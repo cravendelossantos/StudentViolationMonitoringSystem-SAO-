@@ -3830,6 +3830,11 @@ table.table-mail tr td {
 .gray-bg {
   background-color: #f3f3f4;
 }
+
+.lpu-bg {
+  background-color: #8C0001;
+}
+
 .white-bg {
   background-color: #ffffff;
 }
@@ -4422,6 +4427,13 @@ body.mini-navbar.fixed-sidebar .logo-element {
 /* ERROR & LOGIN & LOCKSCREEN*/
 .middle-box {
   max-width: 400px;
+  z-index: 100;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.middle-box-wide {
+  max-width: 800px;
   z-index: 100;
   margin: 0 auto;
   padding-top: 40px;

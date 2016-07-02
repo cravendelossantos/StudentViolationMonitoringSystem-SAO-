@@ -19,3 +19,4 @@ Route::get('/', function () {
 
 /* index */
 Route::get('/index', 'sysController@showIndex');
+Route::get('/login', 'sysController@showLogin2');
