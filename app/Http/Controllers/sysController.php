@@ -10,4 +10,10 @@ class sysController extends Controller {
         return view('index');
     }
 	
+	public function showLogin2()
+    {
+        return view('loginv2');
+    }
+	
+	
 }
