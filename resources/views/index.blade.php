@@ -1,0 +1,17 @@
+@extends('layouts.master')
+
+@section('title', 'SAO | Home')
+
+@section('header-page')
+
+<div class="col-lg-10">
+	<h2>Welcome JPL!</h2>
+
+</div>
+
+@endsection
+
+@section('content')
+
+@endsection
+
