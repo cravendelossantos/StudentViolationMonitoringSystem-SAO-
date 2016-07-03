@@ -32,18 +32,34 @@
 					<br>
 					<br>
 					<div class="">
-						<form class="m-t" role="form" action="/index">
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Username" required="">
+						<form class="m-t" role="form" method="post" action="/login">
+							{!! csrf_field() !!}
+
+							<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+
+								<input type="email" class="form-control" placeholder="Email" value="{{ old('email') }}" name="email" required="" autofocus="">
+
 							</div>
-							<div class="form-group">
-								<input type="password" class="form-control" placeholder="Password" required="">
+							<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+
+								<input type="password" class="form-control" placeholder="Password" name="password" required="">
+
 							</div>
-							<br>
+
+							@if (count($errors) > 0)
+
+							@foreach ($errors->all() as $error)
+							<div class="alert alert-danger">
+								{{ $error }}
+							</div>
+							@endforeach
+
 							<button type="submit" class="btn btn-lpu block full-width m-b">
 								Login
 							</button>
-
+							 <div class="text-center">
+							 	<a href="/register"><small>Create an account</small></a>
+							 </div>  
 							<!--
 							<a href="#">
 							<small>Forgot password?</small>
@@ -63,8 +79,12 @@
 					</div>
 				</div>
 			</div>
+		
+			
+		</div>
+		<br><br><br><br>	
 			<hr/>
-			<div class="row">
+<div class="row">
 				<div class="col-md-8 col-md-offset-2 text-center">
 					Lyceum of the Philippines University Cavite
 					<br>
@@ -74,8 +94,6 @@
 
 				</div>
 			</div>
-		</div>
-
 	</body>
 
 </html>
