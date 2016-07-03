@@ -53,7 +53,7 @@
 								{{ $error }}
 							</div>
 							@endforeach
-
+							@endif
 							<button type="submit" class="btn btn-lpu block full-width m-b">
 								Login
 							</button>
