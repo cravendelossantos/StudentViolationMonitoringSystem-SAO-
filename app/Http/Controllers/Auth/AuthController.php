@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Auth\Registrar;
 
 class AuthController extends Controller
 {
@@ -28,17 +32,19 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+        
+	protected $guard ='admin';
+    protected $redirectPath = '/index';
+	protected $redirectTo = '/index';
+    protected $loginPath = '/login';
+	protected $redirectAfterLogout = '/login';
+	protected $loginView ="/login";
 
     /**
      * Create a new authentication controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
-    }
 
     /**
      * Get a validator for an incoming registration request.
@@ -49,7 +55,7 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|min:2|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
@@ -69,4 +75,34 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+	
+	
+	public function showLoginForm(){
+		if(Auth::guard('admin')->check()){
+		return redirect('/index');
+	}
+	
+	else{
+			return view('login');
+		}
+	}
+	
+    public function showRegistrationForm()
+    {
+        if (property_exists($this, 'registerView')) {
+            return view($this->registerView);
+        }
+
+        return view('register');
+    }
+	
+	   public function logout()
+    {
+    
+       If(Auth::guard('admin')->logout());
+       
+		return redirect('/index');
+
+    }
+			
 }

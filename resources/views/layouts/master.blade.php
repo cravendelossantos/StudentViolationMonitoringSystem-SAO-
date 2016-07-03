@@ -151,7 +151,7 @@
 								<img alt="image" class="img-circle"  height="50px" width="50px" src="/img/aboutlpu.jpg">
 
 								<a data-toggle="dropdown" class="dropdown-toggle" href="#"> 
-								<span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"> Jose P. Laurel </strong> </span> <span class="text-muted text-xs block"> Admin <b class="caret"></b></span> </span> </a>
+								<span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"> {{{ Auth::guard('admin')->user()->name }}} </strong> </span> <span class="text-muted text-xs block"> Admin <b class="caret"></b></span> </span> </a>
 								<ul class="dropdown-menu animated fadeInRight m-t-xs">
 									<li>
 										<a ui-sref="profile">Profile</a>
@@ -164,7 +164,7 @@
 									</li>
 									<li class="divider"></li>
 									<li>
-										<a href="../login.html">Logout</a>
+										<a href="/logout">Logout</a>
 									</li>
 								</ul>
 							</div>
@@ -233,11 +233,11 @@
 						</div>
 						<ul class="nav navbar-top-links navbar-right">
 							<li>
-								<span class="m-r-sm text-muted welcome-message">Student Violations Monitoring System</span>
+								<span class="m-r-sm text-muted welcome-message">Student's Violations Monitoring System</span>
 							</li>
 
 							<li>
-								<a href="/inventory/logout"> <i class="fa fa-sign-out"></i> Log out </a>
+								<a href="/logout"> <i class="fa fa-sign-out"></i> Log out </a>
 							</li>
 
 						</ul>
