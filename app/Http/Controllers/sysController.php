@@ -21,6 +21,12 @@ class sysController extends Controller {
     {
         return view('loginv2');
     }
+ 	
+ 	public function showReportViolation()
+    {
+        return view('report_violation');
+    }
+	
 	
 	
 }

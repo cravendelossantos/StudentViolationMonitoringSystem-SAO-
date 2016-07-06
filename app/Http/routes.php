@@ -30,5 +30,6 @@ Route::get('/logout', 'Auth\AuthController@getLogout');
 Route::get('/register', 'Auth\AuthController@getRegister');
 Route::post('/register', 'Auth\AuthController@postRegister');
 
-
+// Report violation
+Route::get('/ReportViolation', 'sysController@showReportViolation');
 

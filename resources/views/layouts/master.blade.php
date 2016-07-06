@@ -34,7 +34,7 @@
 	</head>
 
 	<body class="md-skin">
-
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
 		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
@@ -150,8 +150,7 @@
 							<div class="dropdown profile-element" dropdown="">
 								<img alt="image" class="img-circle"  height="50px" width="50px" src="/img/aboutlpu.jpg">
 
-								<a data-toggle="dropdown" class="dropdown-toggle" href="#"> 
-								<span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"> {{{ Auth::guard('admin')->user()->name }}} </strong> </span> <span class="text-muted text-xs block"> Admin <b class="caret"></b></span> </span> </a>
+								<a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{{ Auth::guard('admin')->user()->first_name }}} {{{ Auth::guard('admin')->user()->last_name }}} </strong> </span> <span class="text-muted text-xs block"> Admin <b class="caret"></b></span> </span> </a>
 								<ul class="dropdown-menu animated fadeInRight m-t-xs">
 									<li>
 										<a ui-sref="profile">Profile</a>
@@ -172,19 +171,15 @@
 								SAO
 							</div>
 						</li>
-						<li class="active">
-							<a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> <span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level collapse in">
-								<li ui-sref-active="active" class="active">
-									<a ui-sref="dashboards.dashboard_1" class="ng-binding" href="/dashboards/dashboard_1">Dashboard v.1</a>
-								</li>
-								<li ui-sref-active="active">
-									<a ui-sref="dashboards.dashboard_2" class="ng-binding" href="/dashboards/dashboard_2">Dashboard v.2</a>
-								</li>
-							</ul>
+
+						@section('menu')
+						<li>
+							<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+
 						</li>
+
 						<li ui-sref-active="active">
-							<a ui-sref="layouts" href="/layouts"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Layouts</span> </a>
+							<a href="/ReportViolation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Reports</span> </a>
 						</li>
 
 						<li>
@@ -216,12 +211,11 @@
 								</li>
 							</ul>
 						</li>
-
-					
+						@show
 					</ul>
 
 				</div>
-					@show
+
 			</nav>
 
 			<div id="page-wrapper" class="gray-bg dashbard-1">
@@ -270,8 +264,7 @@
 		</div>
 
 		@yield('scripts')
-		<script src="/js/inventory.js"></script>
-
+		<script src="/js/sysJs.js"></script>
 		@show
 
 	</body>
