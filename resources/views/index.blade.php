@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'SAO | Home')
+@section('title', 'Student Affairs Office')
 
 @section('header-page')
 <div class="col-lg-10">
@@ -10,12 +10,14 @@
 @endsection
 
 @section('menu')
+
 <li class="active">
-	<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+	<a href="index" id="me"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
 
 </li>
+
 <li ui-sref-active="active">
-	<a href="/ReportViolation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Reports</span> </a>
+	<a href="ReportViolation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Reports</span> </a>
 </li>
 
 <li>
@@ -47,9 +49,8 @@
 		</li>
 	</ul>
 </li>
+
 @endsection
-
-
 
 @section('content')
 
