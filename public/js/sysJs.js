@@ -1,3 +1,18 @@
+//nav load page
+$(document).ready(function() {
+
+	$('ul#side-menu li a').click(function(e) {
+		e.preventDefault();
+
+		var page = $(this).attr('href');
+
+		$('#wrapper').load(page);
+		window.history.pushState('', '', '/' + page);
+
+	});
+
+});
+
 //date picker
 $('#data_1 .input-group.date').datepicker({
 	todayBtn : "linked",
@@ -40,7 +55,6 @@ $('.dataTables-example1').DataTable({
 	dom : '<"html5buttons">'
 
 });
-
 
 //register
 
