@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 	<head>
 
@@ -8,27 +7,40 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>@yield('title')</title>
 
+		@section('css')
 		<!-- CSS Files -->
-
 		<link href="/css/bootstrap.min.css" rel="stylesheet">
 		<link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
 		<link href="/css/animate.css" rel="stylesheet">
 		<link href="/css/style.css" rel="stylesheet">
+
+		<!-- Toastr style -->
+		<link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+		<!-- Gritter -->
+		<link href="/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
 		<link href="/css/bootstrap.min.css" rel="stylesheet">
 		<link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
 		<link href="/css/plugins/iCheck/custom.css" rel="stylesheet">
 		<link href="/css/animate.css" rel="stylesheet">
 		<link href="/css/style.css" rel="stylesheet">
 		<link href="/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+		<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
+		<script src="/js/plugins/chartJs/Chart.min.js"></script>
 		<link href="/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
 		<link href="/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="/css/plugins/jQueryUI/jquery-ui.css" />
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
 
+		@show
+	</head>
+
+	<body class="md-skin">
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
 		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 		<script type="text/javascript" src="/js/jquery-ui-1.10.4.min.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="/css/plugins/jQueryUI/jquery-ui.css" />
 
 		<!-- Mainly scripts -->
 		<script src="/js/jquery-2.1.1.js"></script>
@@ -47,7 +59,6 @@
 		<!-- Data Tables -->
 		<script src="/js/plugins/jeditable/jquery.jeditable.js"></script>
 		<script src="/js/plugins/dataTables/datatables.min.js"></script>
-
 		<!-- Peity -->
 		<script src="/js/plugins/peity/jquery.peity.min.js"></script>
 		<script src="/js/demo/peity-demo.js"></script>
@@ -55,7 +66,7 @@
 		<!-- jQuery UI -->
 		<script src="/js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
-		<!-- Gritter -->
+		<!-- GITTER -->
 		<script src="/js/plugins/gritter/jquery.gritter.min.js"></script>
 
 		<!-- Sparkline -->
@@ -127,15 +138,13 @@
 		<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 		<script src="/js/plugins/chartJs/Chart.min.js"></script>
 
-	</head>
-
-	<body class="md-skin">
 		<div id="wrapper">
+
 			<nav class="navbar-default navbar-static-side" role="navigation">
 				<div class="fixed-nav">
 
-					@section('sidebar')
 					<ul side-navigation="" class="nav metismenu" id="side-menu" style="display: block;">
+						@section('sidebar')
 						<li class="nav-header">
 
 							<div class="dropdown profile-element" dropdown="">
@@ -154,7 +163,7 @@
 									</li>
 									<li class="divider"></li>
 									<li>
-										<a href="logout">Logout</a>
+										<a href="/logout">Logout</a>
 									</li>
 								</ul>
 							</div>
@@ -163,14 +172,52 @@
 							</div>
 						</li>
 
-						@yield('menu')
-			
+						@section('menu')
+						<li>
+							<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+
+						</li>
+
+						<li ui-sref-active="active">
+							<a href="/ReportViolation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Reports</span> </a>
+						</li>
+
+						<li>
+							<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Menu levels</span><span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+								<li>
+									<a href="">Third Level <span class="fa arrow"></span></a>
+									<ul class="nav nav-third-level collapse">
+										<li>
+											<a href="">Third Level Item</a>
+										</li>
+										<li>
+											<a href="">Third Level Item</a>
+										</li>
+										<li>
+											<a href="">Third Level Item</a>
+										</li>
+
+									</ul>
+								</li>
+								<li>
+									<a href="">Second Level Item</a>
+								</li>
+								<li>
+									<a href="">Second Level Item</a>
+								</li>
+								<li>
+									<a href="">Second Level Item</a>
+								</li>
+							</ul>
+						</li>
+						@show
 					</ul>
 
 				</div>
 
 			</nav>
-			@show
+
 			<div id="page-wrapper" class="gray-bg dashbard-1">
 				<div class="row border-bottom">
 					<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
