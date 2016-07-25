@@ -27,6 +27,24 @@ class sysController extends Controller {
         return view('report_violation');
     }
 	
+	public function showCommunityService()
+    {
+        return view('community_service');
+    }
+	
+	public function showViolation()
+    {
+        return view('violation');
+    }
+	
+		public function showSanctions()
+    {
+        return view('sanction_monitoring');
+    }
+	
+	
+	
+	
 	
 	
 }

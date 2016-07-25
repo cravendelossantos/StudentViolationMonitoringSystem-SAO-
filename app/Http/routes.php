@@ -33,3 +33,21 @@ Route::post('/register', 'Auth\AuthController@postRegister');
 // Report violation
 Route::get('/ReportViolation', 'sysController@showReportViolation');
 
+// Community Service
+Route::get('/CommunityService', 'sysController@showCommunityService');
+
+// violations
+Route::get('/violation', 'sysController@showViolation');
+
+// Sanction Monitoring
+Route::get('/sanctions', 'sysController@showSanctions');
+
+
+
+
+
+
+
+
+
+

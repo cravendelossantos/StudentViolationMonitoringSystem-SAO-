@@ -17,9 +17,22 @@
 <li ui-sref-active="active">
 	<a href="/ReportViolation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Reports</span> </a>
 </li>
+</li>
+<li ui-sref-active="active">
+	<a href="/CommunityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+</li>
+
+<li ui-sref-active="active">
+	<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+</li>
+
+<li ui-sref-active="active">
+	<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+</li>
+
 
 <li>
-	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Menu levels</span><span class="fa arrow"></span></a>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Reports</span><span class="fa arrow"></span></a>
 	<ul class="nav nav-second-level collapse">
 		<li>
 			<a href="">Third Level <span class="fa arrow"></span></a>
