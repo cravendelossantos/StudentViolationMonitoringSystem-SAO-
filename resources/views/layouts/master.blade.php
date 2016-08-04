@@ -150,7 +150,7 @@
 							<div class="dropdown profile-element" dropdown="">
 								<img alt="image" class="img-circle"  height="50px" width="50px" src="/img/aboutlpu.jpg">
 
-								<a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{{ Auth::guard('admin')->user()->first_name }}} {{{ Auth::guard('admin')->user()->last_name }}} </strong> </span> <span class="text-muted text-xs block"> Admin <b class="caret"></b></span> </span> </a>
+								<a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{{ Auth::guard('admin')->user()->first_name }}} {{{ Auth::guard('admin')->user()->last_name }}} </strong> </span> <span class="text-muted text-xs block"> {{{ Auth::guard('admin')->user()->user_type }}} <b class="caret"></b></span> </span> </a>
 								<ul class="dropdown-menu animated fadeInRight m-t-xs">
 									<li>
 										<a ui-sref="profile">Profile</a>

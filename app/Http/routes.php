@@ -32,12 +32,15 @@ Route::post('/register', 'Auth\AuthController@postRegister');
 
 // Report violation
 Route::get('/ReportViolation', 'sysController@showReportViolation');
+Route::post('/ReportViolation', 'sysController@postReportViolation');
+
 
 // Community Service
 Route::get('/CommunityService', 'sysController@showCommunityService');
 
 // violations
 Route::get('/violation', 'sysController@showViolation');
+Route::post('/violation', 'sysController@postViolation');
 
 // Sanction Monitoring
 Route::get('/sanctions', 'sysController@showSanctions');

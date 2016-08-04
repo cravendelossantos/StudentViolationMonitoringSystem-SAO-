@@ -30,7 +30,6 @@
 	<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
 </li>
 
-
 <li>
 	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Reports</span><span class="fa arrow"></span></a>
 	<ul class="nav nav-second-level collapse">
@@ -135,67 +134,64 @@
 							</div>
 						</div>
 					</div>
-				</form>
 
 			</div>
 
 			<div class="ibox-footer">
-				<button class="btn btn-w-m btn-primary" id="addItemBtn" type="button">
+				<button class="btn btn-w-m btn-primary" id="addItemBtn" type="submit">
 					<strong>Save</strong>
 				</button>
-
+				</form>
 			</div>
 
 		</div>
 
+		<div class="ibox">
+			<div class="ibox float-e-margins">
 
-
-			<div class="ibox">
-				<div class="ibox float-e-margins">
-
-					<div class="ibox-title">
-						<h5>List</h5>
-						<div class="ibox-tools">
-							<a class="collapse-link"> <i class="fa fa-chevron-up"></i> </a>
-							<a class="close-link"> <i class="fa fa-times"></i> </a>
-						</div>
+				<div class="ibox-title">
+					<h5>List</h5>
+					<div class="ibox-tools">
+						<a class="collapse-link"> <i class="fa fa-chevron-up"></i> </a>
+						<a class="close-link"> <i class="fa fa-times"></i> </a>
 					</div>
+				</div>
 
-					<div class="ibox-content">
+				<div class="ibox-content">
 
-						<div class="table-responsive">
+					<div class="table-responsive">
 
-							<table class="table table-striped table-bordered table-hover dataTables-example" >
-								<thead>
-									<tr>
-										<th>Student No.</th>
-										<th>Name</th>
-										<th>Violation</th>
-										<th>Year / Course</th>
-										<th>Date</th>
+						<table class="table table-striped table-bordered table-hover dataTables-example" >
+							<thead>
+								<tr>
+									<th>Student No.</th>
+									<th>Name</th>
+									<th>Violation</th>
+									<th>Year / Course</th>
+									<th>Date</th>
 
-									</tr>
-								</thead>
-								<tbody  id="tbody">
+								</tr>
+							</thead>
+							<tbody  id="tbody">
 
-									<tr >
-										<td>2016-0000</td>
-										<td>Elmar "Jimboy" Anchuelo</td>
-										<td>Umihi sa Pond</td>
-										<td>4th Year / BSIT</td>
-										<td>7/7/2016</td>
+								<tr >
+									<td>2016-0000</td>
+									<td>Elmar "Jimboy" Anchuelo</td>
+									<td>Umihi sa Pond</td>
+									<td>4th Year / BSIT</td>
+									<td>7/7/2016</td>
 
-									</tr>
+								</tr>
 
-								</tbody>
+							</tbody>
 
-							</table>
-						</div>
+						</table>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
 @endsection
 

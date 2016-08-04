@@ -107,7 +107,6 @@
 <script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="/js/plugins/chartJs/Chart.min.js"></script>
 <link href="/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
-<link href="/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -130,5 +129,38 @@
 <script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="/js/plugins/chartJs/Chart.min.js"></script>
 
-<script src="/js/sysJs.js"></script>
+<script>
+	
+	
+$('#registerBtn').click(function(e) {
+	e.preventDefault();
+	$.ajax({
+		type : "POST",
+		url : "/register",
+		data : $('form#regForm').serialize(),
+
+	}).done(function(data) {
+
+		var msg = "";
+		if (data != "") {
+			$.each(data.errors, function(k, v) {
+				msg = msg + v + "\n";
+				swal("Oops...", msg, "warning");
+			});
+
+		} else {
+
+			$('form#regForm').each(function() {
+				$('form#regForm').hide();
+				$('#regDone').toggle(200);
+				$('#regDone').html("<br><br><br><br><br><div class='alert alert-success'><h1 style='margin-left : 20px'>Success! <span class='glyphicon glyphicon-ok'></span></h1><p style='margin-left : 50px'>Your account was successfully created.<br>Please Click <a href=/login> here </a> to Login.</p><br><br></div>");
+
+			});
+
+		}
+	});
+
+});
+
+</script>
 
