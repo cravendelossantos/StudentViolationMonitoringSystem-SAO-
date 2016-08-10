@@ -45,6 +45,12 @@ Route::post('/violation', 'sysController@postViolation');
 // Sanction Monitoring
 Route::get('/sanctions', 'sysController@showSanctions');
 
+// Lost and Found 
+Route::get('/lostandfound','sysController@showLostAndFound');
+Route::post('/lostandfound','sysController@postLostAndFoundAdd');
+Route::post('/lostandfound','sysController@postLostAndFoundUpdate');
+
+
 
 
 

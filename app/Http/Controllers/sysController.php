@@ -73,7 +73,7 @@ class sysController extends Controller {
     	$violation_table = DB::table('violations')->get();
         return view('violation', ['violationTable' => $violation_table ]);
     }
-		public function postViolation(Request $request)
+	public function postViolation(Request $request)
 	{
 		$validator = Validator::make($request->all(),[
         	'violationNo' => 'required|numeric|max:255|unique:violations,violation_id',
@@ -101,10 +101,65 @@ class sysController extends Controller {
 		}
 		
 	}
-		public function showSanctions()
+	public function showSanctions()
     {
         return view('sanction_monitoring');
     }
+	
+	
+	public function showLostAndFound()
+	{
+   		$lostandfound_table = DB::table('lost_and_found')->get();
+        return view('lostandfound', ['lostandfoundTable' => $lostandfound_table ]);
+	}
+	
+	public function postLostAndFoundAdd(Request $request)
+	{
+		$validator = Validator::make($request->all(),[
+        	'itemName' => 'required|alpha|max:255',
+            'endorserName' => 'required|alpha|max:255',
+            'dateEndorsed' => 'required|max:255',
+           
+	    ]);
+
+        if ($validator->fails()) {
+            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
+          
+        }
+		else {
+	
+			$lost_and_found = DB::table('lost_and_found')->insert([			
+            'item' => $request['itemName'],
+            'endorser_name' => $request['endorserName'],
+ 	        'date_endorsed' => Carbon::now(),
+        ]);
+			
+		}
+		
+	}
+	
+	public function postLostAndFoundUpdate(Request $request)
+	{
+		$validator = Validator::make($request->all(),[
+        	'claimerName' => 'required|alpha|max:255',
+            'dateClaimed' => 'required|alpha|max:255',                    
+	    ]);
+
+        if ($validator->fails()) {
+            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
+          
+        }
+		else {
+	
+			$lost_and_found = DB::table('lost_and_found')->insert([			
+            'claimer_name' => $request['claimerName'],
+ 	        'date_claimed' => Carbon::now(),
+        ]);
+			
+		}
+		
+	}
+	
 	
 	
 	
