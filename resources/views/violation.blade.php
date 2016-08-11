@@ -10,28 +10,33 @@
 @endsection
 
 @section('menu')
-<li ui-sref-active="active">
-	<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+<li>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Students Violation Management</span><span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level collapse">
+		<li ui-sref-active="active">
+			<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
 
-</li>
-<li ui-sref-active="active" >
-	<a href="/ReportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
-</li>
+		</li>
+		<li ui-sref-active="active" >
+			<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+		</li>
 
-<li ui-sref-active="active">
-	<a href="/CommunityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
-</li>
+		<li ui-sref-active="active">
+			<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+		</li>
 
-<li ui-sref-active="active" class="active">
-	<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
-</li>
+		<li ui-sref-active="active">
+			<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+		</li>
 
-<li ui-sref-active="active" >
-	<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+		<li ui-sref-active="active" >
+			<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+		</li>
+	</ul>
 </li>
 
 <li>
-	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Reports</span><span class="fa arrow"></span></a>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Lockers Management</span><span class="fa arrow"></span></a>
 	<ul class="nav nav-second-level collapse">
 		<li>
 			<a href="">Third Level <span class="fa arrow"></span></a>
@@ -56,6 +61,106 @@
 		</li>
 		<li>
 			<a href="">Second Level Item</a>
+		</li>
+	</ul>
+</li>
+
+<li>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Lost and Found</span><span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level collapse">
+		<li ui-sref-active="active">
+			<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+
+		</li>
+		<li ui-sref-active="active" >
+			<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active" >
+			<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+		</li>
+	</ul>
+</li>
+
+<li>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Campus Venue Rservation Monitoring</span><span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level collapse">
+		<li ui-sref-active="active">
+			<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+
+		</li>
+		<li ui-sref-active="active" >
+			<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active" >
+			<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+		</li>
+	</ul>
+</li>
+
+<li>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Monitoring of Proposal of Activities</span><span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level collapse">
+		<li ui-sref-active="active">
+			<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+
+		</li>
+		<li ui-sref-active="active" >
+			<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active" >
+			<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+		</li>
+	</ul>
+</li>
+
+<li>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Organizations Renewal Management</span><span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level collapse">
+		<li ui-sref-active="active">
+			<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+
+		</li>
+		<li ui-sref-active="active" >
+			<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active" >
+			<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
 		</li>
 	</ul>
 </li>
@@ -130,6 +235,8 @@
 			</div>
 
 		</div>
+		
+		
 
 		<div class="ibox">
 			<div class="ibox float-e-margins">
@@ -149,19 +256,17 @@
 						<table class="table table-striped table-bordered table-hover dataTables-example" >
 							<thead>
 								<tr>
-									<th>Violation ID No.</th>
 									<th>Violation Name</th>
 									<th>Offense Level</th>
 									<th>Description</th>
 									<th>Sanction</th>
 									<th>Date</th>
-
+	
 								</tr>
 							</thead>
 							<tbody  id="tbody">
 							@foreach ($violationTable as $row)
-								<tr >
-									<td>{{$row->violation_id}}</td>
+								<tr>
 									<td>{{$row->name}}</td>
 									<td>{{$row->offense_level}}</td>
 									<td>{{$row->description}}</td>
@@ -179,6 +284,7 @@
 		</div>
 	</div>
 </div>
+     
 
 @endsection
 

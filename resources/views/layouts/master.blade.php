@@ -59,6 +59,11 @@
 		<!-- Data Tables -->
 		<script src="/js/plugins/jeditable/jquery.jeditable.js"></script>
 		<script src="/js/plugins/dataTables/datatables.min.js"></script>
+
+		<!-- Data Tables Scripts -->
+		<script src="/js/dataTables.js"></script>
+		<script src="/css/mystyle.css"></script>
+
 		<!-- Peity -->
 		<script src="/js/plugins/peity/jquery.peity.min.js"></script>
 		<script src="/js/demo/peity-demo.js"></script>
@@ -174,16 +179,32 @@
 
 						@section('menu')
 						<li>
+							<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Reports</span><span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+							<li ui-sref-active="active">
 							<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
 
 						</li>
-
-						<li ui-sref-active="active">
-							<a href="/ReportViolation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Reports</span> </a>
+						<li ui-sref-active="active" >
+							<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
 						</li>
 
+						<li ui-sref-active="active">
+							<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+						</li>
+
+						<li ui-sref-active="active">
+							<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+						</li>
+
+						<li ui-sref-active="active" >
+							<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+						</li> 
+							</ul>
+						</li>
+						
 						<li>
-							<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Menu levels</span><span class="fa arrow"></span></a>
+							<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Reports</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
 									<a href="">Third Level <span class="fa arrow"></span></a>
@@ -225,11 +246,12 @@
 							<a class="navbar-minimalize minimalize-styl-2 btn btn-default " href="#"><i class="fa fa-bars"></i> </a>
 
 						</div>
-						<ul class="nav navbar-top-links navbar-right">
+						<ul class="nav navbar-top-links navbar-left">
 							<li>
-								<span class="m-r-sm text-muted welcome-message">Student's Violations Monitoring System</span>
+								<span class="m-r-sm text-muted welcome-message"><img src="/img/lpulogo.png" height="65px" width="65px">Students Affairs Office Information System</span>
 							</li>
-
+						</ul>
+						<ul class="nav navbar-top-links navbar-right">
 							<li>
 								<a href="/logout"> <i class="fa fa-sign-out"></i> Log out </a>
 							</li>
@@ -242,7 +264,7 @@
 				<div class="row  border-bottom white-bg dashboard-header">
 					@yield('header-page')
 				</div>
-				<div class="row">
+				<div class="row" id="content">
 					<div class="col-lg-12">
 						<div class="wrapper wrapper-content">
 							@yield('content')
@@ -264,7 +286,7 @@
 		</div>
 
 		@yield('scripts')
-		<script src="/js/sysJs.js"></script>
+
 		@show
 
 	</body>

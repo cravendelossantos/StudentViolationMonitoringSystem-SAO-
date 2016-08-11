@@ -28,7 +28,10 @@ class sysController extends Controller {
  	
  	public function showReportViolation()
     {
-        return view('report_violation');
+    	$students_violation_table = DB::table('students_violation')->get();
+		$courses = DB::table('courses')->get();
+		$violations = DB::table('violations')->get();
+        return view('report_violation', ['studentsViolationTable' => $students_violation_table ], ['violations' => $violations])->with(['courses'=>$courses]);
     }
 	
 	public function postReportViolation(Request $request)
@@ -52,8 +55,8 @@ class sysController extends Controller {
 			$student_violation = DB::table('students_violation')->insert([			
             'student_no' => $request['studentNo'],
             'violation' => $request['violationSelection'],
-            'first_name' => $request['firstName'],
-            'last_name' => $request['lastName'],
+            'first_name' => ucwords($request['firstName']),
+            'last_name' => ucwords($request['lastName']),
             'year_level' => $request['yearLevel'],
  	        'course' => $request['course'],
  	        'date_created' => Carbon::now(),
@@ -101,13 +104,78 @@ class sysController extends Controller {
 		}
 		
 	}
-		public function showSanctions()
+	public function showSanctions()
     {
         return view('sanction_monitoring');
     }
 	
 	
 	
+	public function showCourses()
+    {
+    	$courses = DB::table('courses')->get();
+        return view('courses',["courses"=>$courses]);
+    }
+
+	public function postCourse(Request $request)
+	{
+		$course = $request->input('courseDesc');
+		DB::table('courses')->insert(['course' => $course]);	
+		return response()->json(['success' => true, "course"=>$course]);
+	}
+	
+	public function showLostAndFound()
+	{
+   		$lostandfound_table = DB::table('lost_and_found')->get();
+        return view('lostandfound', ['lostandfoundTable' => $lostandfound_table ]);
+	}
+	
+	public function postLostAndFoundAdd(Request $request)
+	{
+		$validator = Validator::make($request->all(),[
+        	'itemName' => 'required|alpha|max:255',
+            'endorserName' => 'required|alpha|max:255',
+            'dateEndorsed' => 'required|max:255',
+           
+	    ]);
+
+        if ($validator->fails()) {
+            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
+          
+        }
+		else {
+	
+			$lost_and_found = DB::table('lost_and_found')->insert([			
+            'item' => $request['itemName'],
+            'endorser_name' => $request['endorserName'],
+ 	        'date_endorsed' => Carbon::now(),
+        ]);
+			
+		}
+		
+	}
+	
+	public function postLostAndFoundUpdate(Request $request)
+	{
+		$validator = Validator::make($request->all(),[
+        	'claimerName' => 'required|alpha|max:255',
+            'dateClaimed' => 'required|alpha|max:255',                    
+	    ]);
+
+        if ($validator->fails()) {
+            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
+          
+        }
+		else {
+	
+			$lost_and_found = DB::table('lost_and_found')->insert([			
+            'claimer_name' => $request['claimerName'],
+ 	        'date_claimed' => Carbon::now(),
+        ]);
+			
+		}
+		
+	}
 	
 	
 	
