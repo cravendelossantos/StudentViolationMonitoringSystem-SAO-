@@ -77,7 +77,7 @@
 			</div>
 			<div class="ibox-content">
 
-				<form role="form" id="addItemForm" method="POST" action="/lostandfound">
+				<form role="form" id="addItemForm" method="POST" action="/lostandfoundAdd">
 					{!! csrf_field() !!}
 					<div class="row">
 						<div class="col-md-6">
@@ -129,13 +129,18 @@
 			</div>
 			<div class="ibox-content">
 
-				<form role="form" id="addItemForm" method="POST" action="/lostandfound">
+				<form role="form" id="addItemForm" method="POST" action="/lostandfoundUpdate">
 					{!! csrf_field() !!}
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group ">
 								<label>Item</label>
-								<input type="text" placeholder="Item Description" name="studentNo" class="form-control" autofocus="" aria-required="true">
+									<select class="form-control" name="itemSelection">
+									<option autofocus="" disabled selected >Select Item</option>
+									@foreach ($lostandfoundTable as $row)
+									<option>{{$row->item}}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 
@@ -201,6 +206,7 @@
 							<tbody  id="tbody">
 							@foreach ($lostandfoundTable as $row)
 								<tr >
+									<td style="display: none">{{$row->id}}</td>
 									<td>{{$row->item}}</td>
 									<td>{{$row->date_endorsed}}</td>
 									<td>{{$row->endorser_name}}</td>

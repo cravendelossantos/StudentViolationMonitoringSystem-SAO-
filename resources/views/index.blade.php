@@ -73,7 +73,7 @@
 
 		</li>
 		<li ui-sref-active="active" >
-			<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+			<a href="/lostandfound"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Add Item</span> </a>
 		</li>
 
 		<li ui-sref-active="active">

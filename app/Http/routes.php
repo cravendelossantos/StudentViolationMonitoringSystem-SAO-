@@ -58,8 +58,8 @@ Route::post('/addCourse' , 'sysController@postCourse');
 
 // Lost and Found 
 Route::get('/lostandfound','sysController@showLostAndFound');
-Route::post('/lostandfound','sysController@postLostAndFoundAdd');
-Route::post('/lostandfound','sysController@postLostAndFoundUpdate');
+Route::post('/lostandfoundAdd','sysController@postLostAndFoundAdd');
+Route::post('/lostandfoundUpdate','sysController@postLostAndFoundUpdate');
 
 
 

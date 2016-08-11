@@ -109,63 +109,7 @@ class sysController extends Controller {
         return view('sanction_monitoring');
     }
 	
-	
-	public function showLostAndFound()
-	{
-   		$lostandfound_table = DB::table('lost_and_found')->get();
-        return view('lostandfound', ['lostandfoundTable' => $lostandfound_table ]);
-	}
-	
-	public function postLostAndFoundAdd(Request $request)
-	{
-		$validator = Validator::make($request->all(),[
-        	'itemName' => 'required|alpha|max:255',
-            'endorserName' => 'required|alpha|max:255',
-            'dateEndorsed' => 'required|max:255',
-           
-	    ]);
-
-        if ($validator->fails()) {
-            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
-          
-        }
-		else {
-	
-			$lost_and_found = DB::table('lost_and_found')->insert([			
-            'item' => $request['itemName'],
-            'endorser_name' => $request['endorserName'],
- 	        'date_endorsed' => Carbon::now(),
-        ]);
-			
-		}
 		
-	}
-	
-	public function postLostAndFoundUpdate(Request $request)
-	{
-		$validator = Validator::make($request->all(),[
-        	'claimerName' => 'required|alpha|max:255',
-            'dateClaimed' => 'required|alpha|max:255',                    
-	    ]);
-
-        if ($validator->fails()) {
-            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
-          
-        }
-		else {
-	
-			$lost_and_found = DB::table('lost_and_found')->insert([			
-            'claimer_name' => $request['claimerName'],
- 	        'date_claimed' => Carbon::now(),
-        ]);
-			
-		}
-		
-	}
-	
-	
-	
-	
 	public function showCourses()
     {
     	$courses = DB::table('courses')->get();
@@ -182,7 +126,7 @@ class sysController extends Controller {
 	public function showLostAndFound()
 	{
    		$lostandfound_table = DB::table('lost_and_found')->get();
-        return view('lostandfound', ['lostandfoundTable' => $lostandfound_table ]);
+        return view('lost_and_found', ['lostandfoundTable' => $lostandfound_table ]);
 	}
 	
 	public function postLostAndFoundAdd(Request $request)
@@ -205,7 +149,7 @@ class sysController extends Controller {
             'endorser_name' => $request['endorserName'],
  	        'date_endorsed' => Carbon::now(),
         ]);
-			
+			return redirect('/lostandfound');
 		}
 		
 	}
@@ -214,7 +158,7 @@ class sysController extends Controller {
 	{
 		$validator = Validator::make($request->all(),[
         	'claimerName' => 'required|alpha|max:255',
-            'dateClaimed' => 'required|alpha|max:255',                    
+            'dateClaimed' => 'required|max:255',                    
 	    ]);
 
         if ($validator->fails()) {
@@ -223,13 +167,14 @@ class sysController extends Controller {
         }
 		else {
 	
-			$lost_and_found = DB::table('lost_and_found')->insert([			
+			$lost_and_found = DB::table('lost_and_found')->update([			
             'claimer_name' => $request['claimerName'],
  	        'date_claimed' => Carbon::now(),
         ]);
 			
 		}
 		
+		return redirect('/lostandfound');
 	}
 	
 	
