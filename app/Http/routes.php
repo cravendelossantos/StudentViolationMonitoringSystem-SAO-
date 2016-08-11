@@ -31,12 +31,12 @@ Route::get('/register', 'Auth\AuthController@getRegister');
 Route::post('/register', 'Auth\AuthController@postRegister');
 
 // Report violation
-Route::get('/ReportViolation', 'sysController@showReportViolation');
-Route::post('/ReportViolation', 'sysController@postReportViolation');
+Route::get('/reportViolation', 'sysController@showReportViolation');
+Route::post('/reportViolation', 'sysController@postReportViolation');
 
 
 // Community Service
-Route::get('/CommunityService', 'sysController@showCommunityService');
+Route::get('/communityService', 'sysController@showCommunityService');
 
 // violations
 Route::get('/violation', 'sysController@showViolation');
@@ -52,10 +52,14 @@ Route::post('/lostandfound','sysController@postLostAndFoundUpdate');
 
 
 
+//Courses
+Route::get('/courses' , 'sysController@showCourses');
+Route::post('/addCourse' , 'sysController@postCourse');
 
-
-
-
+// Lost and Found 
+Route::get('/lostandfound','sysController@showLostAndFound');
+Route::post('/lostandfound','sysController@postLostAndFoundAdd');
+Route::post('/lostandfound','sysController@postLostAndFoundUpdate');
 
 
 

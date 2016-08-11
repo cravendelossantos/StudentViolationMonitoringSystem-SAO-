@@ -10,28 +10,33 @@
 @endsection
 
 @section('menu')
-<li >
-	<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+<li class="active">
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Students Violation Management</span><span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level collapse in">
+		<li ui-sref-active="active">
+			<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
 
-</li>
-<li ui-sref-active="active" class="active">
-	<a href="/ReportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Reports</span> </a>
-</li>
+		</li>
+		<li class="active" ui-sref-active="active" >
+			<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+		</li>
 
-<li ui-sref-active="active">
-	<a href="/CommunityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
-</li>
+		<li ui-sref-active="active">
+			<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+		</li>
 
-<li ui-sref-active="active">
-	<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
-</li>
+		<li ui-sref-active="active">
+			<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+		</li>
 
-<li ui-sref-active="active">
-	<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+		<li ui-sref-active="active" >
+			<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+		</li>
+	</ul>
 </li>
 
 <li>
-	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Reports</span><span class="fa arrow"></span></a>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Lockers Management</span><span class="fa arrow"></span></a>
 	<ul class="nav nav-second-level collapse">
 		<li>
 			<a href="">Third Level <span class="fa arrow"></span></a>
@@ -59,6 +64,106 @@
 		</li>
 	</ul>
 </li>
+
+<li>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Lost and Found</span><span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level collapse">
+		<li ui-sref-active="active">
+			<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+
+		</li>
+		<li ui-sref-active="active" >
+			<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active" >
+			<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+		</li>
+	</ul>
+</li>
+
+<li>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Campus Venue Rservation Monitoring</span><span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level collapse">
+		<li ui-sref-active="active">
+			<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+
+		</li>
+		<li ui-sref-active="active" >
+			<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active" >
+			<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+		</li>
+	</ul>
+</li>
+
+<li>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Monitoring of Proposal of Activities</span><span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level collapse">
+		<li ui-sref-active="active">
+			<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+
+		</li>
+		<li ui-sref-active="active" >
+			<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active" >
+			<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+		</li>
+	</ul>
+</li>
+
+<li>
+	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Organizations Renewal Management</span><span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level collapse">
+		<li ui-sref-active="active">
+			<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
+
+		</li>
+		<li ui-sref-active="active" >
+			<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
+		</li>
+
+		<li ui-sref-active="active">
+			<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
+		</li>
+
+		<li ui-sref-active="active" >
+			<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
+		</li>
+	</ul>
+</li>
 @endsection
 
 @section('content')
@@ -77,7 +182,7 @@
 			</div>
 			<div class="ibox-content">
 
-				<form role="form" id="addItemForm" method="POST">
+				<form role="form" id="reportViolationForm" method="POST">
 					{!! csrf_field() !!}
 					<div class="row">
 						<div class="col-md-6">
@@ -86,53 +191,72 @@
 								<input type="text" placeholder="Student No." name="studentNo" class="form-control" autofocus="" aria-required="true">
 							</div>
 						</div>
-
-						<div class="col-md-6">
+						
+									<div class="col-md-6">
 							<div class="form-group">
-								<label>Violation</label>
-								<!--	<input type="text" placeholder="Company" name="" class="form-control" name="">-->
-								<select class="form-control" name="violationSelection">
-									<option autofocus="" disabled selected >Violation</option>
-									<option>Cheating</option>
-									<option>Elmar Gaming</option>
-
+								<label>Year Level</label>
+								<select class="form-control" name="yearLevel">
+									<option autofocus="" disabled selected >Year Level</option>
+									<option>1st Year</option>
+									<option>2nd Year</option>
+									<option>3rd Year</option>
+									<option>4th Year</option>
+									<option>5th Year</option>
 								</select>
 							</div>
 						</div>
-						<div class="col-md-6">
+						
+								<div class="col-md-6">
 							<div class="form-group">
 								<label>First Name</label>
-								<input type="text" placeholder="First Name" name="firstName" class="form-control">
+								<input type="text" placeholder="First Name" style="text-transform: capitalize;" name="firstName" class="form-control">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Last Name</label>
-								<input type="text" placeholder="Last Name" name="lastName" class="form-control">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Year Level</label>
-								<input type="text" placeholder="Year Level" name="yearLevel" class="form-control">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Course</label>
-								<input type="text" placeholder="Course" name="course" class="form-control">
+								<input type="text" placeholder="Last Name" style="text-transform: capitalize;" name="lastName" class="form-control">
 							</div>
 						</div>
 
-						<div class="col-md-6">
-							<div class="form-group" id="data_1">
-								<label>Date</label>
-								<div class="input-group date">
-									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									<input type="text" class="form-control" name="date" placeholder="Pick Date" >
-								</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Violation</label>
+								<select class="form-control" name="violationSelection">
+									<option autofocus="" disabled selected >Violation</option>
+									@foreach ($violations as $violations_row)
+									<option>{{$violations_row->name}}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Course</label>
+								<select class="form-control" name="course">
+									<option autofocus="" disabled selected >Select Course</option>
+									@foreach ($courses as $row)
+									<option>{{$row->course}}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+
+				
+			
+
+						<!--
+						<div class="col-md-6">
+						<div class="form-group" id="data_1">
+						<label>Date</label>
+						<div class="input-group date">
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						<input type="text" class="form-control" name="date" placeholder="Pick Date" >
+						</div>
+						</div>
+						</div>-->
+
 					</div>
 
 			</div>
@@ -168,21 +292,23 @@
 									<th>Name</th>
 									<th>Violation</th>
 									<th>Year / Course</th>
-									<th>Date</th>
+									<th>Date Committed</th>
 
 								</tr>
 							</thead>
 							<tbody  id="tbody">
-
+								@foreach ($studentsViolationTable as $row)
 								<tr >
-									<td>2016-0000</td>
-									<td>Elmar "Jimboy" Anchuelo</td>
-									<td>Umihi sa Pond</td>
-									<td>4th Year / BSIT</td>
-									<td>7/7/2016</td>
+									<td>{{$row->student_no}}</td>
+									<td>{{$row->last_name}}, {{$row->first_name}}</td>
+									<td>{{$row->violation}}</td>
+									<td>{{$row->year_level}}
+									<br>
+									{{$row->course}}</td>
+									<td>{{$row->date_created}}</td>
 
 								</tr>
-
+								@endforeach
 							</tbody>
 
 						</table>
