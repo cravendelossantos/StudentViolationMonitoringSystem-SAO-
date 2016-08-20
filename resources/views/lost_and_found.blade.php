@@ -1,64 +1,14 @@
-@extends('layouts.master')
+@extends('index')
 
 @section('title', 'SAO | Lost and Found')
 
 @section('header-page')
-<div class="col-md-12">
-	<h1>Lost and Found</h1>
+<div class="row">
+	<div class="col-md-12">
+		<h1>Lost and Found</h1>
+	</div>
 </div>
 
-@endsection
-
-@section('menu')
-<li >
-	<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
-
-</li>
-<li ui-sref-active="active" class="active">
-	<a href="/ReportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Reports</span> </a>
-</li>
-
-<li ui-sref-active="active">
-	<a href="/CommunityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
-</li>
-
-<li ui-sref-active="active">
-	<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
-</li>
-
-<li ui-sref-active="active">
-	<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
-</li>
-
-<li>
-	<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Reports</span><span class="fa arrow"></span></a>
-	<ul class="nav nav-second-level collapse">
-		<li>
-			<a href="">Third Level <span class="fa arrow"></span></a>
-			<ul class="nav nav-third-level collapse">
-				<li>
-					<a href="">Third Level Item</a>
-				</li>
-				<li>
-					<a href="">Third Level Item</a>
-				</li>
-				<li>
-					<a href="">Third Level Item</a>
-				</li>
-
-			</ul>
-		</li>
-		<li>
-			<a href="">Second Level Item</a>
-		</li>
-		<li>
-			<a href="">Second Level Item</a>
-		</li>
-		<li>
-			<a href="">Second Level Item</a>
-		</li>
-	</ul>
-</li>
 @endsection
 
 @section('content')
@@ -87,14 +37,12 @@
 							</div>
 						</div>
 
-			
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Endorsed By:</label>
 								<input type="text" placeholder="Endorser name" name="endorserName" class="form-control">
 							</div>
 						</div>
-
 
 						<div class="col-md-6">
 							<div class="form-group" id="data_1">
@@ -117,7 +65,7 @@
 			</div>
 
 		</div>
-		
+
 		<div class="ibox float-e-margins">
 
 			<div class="ibox-title">
@@ -135,23 +83,21 @@
 						<div class="col-md-6">
 							<div class="form-group ">
 								<label>Item</label>
-									<select class="form-control" name="itemSelection">
+								<select class="form-control" name="itemSelection">
 									<option autofocus="" disabled selected >Select Item</option>
 									@foreach ($lostandfoundTable as $row)
-									<option>{{$row->item}}</option>
+									<option>{{$row->item_description}}</option>
 									@endforeach
 								</select>
 							</div>
 						</div>
 
-			
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Claimed By:</label>
 								<input type="text" placeholder="Endorser name" name="claimerName" class="form-control">
 							</div>
 						</div>
-
 
 						<div class="col-md-6">
 							<div class="form-group" id="data_1">
@@ -175,7 +121,6 @@
 
 		</div>
 
-
 		<div class="ibox">
 			<div class="ibox float-e-margins">
 
@@ -191,7 +136,7 @@
 
 					<div class="table-responsive">
 
-						<table class="table table-striped table-bordered table-hover dataTables-example" >
+						<table class="table table-striped table-bordered table-hover dataTables-example1" >
 							<thead>
 								<tr>
 									<th>Item</th>
@@ -199,23 +144,23 @@
 									<th>Endorsed by</th>
 									<th>Date Claimed</th>
 									<th>Claimed By</th>
-									<th>Status</th>	
+									<th>Status</th>
 
 								</tr>
 							</thead>
 							<tbody  id="tbody">
-							@foreach ($lostandfoundTable as $row)
+								@foreach ($lostandfoundTable as $row)
 								<tr >
 									<td style="display: none">{{$row->id}}</td>
-									<td>{{$row->item}}</td>
+									<td>{{$row->item_description}}</td>
 									<td>{{$row->date_endorsed}}</td>
 									<td>{{$row->endorser_name}}</td>
 									<td>{{$row->date_claimed}}</td>
-									<td>{{$row->claimer_name}}</td>
+									<td>{{$row->owner_name}}</td>
 									<td>{{$row->status}}</td>
 
 								</tr>
-							@endforeach
+								@endforeach
 							</tbody>
 
 						</table>
