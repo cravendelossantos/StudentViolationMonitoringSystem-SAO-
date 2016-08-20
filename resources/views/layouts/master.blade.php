@@ -143,13 +143,14 @@
 		<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 		<script src="/js/plugins/chartJs/Chart.min.js"></script>
 
-		<div id="wrapper">
+		<div  id="content">
 
-			<nav class="navbar-default navbar-static-side" role="navigation">
+			<nav class="navbar-default navbar-static-side" id="nav" role="navigation">
 				<div class="fixed-nav">
 
+					
+				
 					<ul side-navigation="" class="nav metismenu" id="side-menu" style="display: block;">
-						@section('sidebar')
 						<li class="nav-header">
 
 							<div class="dropdown profile-element" dropdown="">
@@ -178,61 +179,130 @@
 						</li>
 
 						@section('menu')
-						<li>
-							<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Reports</span><span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level collapse">
-							<li ui-sref-active="active">
-							<a href="/index"><i class="fa fa-th-large"></i> <span class="nav-label ng-binding">Dashboard</span> </a>
-
-						</li>
-						<li ui-sref-active="active" >
-							<a href="/reportViolation"><i class="fa fa-diamond"></i> <span class="nav-label ng-binding">Report a violation</span> </a>
-						</li>
-
-						<li ui-sref-active="active">
-							<a href="/communityService"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Community Service</span> </a>
-						</li>
-
-						<li ui-sref-active="active">
-							<a href="/violation"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Violation</span> </a>
-						</li>
-
-						<li ui-sref-active="active" >
-							<a href="/sanctions"><i class="glyphicon glyphicon-list-alt"></i> <span class="nav-label ng-binding">Sanctions Monitoring</span> </a>
-						</li> 
-							</ul>
-						</li>
 						
+						<li >
+							<a href="/index"><i class="fa fa-home"></i> <span class="nav-label ng-binding">Home</span> </a>
+						</li>
 						<li>
-							<a href=""><i class="fa fa-sitemap"></i> <span class="nav-label ng-binding">Reports</span><span class="fa arrow"></span></a>
+							<a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label ng-binding" > Students Violation Management</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
-								<li>
-									<a href="">Third Level <span class="fa arrow"></span></a>
-									<ul class="nav nav-third-level collapse">
-										<li>
-											<a href="">Third Level Item</a>
-										</li>
-										<li>
-											<a href="">Third Level Item</a>
-										</li>
-										<li>
-											<a href="">Third Level Item</a>
-										</li>
+								<li ui-sref-active="active" >
+									<a href="/violationStatistics"><i class=""></i> <span class="nav-label ng-binding">Statistics </span> </a>
+								</li>
+								<li ui-sref-active="active" >
+									<a href="/reportViolation"><i class=""></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+								</li>
 
-									</ul>
+								<li ui-sref-active="active" >
+									<a href="/violationReports"><i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
 								</li>
-								<li>
-									<a href="">Second Level Item</a>
-								</li>
-								<li>
-									<a href="">Second Level Item</a>
-								</li>
-								<li>
-									<a href="">Second Level Item</a>
-								</li>
+
 							</ul>
 						</li>
-						@show
+
+						<li>
+							<a href="#"><i class="fa fa-desktop"></i> <span class="nav-label ng-binding" >Sanctions Monitoring</span><span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+								<li ui-sref-active="active" >
+									<a href="/communityService"><i class=""></i> <span class="nav-label ng-binding">Community Service and Suspensions</span> </a>
+								</li>
+
+							</ul>
+						</li>
+
+						<li>
+							<a href="#"><i class="fa fa-lock"></i> <span class="nav-label ng-binding">Locker Management</span><span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+
+								<li ui-sref-active="active" >
+									<a href="/lockerAssignment"> <i class=""></i> <span class="nav-label ng-binding">Locker Assignment</span> </a>
+								</li>
+								<li ui-sref-active="active" >
+									<a href="/lockerReports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
+								</li>
+
+							</ul>
+						</li>
+
+						<li>
+							<a href="#"><i class="fa fa-book"></i> <span class="nav-label ng-binding">Lost and Found</span><span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+								<li ui-sref-active="active">
+									<a href="/lostandfoundStatistics"> <i class=""></i> <span class="nav-label ng-binding">Statistics</span> </a>
+								</li>
+								
+								<li ui-sref-active="active">
+									<a href="/lostandfound"><i class=""></i> <span class="nav-label ng-binding">Add / Claim Items</span> </a>
+								</li>
+								<li ui-sref-active="active" >
+									<a href="/lostandfoundReports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
+								</li>
+
+							</ul>
+						</li>
+
+						<li>
+							<a href="#"><i class="fa fa-calendar"></i> <span class="nav-label ng-binding">Campus Venue Reservation Monitoring</font></span><span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+
+								<li ui-sref-active="active" >
+									<a href="/reservation"> <i class=""></i> <span class="nav-label ng-binding">Reservation Form</span> </a>
+								</li>
+						</li>
+						<li ui-sref-active="active" >
+							<a href="/reservationReports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
+						</li>
+
+					</ul>
+					</li>
+
+					<li>
+						<a href="#"><i class="fa fa-list"></i> <span class="nav-label ng-binding">Monitoring of Proposal of Activities</span><span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level collapse">
+							<li ui-sref-active="active">
+								<a href="/addActivity"><i class=""></i> <span class="nav-label ng-binding">Add Activity</span> </a>
+
+							</li>
+							<li ui-sref-active="active" >
+								<a href="/activities"> <i class=""></i> <span class="nav-label ng-binding">Monitoring of Activities</span> </a>
+							</li>
+
+					</li>
+					<li ui-sref-active="active" >
+						<a href="/activitiesReports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
+					</li>
+
+					</ul>
+					</li>
+
+					<li>
+						<a href="#"><i class="fa fa-file"></i> <span class="nav-label ng-binding">Organizations Renewal Management</span><span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level collapse">
+							<li ui-sref-active="active">
+								<a href="/organizations"><i class=""></i> <span class="nav-label ng-binding">List of Organizations</span> </a>
+
+							</li>
+							<li ui-sref-active="active" >
+								<a href="/checklist"> <i class=""></i> <span class="nav-label ng-binding">Checklist of Requirements</span> </a>
+							</li>
+
+						</ul>
+					</li>
+
+					<li>
+						<a href="#"><i class="fa fa-cog"></i> <span class="nav-label ng-binding">Settings</span><span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level collapse">
+							<li ui-sref-active="active">
+								<a href="/violation"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Violations</span> </a>
+
+							</li>
+							<li ui-sref-active="active" >
+								<a href="/courses"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Courses</span> </a>
+							</li>
+
+						</ul>
+					</li>
+			
 					</ul>
 
 				</div>
@@ -242,10 +312,12 @@
 			<div id="page-wrapper" class="gray-bg dashbard-1">
 				<div class="row border-bottom">
 					<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+						<!--
 						<div class="navbar-header">
-							<a class="navbar-minimalize minimalize-styl-2 btn btn-default " href="#"><i class="fa fa-bars"></i> </a>
+						<a class="navbar-minimalize minimalize-styl-2 btn btn-default " href="#"><i class="fa fa-bars"></i> </a>
 
-						</div>
+						</div>-->
+
 						<ul class="nav navbar-top-links navbar-left">
 							<li>
 								<span class="m-r-sm text-muted welcome-message"><img src="/img/lpulogo.png" height="65px" width="65px">Students Affairs Office Information System</span>
@@ -264,7 +336,7 @@
 				<div class="row  border-bottom white-bg dashboard-header">
 					@yield('header-page')
 				</div>
-				<div class="row" id="content">
+				<div class="row">
 					<div class="col-lg-12">
 						<div class="wrapper wrapper-content">
 							@yield('content')
@@ -284,6 +356,27 @@
 			</div>
 
 		</div>
+<script>
+      $(document).ready(function(){
+        // Set trigger and container variables
+        var trigger = $('#nav ul li a'),
+            container = $('#content');
+        
+        // Fire on click
+  
+        trigger.on('click', function(){
+          // Set $this for re-use. Set target from data attribute
+          var $this = $(this),
+            target = $this.attr('href');       
+     alert(target);
+          // Load target page into container
+          container.load(target);
+          
+          // Stop normal link behavior
+          return false;
+        });
+      });
+    </script>
 
 		@yield('scripts')
 
