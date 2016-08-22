@@ -1,4 +1,4 @@
-@extends('index')
+@extends('layouts.master')
 
 @section('title', 'SAO | Report Violation')
 
@@ -8,8 +8,6 @@
 </div>
 
 @endsection
-
-
 
 @section('content')
 
@@ -36,8 +34,8 @@
 								<input type="text" placeholder="Student No." name="studentNo" class="form-control" autofocus="" aria-required="true">
 							</div>
 						</div>
-						
-									<div class="col-md-6">
+
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>Year Level</label>
 								<select class="form-control" name="yearLevel">
@@ -50,8 +48,8 @@
 								</select>
 							</div>
 						</div>
-						
-								<div class="col-md-6">
+
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>First Name</label>
 								<input type="text" placeholder="First Name" style="text-transform: capitalize;" name="firstName" class="form-control">
@@ -87,9 +85,6 @@
 								</select>
 							</div>
 						</div>
-
-				
-			
 
 						<!--
 						<div class="col-md-6">
@@ -130,7 +125,7 @@
 
 					<div class="table-responsive">
 
-						<table class="table table-striped table-bordered table-hover dataTables-example" >
+						<table class="table table-striped table-bordered table-hover dataTables-example dataTable">
 							<thead>
 								<tr>
 									<th>Student No.</th>
@@ -163,6 +158,7 @@
 		</div>
 	</div>
 </div>
+
 
 @endsection
 
