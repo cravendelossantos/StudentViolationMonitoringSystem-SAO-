@@ -4,7 +4,7 @@
 
 		<!-- Metadata -->
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="csrf-token" content="{{ csrf_token() }}" />
 		<title>@yield('title')</title>
 
 		@section('css')
@@ -29,12 +29,12 @@
 		<script src="/js/plugins/chartJs/Chart.min.js"></script>
 		<link href="/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
 		<link href="/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
-
+		
 		@show
 	</head>
 
 	<body class="md-skin">
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
 		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
@@ -48,7 +48,7 @@
 		<script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 		<script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 		<script src="/js/jquery-ui-1.10.4.min.js"></script>
-
+		
 		<!-- Flot -->
 		<script src="/js/plugins/flot/jquery.flot.js"></script>
 		<script src="/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
@@ -59,14 +59,13 @@
 		<!-- Data Tables -->
 		<script src="/js/plugins/jeditable/jquery.jeditable.js"></script>
 		<script src="/js/plugins/dataTables/datatables.min.js"></script>
-
-		<!-- Data Tables Scripts -->
-		<script src="/js/dataTables.js"></script>
-		<script src="/css/mystyle.css"></script>
-
 		<!-- Peity -->
 		<script src="/js/plugins/peity/jquery.peity.min.js"></script>
 		<script src="/js/demo/peity-demo.js"></script>
+
+		<!-- Custom and plugin javascript -->
+		<script src="/js/inspinia.js"></script>
+		<script src="/js/plugins/pace/pace.min.js"></script>
 
 		<!-- jQuery UI -->
 		<script src="/js/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -143,13 +142,12 @@
 		<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 		<script src="/js/plugins/chartJs/Chart.min.js"></script>
 
-		<div  id="content">
+
+		<div id="wrapper">
 
 			<nav class="navbar-default navbar-static-side" id="nav" role="navigation">
 				<div class="fixed-nav">
 
-					
-				
 					<ul side-navigation="" class="nav metismenu" id="side-menu" style="display: block;">
 						<li class="nav-header">
 
@@ -178,8 +176,8 @@
 							</div>
 						</li>
 
-						@section('menu')
-						
+						@section('side-bar')
+
 						<li >
 							<a href="/index"><i class="fa fa-home"></i> <span class="nav-label ng-binding">Home</span> </a>
 						</li>
@@ -230,9 +228,9 @@
 								<li ui-sref-active="active">
 									<a href="/lostandfoundStatistics"> <i class=""></i> <span class="nav-label ng-binding">Statistics</span> </a>
 								</li>
-								
+
 								<li ui-sref-active="active">
-									<a href="/lostandfound"><i class=""></i> <span class="nav-label ng-binding">Add / Claim Items</span> </a>
+									<a href="/lost-and-found"><i class=""></i> <span class="nav-label ng-binding">Add / Claim Items</span> </a>
 								</li>
 								<li ui-sref-active="active" >
 									<a href="/lostandfoundReports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
@@ -302,11 +300,11 @@
 
 						</ul>
 					</li>
-			
+
 					</ul>
 
 				</div>
-
+				@show
 			</nav>
 
 			<div id="page-wrapper" class="gray-bg dashbard-1">
@@ -336,8 +334,7 @@
 				<div class="row  border-bottom white-bg dashboard-header">
 					@yield('header-page')
 				</div>
-				<div class="row">
-					<div class="col-lg-12">
+				
 						<div class="wrapper wrapper-content">
 							@yield('content')
 
@@ -350,36 +347,13 @@
 								<strong>Copyright</strong> Lyceum of the Philippines University. &copy; 2016
 							</div>
 						</div>
-					</div>
-				</div>
+					
 
 			</div>
 
 		</div>
-<script>
-      $(document).ready(function(){
-        // Set trigger and container variables
-        var trigger = $('#nav ul li a'),
-            container = $('#content');
-        
-        // Fire on click
-  
-        trigger.on('click', function(){
-          // Set $this for re-use. Set target from data attribute
-          var $this = $(this),
-            target = $this.attr('href');       
-     alert(target);
-          // Load target page into container
-          container.load(target);
-          
-          // Stop normal link behavior
-          return false;
-        });
-      });
-    </script>
-
 		@yield('scripts')
-
+		<script src="/js/app.js"></script>
 		@show
 
 	</body>

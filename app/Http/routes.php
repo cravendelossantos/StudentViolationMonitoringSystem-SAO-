@@ -46,21 +46,17 @@ Route::post('/violation', 'sysController@postViolation');
 Route::get('/sanctions', 'sysController@showSanctions');
 
 // Lost and Found 
-Route::get('/lostandfound','sysController@showLostAndFound');
-Route::post('/lostandfound','sysController@postLostAndFoundAdd');
-Route::post('/lostandfound','sysController@postLostAndFoundUpdate');
+Route::get('/lost-and-found','sysController@showLostAndFound');
+
+Route::post('/lost_and_found/report_item/',[
+	'uses' => 'sysController@postLostAndFoundAdd',
+	'as' => 'report.item'
+]);
+Route::post('/lostandfound/update', 'sysController@postLostAndFoundUpdate');
 
 
 
 //Courses
 Route::get('/courses' , 'sysController@showCourses');
 Route::post('/addCourse' , 'sysController@postCourse');
-
-// Lost and Found 
-Route::get('/lostandfound','sysController@showLostAndFound');
-Route::post('/lostandfoundAdd','sysController@postLostAndFoundAdd');
-Route::post('/lostandfoundUpdate','sysController@postLostAndFoundUpdate');
-
-
-
 

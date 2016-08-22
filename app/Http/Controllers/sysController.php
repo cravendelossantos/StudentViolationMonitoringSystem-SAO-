@@ -7,9 +7,13 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use DB;
+use App\User;
+use App\LostAndFound;
 use Carbon\Carbon;
+use DateTime;
 
 class sysController extends Controller {
+
 
   	public function __construct()
     {
@@ -36,6 +40,7 @@ class sysController extends Controller {
 	
 	public function postReportViolation(Request $request)
 	{
+	
 		$validator = Validator::make($request->all(),[
         	'studentNo' => 'required|alpha_dash|max:255',
             'violationSelection' => 'required|alpha|max:255',
@@ -125,16 +130,17 @@ class sysController extends Controller {
 	
 	public function showLostAndFound()
 	{
-   		$lostandfound_table = DB::table('lost_and_found')->get();
+   		$lostandfound_table = DB::table('lost_and_founds')->orderBy('created_at')->get();
         return view('lost_and_found', ['lostandfoundTable' => $lostandfound_table ]);
 	}
 	
 	public function postLostAndFoundAdd(Request $request)
 	{
+			$now = new DateTime();
 		$validator = Validator::make($request->all(),[
-        	'itemName' => 'required|alpha|max:255',
-            'endorserName' => 'required|alpha|max:255',
-            'dateEndorsed' => 'required|max:255',
+        	'itemName' => 'required|string|max:255',
+            'endorserName' => 'required|string|max:255',
+    		'foundedAt' => 'required|string'
            
 	    ]);
 
@@ -144,14 +150,28 @@ class sysController extends Controller {
         }
 		else {
 	
-			$lost_and_found = DB::table('lost_and_found')->insert([			
-            'item' => $request['itemName'],
-            'endorser_name' => $request['endorserName'],
- 	        'date_endorsed' => Carbon::now(),
-        ]);
-			return redirect('/lostandfound');
+	
+		  
+			$report = LostAndFound::create([
+				'item_description' => $request['itemName'],
+            	'endorser_name' => $request['endorserName'],
+            	'founded_at' => $request['foundedAt'],
+            	'owner_name' => $request['ownerName'],
+            	'status' => 1,
+            //	'disposal_date' =>
+            	'reporter_id' => Auth::guard('admin')->user()->id,
+			]);
+	
+       
+		return response()->json(array(
+			'success' => true,
+			'response' => $report
+		));
+		//enum and reported by.
+		//check sorting.
+	
 		}
-		
+
 	}
 	
 	public function postLostAndFoundUpdate(Request $request)
