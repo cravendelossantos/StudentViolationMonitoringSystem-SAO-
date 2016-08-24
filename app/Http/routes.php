@@ -24,10 +24,8 @@ Route::get('/', function () {
 	'roles' => ['Secretary']
 ]);
 */
-Route::group(['middleware' => 'roles', 'roles' => ['Secretary','Admin']],function(){
+Route::group(['middleware' => 'roles', 'roles' => ['Admin']],function(){
 
-	Route::get('/index', 'HomeController@index');
-	Route::auth();
 
 
 
@@ -40,7 +38,6 @@ Route::get('/communityService', 'sysController@showCommunityService');
 Route::get('/violation', [
 	'uses' => 'sysController@showViolation',
 	'middleware' => 'roles',
-	'roles' => ['Secretary','Admin']
 ]);
 
 Route::post('/violation', 'sysController@postViolation');
@@ -67,25 +64,28 @@ Route::post('/addCourse' , 'sysController@postCourse');
 
 });
 
-// Authentication routes...
-Route::get('/login',[
-	'uses' => 'Auth\AuthController@getLogin',
-	'as' => 'login'
-]);
 
+
+
+Route::group(['middleware' => 'web'],function(){
+Route::get('/index', 'HomeController@index');
+	Route::auth();
+	
+
+
+
+});
 Route::post('/login', 'Auth\AuthController@postLogin');
-Route::get('/logout', 'Auth\AuthController@getLogout');
+Route::get('/logout', 'Auth\AuthController@logout');
+Route::get('/login', 'Auth\AuthController@getLogin');
 
 // Registration routes...
 Route::get('/register', 'Auth\AuthController@getRegister');
-Route::post('/register', 'Auth\AuthController@postRegister');
+Route::post('/register', 'Auth\AuthController@postRegister');	
+
+// Authentication routes...
 
 
 Route::get('/error401/permission-denied', function(){
 	return view('errors.401');
 });
-
-
-
-
-

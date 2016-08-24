@@ -31,10 +31,10 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectPath = '/index';
     protected $redirectTo = '/index';
-    protected $redirectAfterLogout = '/login';
     protected $loginPath = '/login';
+    protected $redirectAfterLogout = '/index';
+    protected $loginView ="/login";
 
 
     /**
@@ -53,6 +53,12 @@ class AuthController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+    public function logout()
+    {
+        Auth::guard($this->getGuard())->logout();
+
+        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/login');
+    }
     protected function validator(array $data)
     {
         return Validator::make($data, [
