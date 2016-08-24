@@ -153,8 +153,8 @@
 
 							<div class="dropdown profile-element" dropdown="">
 								<img alt="image" class="img-circle"  height="50px" width="50px" src="/img/aboutlpu.jpg">
-
-								<a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{{ Auth::guard('admin')->user()->first_name }}} {{{ Auth::guard('admin')->user()->last_name }}} </strong> </span> <span class="text-muted text-xs block"> {{{ Auth::guard('admin')->user()->user_type }}} <b class="caret"></b></span> </span> </a>
+								
+								<a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span class="clear"> <span class="block m-t-xs"> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<strong class="font-bold"></strong> </span> <span class="text-muted text-xs block"><b class="caret"></b></span> </span> </a>
 								<ul class="dropdown-menu animated fadeInRight m-t-xs">
 									<li>
 										<a ui-sref="profile">Profile</a>
@@ -167,7 +167,7 @@
 									</li>
 									<li class="divider"></li>
 									<li>
-										<a href="/logout">Logout</a>
+										<a href="{{url ('/logout') }}">Logout</a>
 									</li>
 								</ul>
 							</div>
@@ -323,7 +323,7 @@
 						</ul>
 						<ul class="nav navbar-top-links navbar-right">
 							<li>
-								<a href="/logout"> <i class="fa fa-sign-out"></i> Log out </a>
+								<a href="{{url ('/logout') }}"> <i class="fa fa-sign-out"></i> Log out </a>
 							</li>
 
 						</ul>

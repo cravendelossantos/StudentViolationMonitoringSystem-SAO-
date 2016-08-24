@@ -8,7 +8,10 @@ $('#data_1 .input-group.date').datepicker({
 });
 
 //LostandFound
-$('.lost-and-found-DT').DataTable();
+$('.lost-and-found-DT').DataTable({
+	"bSort" : false,
+	"bFilter" : false,
+});
 
 //addItem
 
