@@ -38,18 +38,24 @@
 					<div class="row">
 					<div class="form-group">
 					<div class="col-md-6">
-					<input type="text" class="form-control"  style="text-transform: capitalize;" name="firstName" placeholder="Firstname" autocomplete="off" required autofocus>
+
+                                @if ($errors->has('first_name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('first_name') }}</strong>
+                                    </span>
+                                @endif
+					<input type="text" class="form-control"  style="text-transform: capitalize;" name="first_name" value="{{ old('first_name')}}" placeholder="First name" autocomplete="off" required autofocus>
 					</div>
 
 					<div class="col-md-6">
-					<input type="text" class="form-control"  style="text-transform: capitalize;" name="lastName"  placeholder="Lastname" autocomplete="off" required>
+					<input type="text" class="form-control"  style="text-transform: capitalize;" name="last_name" value="{{ old('last_name') }}"  placeholder="Last name" autocomplete="off" required>
 					</div>
 					</div>
 					</div>
 				
 					<br>
 					<div class="form-group">
-					<input type="email" class="form-control" placeholder="Email" name="email" value="" autocomplete="off">
+					<input type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}" autocomplete="off">
 					</div>
 					<div class="form-group">
 
@@ -128,7 +134,4 @@
 <!-- Sweet Alert -->
 <script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="/js/plugins/chartJs/Chart.min.js"></script>
-
 <script src="/js/register.js"></script>
-
-

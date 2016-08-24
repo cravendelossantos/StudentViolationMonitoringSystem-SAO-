@@ -33,7 +33,7 @@
 		
 					<h1>Login</h1>
 					<div class="">
-						<form class="m-t" role="form" id="loginForm" method="POST" action="/login">
+						<form class="m-t" role="form" id="loginForm" method="POST" action="{{ url('/login') }}">
 							{!! csrf_field() !!}
 
 							<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -61,21 +61,9 @@
 							<div class="text-center">
 							<a href="/register"><small>Create an account</small></a>
 							</div>
-							<!--
-							<a href="#">
-							<small>Forgot password?</small>
-							</a>
-
-							<p class="text-muted text-center">
-							<small>Do not have an account?</small>
-							</p>
-							<a class="btn btn-sm btn-white btn-block" href="register.html">Create an account</a>-->
-
+							
 							</form>
-							<!--
-							<p class="m-t">
-							<small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small>
-							</p>-->
+						
 
 							</div>
 							</div>
@@ -90,7 +78,7 @@
 							<br>
 							<small>Copyright © 2016 · All Rights Reserved</small>
 					</div>
-					<div class="col-md-6 ">
+					<div class="col-md-6">
 
 					</div>
 				</div>

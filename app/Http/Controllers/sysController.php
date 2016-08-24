@@ -13,22 +13,12 @@ use Carbon\Carbon;
 use DateTime;
 
 class sysController extends Controller {
-
-
-  	public function __construct()
+	
+	public function __construct()
     {
         $this->middleware('admin');
     }
 	
-    public function showIndex()
-    {
-        return view('index');
-    }
-	
-	public function showLogin2()
-    {
-        return view('loginv2');
-    }
  	
  	public function showReportViolation()
     {
@@ -128,75 +118,7 @@ class sysController extends Controller {
 		return response()->json(['success' => true, "course"=>$course]);
 	}
 	
-	public function showLostAndFound()
-	{
-   		$lostandfound_table = DB::table('lost_and_founds')->orderBy('created_at')->get();
-        return view('lost_and_found', ['lostandfoundTable' => $lostandfound_table ]);
-	}
-	
-	public function postLostAndFoundAdd(Request $request)
-	{
-			$now = new DateTime();
-		$validator = Validator::make($request->all(),[
-        	'itemName' => 'required|string|max:255',
-            'endorserName' => 'required|string|max:255',
-    		'foundedAt' => 'required|string'
-           
-	    ]);
 
-        if ($validator->fails()) {
-            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
-          
-        }
-		else {
-	
-	
-		  
-			$report = LostAndFound::create([
-				'item_description' => $request['itemName'],
-            	'endorser_name' => $request['endorserName'],
-            	'founded_at' => $request['foundedAt'],
-            	'owner_name' => $request['ownerName'],
-            	'status' => 1,
-            //	'disposal_date' =>
-            	'reporter_id' => Auth::guard('admin')->user()->id,
-			]);
-	
-       
-		return response()->json(array(
-			'success' => true,
-			'response' => $report
-		));
-		//enum and reported by.
-		//check sorting.
-	
-		}
-
-	}
-	
-	public function postLostAndFoundUpdate(Request $request)
-	{
-		$validator = Validator::make($request->all(),[
-        	'claimerName' => 'required|alpha|max:255',
-            'dateClaimed' => 'required|max:255',                    
-	    ]);
-
-        if ($validator->fails()) {
-            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
-          
-        }
-		else {
-	
-			$lost_and_found = DB::table('lost_and_found')->update([			
-            'claimer_name' => $request['claimerName'],
- 	        'date_claimed' => Carbon::now(),
-        ]);
-			
-		}
-		
-		return redirect('/lostandfound');
-	}
-	
 	
 	
 }
