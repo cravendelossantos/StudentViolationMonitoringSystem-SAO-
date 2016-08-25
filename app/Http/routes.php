@@ -24,16 +24,24 @@ Route::get('/', function () {
 	'roles' => ['Secretary']
 ]);
 */
-Route::group(['middleware' => 'roles', 'roles' => ['Admin']],function(){
+Route::group(['middleware' => 'roles', 'roles' => ['Admin','Secretary']],function(){
 
+
+Route::get('/index', 'HomeController@index');
 
 
 
 // Report violation
-Route::get('/reportViolation', 'sysController@showReportViolation');
-Route::post('/reportViolation', 'sysController@postReportViolation');
+Route::get('/report-violation', 'ReportViolationController@showReportViolation');
+//Search
+Route::get('/report-violation/violation/search', 'ReportViolationController@searchViolation');
+//Post
+Route::post('/report-violation/report', 'ReportViolationController@postReportViolation');
+
+
 // Community Service
 Route::get('/communityService', 'sysController@showCommunityService');
+
 // violations
 Route::get('/violation', [
 	'uses' => 'sysController@showViolation',
@@ -68,7 +76,7 @@ Route::post('/addCourse' , 'sysController@postCourse');
 
 
 Route::group(['middleware' => 'web'],function(){
-Route::get('/index', 'HomeController@index');
+
 	Route::auth();
 	
 
