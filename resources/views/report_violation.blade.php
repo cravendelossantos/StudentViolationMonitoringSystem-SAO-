@@ -24,8 +24,8 @@
 				</div>
 			</div>
 			<div class="ibox-content">
-
-				<form role="form" id="reportViolationForm" method="POST">
+				
+				<form role="form" action="{{ url('/report-violation/report') }}" id="reportViolationForm" method="POST">
 					{!! csrf_field() !!}
 					<div class="row">
 						<div class="col-md-6">
@@ -62,15 +62,30 @@
 							</div>
 						</div>
 
-						<div class="col-md-12">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>Violation</label>
-								<select class="form-control" name="violationSelection">
+								<select class="form-control" id="violation_selection" name="violationSelection">
 									<option autofocus="" disabled selected >Violation</option>
 									@foreach ($violations as $violations_row)
-									<option>{{$violations_row->name}}</option>
+									<option >{{$violations_row->name}}</option>
 									@endforeach
+									<option>sample</option>
 								</select>
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Offense level</label>
+								<input type="text" placeholder="Offense level" style="text-transform: capitalize;" id="offense_level" name="offense_level" class="form-control" readonly="">
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Number of Offense</label>
+								<input type="text" placeholder="Offense level" style="text-transform: capitalize;" name="OffenseLevel" class="form-control">
 							</div>
 						</div>
 
@@ -102,7 +117,7 @@
 			</div>
 
 			<div class="ibox-footer">
-				<button class="btn btn-w-m btn-primary" id="addItemBtn" type="submit">
+				<button class="btn btn-w-m btn-primary" id="report_btn" type="submit">
 					<strong>Save</strong>
 				</button>
 				</form>
@@ -138,6 +153,7 @@
 							</thead>
 							<tbody  id="tbody">
 								@foreach ($studentsViolationTable as $row)
+
 								<tr >
 									<td>{{$row->student_no}}</td>
 									<td>{{$row->last_name}}, {{$row->first_name}}</td>
@@ -160,5 +176,34 @@
 </div>
 
 
+<script>
+
+
+$(document).ready(function(){
+	$('#violation_selection').on('change', function(e){	
+		e.preventDefault();
+	
+	$.ajax({
+		url: '/report-violation/violation/search',
+		type: 'GET',
+		data: { violation : $('#violation_selection').val()
+		},
+	}).done(function(data){
+		
+	var a = data.reponse['offense_level'];
+	
+		if (data == null)
+		{
+			alert('Not Found');
+		} else	{
+
+			$('#offense_level').val(a);
+		}
+
+		});
+
+	});
+});
+</script>
 @endsection
 

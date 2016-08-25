@@ -167,7 +167,7 @@
 									</li>
 									<li class="divider"></li>
 									<li>
-										<a href="{{url ('/logout') }}">Logout</a>
+										<a href="/logout">Logout</a>
 									</li>
 								</ul>
 							</div>
@@ -188,7 +188,7 @@
 									<a href="/violationStatistics"><i class=""></i> <span class="nav-label ng-binding">Statistics </span> </a>
 								</li>
 								<li ui-sref-active="active" >
-									<a href="/reportViolation"><i class=""></i> <span class="nav-label ng-binding">Report a violation</span> </a>
+									<a href="{{ url('/report-violation') }}"><i class=""></i> <span class="nav-label ng-binding">Report a violation</span> </a>
 								</li>
 
 								<li ui-sref-active="active" >
@@ -323,7 +323,7 @@
 						</ul>
 						<ul class="nav navbar-top-links navbar-right">
 							<li>
-								<a href="{{url ('/logout') }}"> <i class="fa fa-sign-out"></i> Log out </a>
+								<a href="/logout"> <i class="fa fa-sign-out"></i> Log out </a>
 							</li>
 
 						</ul>
