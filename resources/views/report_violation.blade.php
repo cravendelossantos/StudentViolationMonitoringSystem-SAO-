@@ -15,116 +15,118 @@
 
 	<div class="col-md-12 animated fadeInRight">
 		<div class="ibox float-e-margins">
-
 			<div class="ibox-title">
 				<h5>Violation Form</h5>
+
 				<div class="ibox-tools">
 					<a class="collapse-link"> <i class="fa fa-chevron-up"></i> </a>
 					<a class="close-link"> <i class="fa fa-times"></i> </a>
 				</div>
-			</div>
-			<div class="ibox-content">
-				
-				<form role="form" action="{{ url('/report-violation/report') }}" id="reportViolationForm" method="POST">
-					{!! csrf_field() !!}
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group ">
-								<label>Student No.</label>
-								<input type="text" placeholder="Student No." name="studentNo" class="form-control" autofocus="" aria-required="true">
+
+				<div class="ibox-content">
+
+					<form role="form" action="{{ url('/report-violation/report') }}" id="reportViolationForm" method="POST">
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+						<div class="row">
+
+							<div class="col-md-6">
+
+								<div class="form-group">
+									<label>Student No.</label>
+									<input type="hidden" value="" name="student_number" id="student_number">
+									<input type="text" placeholder="Student No." name="student_no" id="student_no" class="form-control" autofocus="" >
+								</div>
+								<section id="student_info" style="display:none">
+
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>First Name</label>
+											<output name="first_name" id="first_name"></output>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Last Name</label>
+											<output name="last_name" id=last_name></output>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Year/Course</label>
+											<output name="year_level" id="year_level"></output>
+											<output name="course" id="course"></output>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+
+										<label>Number of Offense</label>
+										<output name="committed_offense_number" id="committed_offense_number"></output>
+
+									</div>
+
+								</section>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Violation</label>
+									<input type="hidden" name="violation_id" id="violation_id">
+									<select class="form-control" id="violation_selection" name="violation">
+										<option autofocus="" disabled selected >Violation</option>
+										@foreach ($violations as $violation)
+										<option >{{$violation->name}}</option>
+										@endforeach
+								
+									</select>
+								</div>
+
+								<section id="violation_details" style="display:none">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Description</label>
+											<output id="violation_description">
+												<p></p>
+											</output>
+											</p>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Offense level</label>
+											<output id="violation_offense_level" style="color:red"></output>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Sanction</label>
+											<output id="violation_sanction"></output>
+											</p>
+										</div>
+									</div>
+
+								</section>
 							</div>
 						</div>
 
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Year Level</label>
-								<select class="form-control" name="yearLevel">
-									<option autofocus="" disabled selected >Year Level</option>
-									<option>1st Year</option>
-									<option>2nd Year</option>
-									<option>3rd Year</option>
-									<option>4th Year</option>
-									<option>5th Year</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>First Name</label>
-								<input type="text" placeholder="First Name" style="text-transform: capitalize;" name="firstName" class="form-control">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Last Name</label>
-								<input type="text" placeholder="Last Name" style="text-transform: capitalize;" name="lastName" class="form-control">
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Violation</label>
-								<select class="form-control" id="violation_selection" name="violationSelection">
-									<option autofocus="" disabled selected >Violation</option>
-									@foreach ($violations as $violations_row)
-									<option >{{$violations_row->name}}</option>
-									@endforeach
-									<option>sample</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="col-md-3">
-							<div class="form-group">
-								<label>Offense level</label>
-								<input type="text" placeholder="Offense level" style="text-transform: capitalize;" id="offense_level" name="offense_level" class="form-control" readonly="">
-							</div>
-						</div>
-
-						<div class="col-md-3">
-							<div class="form-group">
-								<label>Number of Offense</label>
-								<input type="text" placeholder="Offense level" style="text-transform: capitalize;" name="OffenseLevel" class="form-control">
-							</div>
-						</div>
-
-						<div class="col-md-12">
-							<div class="form-group">
-								<label>Course</label>
-								<select class="form-control" name="course">
-									<option autofocus="" disabled selected >Select Course</option>
-									@foreach ($courses as $row)
-									<option>{{$row->course}}</option>
-									@endforeach
-								</select>
-							</div>
-						</div>
-
-						<!--
-						<div class="col-md-6">
-						<div class="form-group" id="data_1">
-						<label>Date</label>
-						<div class="input-group date">
-						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-						<input type="text" class="form-control" name="date" placeholder="Pick Date" >
-						</div>
-						</div>
-						</div>-->
-
-					</div>
-
-			</div>
-
-			<div class="ibox-footer">
-				<button class="btn btn-w-m btn-primary" id="report_btn" type="submit">
-					<strong>Save</strong>
-				</button>
-				</form>
+						<div class="ibox-footer">
+							<button class="btn btn-w-m btn-primary" id="report_btn" type="button">
+								<strong>Save</strong>
+							</button>
+					</form>
+				</div>
 			</div>
 
 		</div>
+	</div>
+</div>
+</div>
 
+<div class="row">
+	<div class="col-md-12 animated fadeInRight">
 		<div class="ibox">
 			<div class="ibox float-e-margins">
 
@@ -151,21 +153,23 @@
 
 								</tr>
 							</thead>
-							<tbody  id="tbody">
-								@foreach ($studentsViolationTable as $row)
+
+							<tbody>
+
+								@foreach ($violation_reports as $violation_report)
 
 								<tr >
-									<td>{{$row->student_no}}</td>
-									<td>{{$row->last_name}}, {{$row->first_name}}</td>
-									<td>{{$row->violation}}</td>
-									<td>{{$row->year_level}}
-									<br>
-									{{$row->course}}</td>
-									<td>{{$row->date_created}}</td>
+									<td></td>
+									<td>{{$violation_report->last_name}}{{$violation_report->first_name}}</td>
+									<td></td>
+									<td>{{$violation_report->year_level}}
+					
+									<td></td>
 
 								</tr>
 								@endforeach
 							</tbody>
+							
 
 						</table>
 					</div>
@@ -175,35 +179,110 @@
 	</div>
 </div>
 
+<script type="text/javascript">
 
-<script>
+$('button#report_btn').click(function(e){
+	e.preventDefault();
 
-
-$(document).ready(function(){
-	$('#violation_selection').on('change', function(e){	
-		e.preventDefault();
-	
 	$.ajax({
-		url: '/report-violation/violation/search',
-		type: 'GET',
-		data: { violation : $('#violation_selection').val()
-		},
-	}).done(function(data){
+		headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+			type : "POST",
+			url : "/report-violation/report",
+			data : $('form#reportViolationForm').serialize(),
+			}).done(function(data){
 		
-	var a = data.reponse['offense_level'];
-	
-		if (data == null)
-		{
-			alert('Not Found');
-		} else	{
+			var msg = "";
+			if (data.success == false) {
+				$.each(data.errors, function(k, v) {
+					msg = msg + v + "\n";
+					swal("Oops...", msg, "warning");
 
-			$('#offense_level').val(a);
+				});
+
+			} else {
+				$('#violation_details').hide();
+				$('#student_info').hide();
+				$('form#reportViolationForm').each(function() {
+					this.reset();
+				});
+				/*$("#table-content").fadeTo("slow", 0.3);
+*/
+				swal('Success!', 'Saved', 'success');
+
+			
+
+			}
+	});
+});
+
+
+
+	$('#student_no').keydown(function() {
+		
+		var search = $('#student_no').autocomplete({
+
+		source : '{!!URL::route('autocompleteStudentNo')!!}',
+		minlength: 3,
+		autoFocus: true,
+
+		
+		select:function(e, ui) {
+		search.on('change', function(){
+
+			$('#student_info').hide();
+			$('#last_name').val("");
+			$('#first_name').val("");
+			$('#year_level').val("");
+			$('#student_number').val("");
+		});
+	
+			$('#student_info').show();
+			$('#student_number').val(ui.item.value);
+			$('#last_name').val(ui.item.l_name);
+			$('#first_name').val(ui.item.f_name);
+			//$('#course').val(ui.item.course);
+			$('#year_level').val(ui.item.year_level + "/" + ui.item.course);
+			
 		}
+	
+		
+	});
+
+
+
+});
+
+	$('#violation_selection').on('change', function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			url : '/report-violation/search/violation',
+			type : 'GET',
+			data : {
+				violation : $('#violation_selection').val()
+			},
+		}).done(function(data) {
+			var violation_id = data.response['id'];
+			var violation_offense_level = data.response['offense_level'];
+			var violation_description = data.response['description'];
+			var violation_sanction = data.response['sanction'];
+
+			if (data == null) {
+				alert('Not Found');
+			} else {
+				$('#violation_id').val(violation_id);
+				$('#violation_offense_level').val(violation_offense_level);
+				$('#violation_description').val(violation_description);
+				$('#violation_sanction').val(violation_sanction);
+				$('#violation_details').show();
+			}
 
 		});
 
 	});
-});
-</script>
-@endsection
 
+</script>
+
+@endsection

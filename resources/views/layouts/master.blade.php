@@ -13,23 +13,19 @@
 		<link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
 		<link href="/css/animate.css" rel="stylesheet">
 		<link href="/css/style.css" rel="stylesheet">
+		<link href="/css/mystyle.css" rel="stylesheet">
 
 		<!-- Toastr style -->
 		<link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
 
 		<!-- Gritter -->
 		<link href="/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
-		<link href="/css/bootstrap.min.css" rel="stylesheet">
-		<link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
-		<link href="/css/plugins/iCheck/custom.css" rel="stylesheet">
-		<link href="/css/animate.css" rel="stylesheet">
-		<link href="/css/style.css" rel="stylesheet">
 		<link href="/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 		<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 		<script src="/js/plugins/chartJs/Chart.min.js"></script>
 		<link href="/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
 		<link href="/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
-		
+
 		@show
 	</head>
 
@@ -48,13 +44,13 @@
 		<script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 		<script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 		<script src="/js/jquery-ui-1.10.4.min.js"></script>
-		
+
 		<!-- Flot -->
 		<script src="/js/plugins/flot/jquery.flot.js"></script>
 		<script src="/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-		<script src="/js/plugins/flot/jquery.flot.spline.js"></script>
 		<script src="/js/plugins/flot/jquery.flot.resize.js"></script>
 		<script src="/js/plugins/flot/jquery.flot.pie.js"></script>
+		<script src="/js/plugins/flot/jquery.flot.time.js"></script>
 
 		<!-- Data Tables -->
 		<script src="/js/plugins/jeditable/jquery.jeditable.js"></script>
@@ -142,7 +138,6 @@
 		<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 		<script src="/js/plugins/chartJs/Chart.min.js"></script>
 
-
 		<div id="wrapper">
 
 			<nav class="navbar-default navbar-static-side" id="nav" role="navigation">
@@ -153,7 +148,7 @@
 
 							<div class="dropdown profile-element" dropdown="">
 								<img alt="image" class="img-circle"  height="50px" width="50px" src="/img/aboutlpu.jpg">
-								
+
 								<a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span class="clear"> <span class="block m-t-xs"> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<strong class="font-bold"></strong> </span> <span class="text-muted text-xs block"><b class="caret"></b></span> </span> </a>
 								<ul class="dropdown-menu animated fadeInRight m-t-xs">
 									<li>
@@ -185,7 +180,7 @@
 							<a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label ng-binding" > Students Violation Management</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li ui-sref-active="active" >
-									<a href="/violationStatistics"><i class=""></i> <span class="nav-label ng-binding">Statistics </span> </a>
+									<a href="/violation-statistics"><i class=""></i> <span class="nav-label ng-binding">Statistics </span> </a>
 								</li>
 								<li ui-sref-active="active" >
 									<a href="{{ url('/report-violation') }}"><i class=""></i> <span class="nav-label ng-binding">Report a violation</span> </a>
@@ -202,7 +197,7 @@
 							<a href="#"><i class="fa fa-desktop"></i> <span class="nav-label ng-binding" >Sanctions Monitoring</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li ui-sref-active="active" >
-									<a href="/communityService"><i class=""></i> <span class="nav-label ng-binding">Community Service and Suspensions</span> </a>
+									<a href="/sanctions"><i class=""></i> <span class="nav-label ng-binding">Community Service and Suspensions</span> </a>
 								</li>
 
 							</ul>
@@ -287,6 +282,11 @@
 						</ul>
 					</li>
 
+
+						<li >
+							<a href="/text-messaging"><i class="fa fa-mobile"></i> <span class="nav-label ng-binding">Text Messaging</span> </a>
+						</li>
+
 					<li>
 						<a href="#"><i class="fa fa-cog"></i> <span class="nav-label ng-binding">Settings</span><span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level collapse">
@@ -300,6 +300,8 @@
 
 						</ul>
 					</li>
+
+
 
 					</ul>
 
@@ -334,20 +336,19 @@
 				<div class="row  border-bottom white-bg dashboard-header">
 					@yield('header-page')
 				</div>
-				
-						<div class="wrapper wrapper-content">
-							@yield('content')
 
-						</div>
-						<div class="footer fixed">
-							<div class="pull-right">
-								Student Affairs Office
-							</div>
-							<div>
-								<strong>Copyright</strong> Lyceum of the Philippines University. &copy; 2016
-							</div>
-						</div>
-					
+				<div class="wrapper wrapper-content">
+					@yield('content')
+
+				</div>
+				<div class="footer fixed">
+					<div class="pull-right">
+						Student Affairs Office
+					</div>
+					<div>
+						<strong>Copyright</strong> Lyceum of the Philippines University. &copy; 2016
+					</div>
+				</div>
 
 			</div>
 
