@@ -19,6 +19,22 @@ class sysController extends Controller {
         $this->middleware('roles');
     }
 	
+    public function showSMS()
+    {
+        return view('text_messaging');
+    }
+
+    public function sendSMS(Request $request)
+    {
+        $number = $request['number'];
+        $message = $request['message'];
+               
+//exec("C:\.....\ gammu.exe" -sendsms etc etc);
+        $a = shell_exec('"C:\Program Files\Gammu\bin\gammu.exe" --sendsms TEXT '.$number.' -text "hello world"');
+        //$response = shell_exec('gammu sendsms TEXT  '.$number.' -text'  "enews");
+        return $a;
+
+    }
    
 	public function showCommunityService()
     {
