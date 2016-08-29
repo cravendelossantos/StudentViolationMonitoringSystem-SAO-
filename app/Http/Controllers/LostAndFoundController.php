@@ -10,12 +10,13 @@ use App\LostAndFound;
 use Carbon\Carbon;
 use DateTime;
 use Validator;
+use Auth;
 
 class LostAndFoundController extends Controller
 {
 	public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('roles');
     }
 	
 	
@@ -63,7 +64,7 @@ class LostAndFoundController extends Controller
 		  $report->founded_at = $request['foundedAt'];
 		  $report->owner_name = $request['ownerName'];
 		  $report->status = '1';
-		  $report->reporter_id = LostAndFound::user($this);
+		  $report->reporter_id = Auth::user()->id;
 		  $report->save();
 		  //gets the request of current user logged in and save report
 		  

@@ -16,51 +16,26 @@ class sysController extends Controller {
 	
 	public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('roles');
     }
 	
- 	
- 	public function showReportViolation()
+    public function showSMS()
     {
-    	$students_violation_table = DB::table('students_violation')->get();
-		$courses = DB::table('courses')->get();
-		$violations = DB::table('violations')->get();
-        return view('report_violation', ['studentsViolationTable' => $students_violation_table ], ['violations' => $violations])->with(['courses'=>$courses]);
+        return view('text_messaging');
     }
-	
-	public function postReportViolation(Request $request)
-	{
-	
-		$validator = Validator::make($request->all(),[
-        	'studentNo' => 'required|alpha_dash|max:255',
-            'violationSelection' => 'required|alpha|max:255',
-            'firstName' => 'required|max:255',
-            'lastName' => 'required|max:255',            
-      		'yearLevel' => 'required|max:255',
-      		'course'=> 'required|max:255',
-      		
-	    ]);
 
-        if ($validator->fails()) {
-            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
-          
-        }
-		else {
-	
-			$student_violation = DB::table('students_violation')->insert([			
-            'student_no' => $request['studentNo'],
-            'violation' => $request['violationSelection'],
-            'first_name' => ucwords($request['firstName']),
-            'last_name' => ucwords($request['lastName']),
-            'year_level' => $request['yearLevel'],
- 	        'course' => $request['course'],
- 	        'date_created' => Carbon::now(),
-        ]);
-			
-		}
-		
-	}
-	
+    public function sendSMS(Request $request)
+    {
+        $number = $request['number'];
+        $message = $request['message'];
+               
+//exec("C:\.....\ gammu.exe" -sendsms etc etc);
+        $a = shell_exec('"C:\Program Files\Gammu\bin\gammu.exe" --sendsms TEXT '.$number.' -text "hello world"');
+        //$response = shell_exec('gammu sendsms TEXT  '.$number.' -text'  "enews");
+        return $a;
+
+    }
+   
 	public function showCommunityService()
     {
         return view('community_service');

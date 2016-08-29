@@ -24,23 +24,45 @@ Route::get('/', function () {
 	'roles' => ['Secretary']
 ]);
 */
-Route::group(['middleware' => 'roles', 'roles' => ['Secretary','Admin']],function(){
+Route::group(['middleware' => 'roles', 'roles' => ['Admin','Secretary']],function(){
 
-	Route::get('/index', 'HomeController@index');
-	Route::auth();
+
+Route::get('/index', 'HomeController@index');
 
 
 
 // Report violation
-Route::get('/reportViolation', 'sysController@showReportViolation');
-Route::post('/reportViolation', 'sysController@postReportViolation');
+Route::get('/report-violation', 'ReportViolationController@showReportViolation');
+
+/*
+Route::get('/report-violation/{id}' , function($id){
+
+
+
+	$students = App\Course::find($id);
+	echo "course id: " .$students->id. "course name galing sa course_tbl:" .$students->description. '<br/>';
+	$course = $students->students;
+echo $course->first_name. $course->last_name. "course id nang student" .$course->course_id.'<br/>';
+	
+});*/
+//Search
+Route::get('/report-violation/search/student', [
+	'as'=> 'autocompleteStudentNo',
+	'uses' => 'ReportViolationController@searchStudent',
+	]);
+
+Route::get('/report-violation/search/violation', 'ReportViolationController@searchViolation');
+//Post
+Route::post('/report-violation/report', 'ReportViolationController@postReportViolation');
+
+
 // Community Service
-Route::get('/communityService', 'sysController@showCommunityService');
+//Route::get('/communityService', 'sysController@showCommunityService');
+
 // violations
 Route::get('/violation', [
 	'uses' => 'sysController@showViolation',
 	'middleware' => 'roles',
-	'roles' => ['Secretary','Admin']
 ]);
 
 Route::post('/violation', 'sysController@postViolation');
@@ -64,28 +86,41 @@ Route::post('/lostandfound/update', 'LostAndFoundController@postLostAndFoundUpda
 Route::get('/courses' , 'sysController@showCourses');
 Route::post('/addCourse' , 'sysController@postCourse');
 
+//Violation Statistics
+Route::get('/violation-statistics' , 'ReportViolationController@showStatistics');
+
+
+//Sanctions Monitoring
+Route::get('/sanctions', 'SanctionController@showSanctions');
+
+//SMS
+Route::get('/text-messaging', 'sysController@showSMS');
+Route::post('/text-messaging/send', 'sysController@sendSMS');
 
 });
 
-// Authentication routes...
-Route::get('/login',[
-	'uses' => 'Auth\AuthController@getLogin',
-	'as' => 'login'
-]);
 
+
+
+Route::group(['middleware' => 'web'],function(){
+
+	Route::auth();
+	
+
+
+
+});
 Route::post('/login', 'Auth\AuthController@postLogin');
-Route::get('/logout', 'Auth\AuthController@getLogout');
+Route::get('/logout', 'Auth\AuthController@logout');
+Route::get('/login', 'Auth\AuthController@getLogin');
 
 // Registration routes...
 Route::get('/register', 'Auth\AuthController@getRegister');
-Route::post('/register', 'Auth\AuthController@postRegister');
+Route::post('/register', 'Auth\AuthController@postRegister');	
+
+// Authentication routes...
 
 
 Route::get('/error401/permission-denied', function(){
 	return view('errors.401');
 });
-
-
-
-
-
