@@ -38,7 +38,10 @@ class ReportViolationController extends Controller
     public function searchStudent(Request $request)
     {
 
+          
+
         $term = $request->term;
+    
         $data = DB::table('students_temp')->where('student_id', 'LIKE', '%' .$term. '%')->take(5)->get();
         $result=array();
         
@@ -52,17 +55,28 @@ class ReportViolationController extends Controller
                       ];
 
         }
+       // return response()->json($data);
         return response()->json($result);
+
     }
-   
+   public function showOffenseNo(Request $request)
+   {
+    $student_number = $request['student_number'];
+    $violation_id = $request['violation_id'];
+    $data = DB::table('violation_reports')->where('student_id', $student_number)->where('violation_id', $violation_id)->value('offense_no');
+
+    return response(['response' => $data]);
+   }
 
     public function searchViolation(Request $request)
     
     {
+    
+   
         $search_violation = DB::table('violations')->where('name', $request['violation'])->first();
         //make a violation model (relationship to violation_reports)
-        return response(['response' => $search_violation]);
-       
+        return response()->json(['response' => $search_violation]);
+
     }
  	
 	public function postReportViolation(Request $request)
@@ -86,6 +100,7 @@ class ReportViolationController extends Controller
             $student_violation = new ViolationReport();
             $student_violation->student_id = $request['student_number'];
             $student_violation->violation_id = $request['violation_id'];
+            $student_violation->offense_no = $request['offense_number'];
             $student_violation->save();
             
             return response()->json(array(['success' => true, 'response' => $student_violation]));

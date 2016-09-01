@@ -16,7 +16,7 @@
 	<div class="col-md-12 animated fadeInRight">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Violation Form</h5>
+				<h5>F-SAO-028</h5>
 
 				<div class="ibox-tools">
 					<a class="collapse-link"> <i class="fa fa-chevron-up"></i> </a>
@@ -26,6 +26,7 @@
 				<div class="ibox-content">
 
 					<form role="form" action="{{ url('/report-violation/report') }}" id="reportViolationForm" method="POST">
+					    {{ csrf_field() }}
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<div class="row">
 
@@ -33,7 +34,7 @@
 
 								<div class="form-group">
 									<label>Student No.</label>
-									<input type="hidden" value="" name="student_number" id="student_number">
+									<input type="hidden" name="student_number" id="student_number">
 									<input type="text" placeholder="Student No." name="student_no" id="student_no" class="form-control" autofocus="" >
 								</div>
 								<section id="student_info" style="display:none">
@@ -63,7 +64,7 @@
 
 										<label>Number of Offense</label>
 										<output name="committed_offense_number" id="committed_offense_number"></output>
-
+										<input type="hidden" name="offense_number" id="offense_number">
 									</div>
 
 								</section>
@@ -114,7 +115,7 @@
 
 						<div class="ibox-footer">
 							<button class="btn btn-w-m btn-primary" id="report_btn" type="button">
-								<strong>Save</strong>
+								<strong>Add</strong>
 							</button>
 					</form>
 				</div>
@@ -160,7 +161,7 @@
 
 								<tr >
 									<td></td>
-									<td>{{$violation_report->last_name}}{{$violation_report->first_name}}</td>
+									<td>{{$violation_report->first_name}} {{$violation_report->last_name}}</td>
 									<td></td>
 									<td>{{$violation_report->year_level}}
 					
@@ -237,13 +238,15 @@ $('button#report_btn').click(function(e){
 			$('#year_level').val("");
 			$('#student_number').val("");
 		});
-	
+			
+
 			$('#student_info').show();
 			$('#student_number').val(ui.item.value);
 			$('#last_name').val(ui.item.l_name);
 			$('#first_name').val(ui.item.f_name);
 			//$('#course').val(ui.item.course);
 			$('#year_level').val(ui.item.year_level + "/" + ui.item.course);
+			countOffense();
 			
 		}
 	
@@ -258,6 +261,9 @@ $('button#report_btn').click(function(e){
 		e.preventDefault();
 
 		$.ajax({
+			headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
 			url : '/report-violation/search/violation',
 			type : 'GET',
 			data : {
@@ -269,20 +275,53 @@ $('button#report_btn').click(function(e){
 			var violation_description = data.response['description'];
 			var violation_sanction = data.response['sanction'];
 
+
+	
 			if (data == null) {
 				alert('Not Found');
 			} else {
+
 				$('#violation_id').val(violation_id);
 				$('#violation_offense_level').val(violation_offense_level);
 				$('#violation_description').val(violation_description);
 				$('#violation_sanction').val(violation_sanction);
 				$('#violation_details').show();
+				countOffense();
+			
+	
 			}
 
 		});
 
 	});
 
+
+function countOffense()
+{
+		$.ajax({
+					headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+				},
+					url : '/report-violation/offense-no',
+					type: 'POST',
+					data : $('form#reportViolationForm').serialize(),
+				}).done(function(data){
+
+
+				var offense_no = data.response;
+				if (offense_no != null)	{
+					offense_no += 1;
+				$('#committed_offense_number').val(offense_no);	
+				$('#offense_number').val(offense_no);	
+				} else {
+				$('#committed_offense_number').val(1);
+				$('#offense_number').val(1);
+				}
+
+				//alert(	$('#committed_offense_number').val());
+			
+				});
+			}
 </script>
 
 @endsection
