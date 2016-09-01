@@ -59,6 +59,14 @@ Route::post('/report-violation/report', 'ReportViolationController@postReportVio
 // Community Service
 //Route::get('/communityService', 'sysController@showCommunityService');
 
+Route::get('/campus', 'CampusVenueReservationController@showCampusVenueReservation');
+Route::post('/campus/add', 'CampusVenueReservationController@postCampusVenueReservationAdd');
+
+Route::post('/campus/update', 'CampusVenueReservationController@postCampusVenueReservationUpdate');
+
+
+
+
 // violations
 Route::get('/violation', [
 	'uses' => 'sysController@showViolation',

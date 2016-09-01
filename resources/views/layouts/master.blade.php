@@ -14,6 +14,11 @@
 		<link href="/css/animate.css" rel="stylesheet">
 		<link href="/css/style.css" rel="stylesheet">
 		<link href="/css/mystyle.css" rel="stylesheet">
+		<link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+		<link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print'>
+
+
+
 
 		<!-- Toastr style -->
 		<link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
