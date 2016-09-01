@@ -54,7 +54,7 @@ Route::get('/report-violation/search/student', [
 Route::get('/report-violation/search/violation', 'ReportViolationController@searchViolation');
 //Post
 Route::post('/report-violation/report', 'ReportViolationController@postReportViolation');
-
+Route::post('/report-violation/offense-no', 'ReportViolationController@showOffenseNo');
 
 // Community Service
 //Route::get('/communityService', 'sysController@showCommunityService');
