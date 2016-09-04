@@ -63,7 +63,8 @@ class ReportViolationController extends Controller
    {
     $student_number = $request['student_number'];
     $violation_id = $request['violation_id'];
-    $data = DB::table('violation_reports')->where('student_id', $student_number)->where('violation_id', $violation_id)->value('offense_no');
+    $data = DB::table('violation_reports')->where('student_id', $student_number)->where('violation_id', $violation_id)->max('offense_no');
+
 
     return response(['response' => $data]);
    }
@@ -100,6 +101,7 @@ class ReportViolationController extends Controller
             $student_violation = new ViolationReport();
             $student_violation->student_id = $request['student_number'];
             $student_violation->violation_id = $request['violation_id'];
+            $student_violation->violation_name = $request['violation'];
             $student_violation->offense_no = $request['offense_number'];
             $student_violation->save();
             
