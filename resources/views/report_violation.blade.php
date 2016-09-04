@@ -62,7 +62,7 @@
 
 									<div class="col-md-6">
 
-										<label>Number of Offense</label>
+										<label>Offense Number #</label>
 										<output name="committed_offense_number" id="committed_offense_number"></output>
 										<input type="hidden" name="offense_number" id="offense_number">
 									</div>
@@ -149,6 +149,7 @@
 									<th>Student No.</th>
 									<th>Name</th>
 									<th>Violation</th>
+									<th>Offense Number</th>
 									<th>Year / Course</th>
 									<th>Date Committed</th>
 
@@ -160,12 +161,13 @@
 								@foreach ($violation_reports as $violation_report)
 
 								<tr >
-									<td></td>
+									<td>{{$violation_report->student_id}}</td>
 									<td>{{$violation_report->first_name}} {{$violation_report->last_name}}</td>
-									<td></td>
+									<td>{{$violation_report->violation_name}}</td>
+									<td>{{$violation_report->offense_no}}</td>
 									<td>{{$violation_report->year_level}}
 					
-									<td></td>
+									<td>{{$violation_report->created_at}}</td>
 
 								</tr>
 								@endforeach
@@ -251,7 +253,7 @@ $('button#report_btn').click(function(e){
 		}
 	
 		
-	});
+	});  
 
 
 
@@ -311,9 +313,12 @@ function countOffense()
 				var offense_no = data.response;
 				if (offense_no != null)	{
 					offense_no += 1;
+					
+
 				$('#committed_offense_number').val(offense_no);	
 				$('#offense_number').val(offense_no);	
 				} else {
+
 				$('#committed_offense_number').val(1);
 				$('#offense_number').val(1);
 				}
