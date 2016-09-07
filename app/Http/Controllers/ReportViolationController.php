@@ -27,7 +27,7 @@ class ReportViolationController extends Controller
  	public function showReportViolation()
     {
     	//$violation_reports = ViolationReport::all()
-        $violation_reports = DB::table('violation_reports')->rightJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->get();
+        $violation_reports = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();
 		$courses = DB::table('courses')->get();
 		$violations = Violation::all();
        
@@ -35,6 +35,52 @@ class ReportViolationController extends Controller
         //course will be autofilled if we already have the student records.
     }
 	
+    public function getViolationReportsTable()
+    {
+         $violation_reports_table = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();
+
+        //$violation_reports_table = ViolationReport::orderBy('created_at','desc')->get();
+        return view('tables.violation_reports_table', ['violation_reports' => $violation_reports_table ]);
+    }   
+
+
+    public function newStudentRecord(Request $request)
+    {
+         $messages = [
+            'new_student_no.required.taken' => 'Please check the student information',
+            'violation.required' => 'Please check violation details',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'studentNo' => 'required|alpha_dash|max:255|unique:students_temp,student_id',
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'yearLevel' => 'required',
+            'course' => 'required',
+            'contactNo' => 'required|numeric',
+        ]);
+     
+        if ($validator->fails()) {
+            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
+          
+        }
+        else {
+           
+          $new_student_record = DB::table('students_temp')->insert([
+                'student_id' => $request['studentNo'],
+                'first_name' => $request['firstName'],
+                'last_name' => $request['lastName'],
+                'year_level' => $request['yearLevel'],
+                'course' => $request['course'],
+                'contact_no' => $request['contactNo']
+
+                ]);
+            
+            return response()->json(array(['success' => true, 'response' => $new_student_record]));
+                //napasok kahit random na student number
+        }
+    }
+
     public function searchStudent(Request $request)
     {
 
@@ -42,7 +88,7 @@ class ReportViolationController extends Controller
 
         $term = $request->term;
     
-        $data = DB::table('students_temp')->where('student_id', 'LIKE', '%' .$term. '%')->take(5)->get();
+        $data = DB::table('students_temp')->where('student_id', $term)->take(5)->get();
         $result=array();
         
         foreach ($data as $key => $value)
@@ -83,7 +129,7 @@ class ReportViolationController extends Controller
 	public function postReportViolation(Request $request)
 	{
 	   $messages = [
-            'student_number.required' => 'Please pick the student number from the field',
+            'student_number.required' => 'Please check the student information',
             'violation.required' => 'Please check violation details',
         ];
 

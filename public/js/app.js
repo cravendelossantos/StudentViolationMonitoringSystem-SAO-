@@ -9,8 +9,15 @@ $('#data_1 .input-group.date').datepicker({
 
 //LostandFound
 $('.lost-and-found-DT').DataTable({
-	"bSort" : false,
-	"bFilter" : false,
+	"bSort" : true,
+	"bFilter" : true,
+});
+
+
+//Report violation
+$('.violation-reports-DT').DataTable({
+	"bSort" : true,
+	"bFilter" : true,
 });
 
 //addItem

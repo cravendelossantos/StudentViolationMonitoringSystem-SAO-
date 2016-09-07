@@ -129,15 +129,7 @@
 
 				<div class="ibox-tools">
 
-					<div class="input-group col-lg-offset-8 col-lg-4">
-
-						<input type="text" class="form-control" id="searchBox" name="searchBox" placeholder="Search for something">
-						<span class="input-group-btn">
-							<button type="button" id="" class="btn btn-primary searchBtn">
-								Go!
-						</span>
-						</button>
-					</div>
+				
 
 				</div>
 
@@ -254,7 +246,7 @@
 
 	});
 
-	$('button.searchBtn').click(function(e) {
+	/*$('button.searchBtn').click(function(e) {
 		e.preventDefault();
 		//var item = $('input#searchBox')
 		$.ajax({
@@ -269,7 +261,7 @@
 
 			$("#table-content").load("/lost-and-found/table/load");
 		});
-	});
+	});*/
 
 	$('button#lost_and_found_cancelBtn').click(function() {
 		$('form#reportLostItem').each(function() {
