@@ -45,16 +45,25 @@ Route::get('/report-violation/{id}' , function($id){
 echo $course->first_name. $course->last_name. "course id nang student" .$course->course_id.'<br/>';
 	
 });*/
+
+//New student
+
+Route::post('/report-violation/add-student', 'ReportViolationController@newStudentRecord');
+
 //Search
 Route::get('/report-violation/search/student', [
 	'as'=> 'autocompleteStudentNo',
 	'uses' => 'ReportViolationController@searchStudent',
 	]);
 
+
+Route::get('/violation-reports/table/load','ReportViolationController@getViolationReportsTable');
 Route::get('/report-violation/search/violation', 'ReportViolationController@searchViolation');
 //Post
 Route::post('/report-violation/report', 'ReportViolationController@postReportViolation');
 Route::post('/report-violation/offense-no', 'ReportViolationController@showOffenseNo');
+
+
 
 // Community Service
 //Route::get('/communityService', 'sysController@showCommunityService');
