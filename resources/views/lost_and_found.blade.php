@@ -4,6 +4,7 @@
 
 @section('header-page')
 <div class="row">
+
 	<div class="col-md-12">
 		<h1>Lost and Found</h1>
 	</div>
@@ -13,7 +14,7 @@
 
 @section('content')
 
-<div id="myModal" class="modal fade" role="dialog">
+<div id="LAF_Modal" class="modal fade" role="dialog">
 	<div class="modal-dialog modal-sm">
 
 		<!-- Modal content-->
@@ -30,13 +31,45 @@
 					{!! csrf_field() !!}
 
 					<div class="form-group claimItem">
-						<label class="col-md-2 control-label">Item:</label>
+						<label class="col-md-2 control-label">Date Endorsed</label>
 						<div class="col-md-10">
-							<input type="text" class="form-control" name="itemDescription">
+							<input type="text" class="form-control" name="date_endorsed" id="date_endorsed">
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
 
 					</div>
+
+
+					<div class="form-group claimItem">
+						<label class="col-md-2 control-label">Item</label>
+						<div class="col-md-10">
+							<input type="text" class="form-control" name="item_description" id="item_description">
+							<span class="help-block m-b-none text-danger"></span>
+						</div>
+
+					</div>
+
+					<div class="form-group claimItem">
+						<label class="col-md-2 control-label">Owner Name</label>
+						<div class="col-md-10">
+							<input type="text" class="form-control" name="owner_name" id="owner_name">
+							<span class="help-block m-b-none text-danger"></span>
+						</div>
+
+					</div>
+
+
+					<div class="form-group claimItem">
+						<label class="col-md-2 control-label">Endorsed by</label>
+						<div class="col-md-10">
+							<input type="text" class="form-control" name="endorser_name" id="endorser_name">
+							<span class="help-block m-b-none text-danger"></span>
+						</div>
+
+					</div>
+
+					
+
 
 				</form>
 
@@ -44,7 +77,7 @@
 
 			<div class="modal-footer">
 				<button class="ladda-button btn btn-w-m btn-primary claimItem" type="button">
-					<strong>Save</strong>
+					<strong>Claim</strong>
 				</button>
 				<button type="button" class="btn btn-w-m btn-danger"
 				data-dismiss="modal">
@@ -163,11 +196,11 @@
 									<td>{{$row->founded_at}}</td>
 									<td>{{$row->owner_name}}</td>
 									@if ($row->status == 'Unclaimed')
-									<td ><a href="#" style="color:red" name="" id="{{$row->id}}" data-toggle="modal" data-target="#myModal">{{$row->status}}</a></td>
+									<td><a href="#" style="color:red" name="" id="{{$row->id}}">{{$row->status}}</a></td>
 									@elseif ($row->status == 'Claimed')
-									<td s><a href="#" style="color:green" id="{{$row->id}}">{{$row->status}}</a></td>
+									<td><a href="#" style="color:green" id="{{$row->id}}">{{$row->status}}</a></td>
 									@elseif ($row->status == 'Donated')
-									<td s><a href="#" style="color:blue" id="{{$row->id}}">{{$row->status}}</a></td>
+									<td><a href="#" style="color:blue" id="{{$row->id}}">{{$row->status}}</a></td>
 									@endif
 									<td>{{$row->date_claimed}}</td>
 									<td>{{$row->owner_name}}</td>
@@ -200,6 +233,56 @@
 </div>
 
 <script>
+
+$(document).ready(function(){
+
+$("#{{ $row->id }}").click(function(e){
+e.preventDefault();
+$.ajax({
+	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+	url: "/lost-and-found/item_details",
+	type: "GET",
+	data: {
+		id : {{$row->id}}
+	},
+}).done(function(data){
+
+	var msg = "";
+			if (data.success == false) {
+				$.each(data.errors, function(k, v) {
+					msg = msg + v + "\n";
+					swal("Oops...", msg, "warning");
+
+				});
+
+			} else {
+
+				var item_description = data.response['item_description'];
+				var date_endorsed = data.response['created_at'];
+				var found_at = data.response['founded_at'];
+				var owner_name = data.response['owner_name'];
+				var endorser_name = data.response['endorser_name'];
+
+				$('#item_description').val(item_description);
+				$('#date_endorsed').val(date_endorsed);
+				$('#owner_name').val(owner_name);
+				$('#found_at').val(found_at);
+				$('#endorser_name').val(endorser_name);
+
+			}
+
+});
+
+	$('#LAF_Modal').modal("show");
+
+});
+
+});
+
+
+
 	$('button#lost_and_found_reportBtn').click(function(e) {
 
 		e.preventDefault();

@@ -482,6 +482,7 @@ $('#student_no').keydown(function() {
 					if (data.length == 0)
 					{
 						x();
+						$('#violation_selection').val("");
 						$('#violation_description').val("");
 						$('#violation_sanction').val("");
 						$('#violation_offense_level').val("");	

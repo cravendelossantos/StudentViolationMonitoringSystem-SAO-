@@ -19,6 +19,11 @@ class LostAndFoundController extends Controller
         $this->middleware('roles');
     }
 	
+	public function getItemDetails(Request $request)
+	{
+		$item = LostAndFound::where('id', $request['id'])->first();
+		return response()->json(array('response' => $item));
+	}
 	
 	public function showLostAndFound()
 	{

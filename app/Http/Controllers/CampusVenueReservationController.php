@@ -28,7 +28,27 @@ class CampusVenueReservationController extends Controller
         return view('campus_venue_reservation', ['CampusVenueReservationTable' => $events ]);
     }
 
+
+    public function getEvents()
+    {
+      $data  = DB::table('events')->get();
+
+      foreach ($data as $key)
+      {
+        $events[] = array(
+          'id' => $key->id,
+          'title' => $key->title,
+          'start' => $key->start,
+          'end' => $key->end,
+          'color' => $key->color
+          ); 
+      }
+
+      return response()->json($events);  
+
+    }
       public function getCampusVenueReservation()
+    
     {
       // $campus_venue_reservation = DB::table('campus_venue_reservation')->get();
         $events = DB::table('events')->get();
@@ -37,7 +57,6 @@ class CampusVenueReservationController extends Controller
 
         return Response::json($events);
     }
-  
 	
  	
     public function postCampusVenueReservationAdd(Request $request)
