@@ -26,6 +26,7 @@ Route::get('/', function () {
 */
 Route::group(['middleware' => 'roles', 'roles' => ['Admin','Secretary']],function(){
 
+Route::post('/get-events' , 'CampusVenueReservationController@getEvents');
 
 Route::get('/index', 'HomeController@index');
 
@@ -97,6 +98,9 @@ Route::post('/lost-and-found/report-item',[
 	'uses' => 'LostAndFoundController@postLostAndFoundAdd',
 	'as' => 'report.item'
 ]);
+
+Route::get('/lost-and-found/item_details', 'LostAndFoundController@getItemDetails');
+
 Route::post('/lostandfound/update', 'LostAndFoundController@postLostAndFoundUpdate');
 
 //Courses

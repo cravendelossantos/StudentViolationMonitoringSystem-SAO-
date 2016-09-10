@@ -102,7 +102,7 @@
             </div>
             
         </div>
-        <!-- /.row -->
+        <!-- row -->
         
         <!-- Modal -->
         <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -251,17 +251,7 @@
 
 <!-- Mainly scripts -->
 <script src="js/plugins/fullcalendar/moment.min.js"></script>
-<script src="js/jquery-2.1.1.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-<!-- Custom and plugin javascript -->
-<script src="js/inspinia.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>
-
-<!-- jQuery UI custom -->
-<script src="js/jquery-ui.custom.min.js"></script>
 
 <!-- iCheck -->
 <script src="js/plugins/iCheck/icheck.min.js"></script>
@@ -272,6 +262,9 @@
 <script>
 
     $(document).ready(function() {
+
+
+
 
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
@@ -289,17 +282,40 @@
         var m = date.getMonth();
         var y = date.getFullYear();
 
+
+$.ajax({
+  headers : {
+        'X-CSRF-Token' : $('input[name="_token"]').val()
+      },
+    url: '/get-events',
+   type: 'POST',
+   data: 'type=fetch',
+   async: false,
+   success: function(response){
+     json_events = response;
+
+     console.log (json_events);
+    
+   }
+});
+
+
         $('#calendar').fullCalendar({
+        
             header: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
                 
             },
+
             selectable: true,
             editable: true,
             eventLimit: true, // allow "more" link when too many events
             selectHelper: true,
+            events: json_events,  
+         
+
 			select: function(start, end) {
         
         $('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
@@ -324,14 +340,12 @@
 
         edit(event);
 
-      },
-
-      
-
-
-            events: [],
+      }
             
         });
+
+
+  
 
             function edit(event){
       start = event.start.format('YYYY-MM-DD HH:mm:ss');
@@ -363,7 +377,11 @@
     }
 
 
+
     });
+
+
+
 
 </script>
 
