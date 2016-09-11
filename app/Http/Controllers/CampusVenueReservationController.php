@@ -28,6 +28,14 @@ class CampusVenueReservationController extends Controller
         return view('campus_venue_reservation', ['CampusVenueReservationTable' => $events ]);
     }
 
+      public function showCampusVenueReservationReports()
+    {
+      // $campus_venue_reservation = DB::table('campus_venue_reservation')->get();
+        $events = DB::table('events')->get();
+       
+        return view('campus_venue_reservation_reports', ['CampusVenueReservationTable' => $events ]);
+    }
+
       public function getCampusVenueReservation()
     {
       // $campus_venue_reservation = DB::table('campus_venue_reservation')->get();

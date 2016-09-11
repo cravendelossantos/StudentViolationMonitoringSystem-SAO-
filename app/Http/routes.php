@@ -60,9 +60,24 @@ Route::post('/report-violation/offense-no', 'ReportViolationController@showOffen
 //Route::get('/communityService', 'sysController@showCommunityService');
 
 Route::get('/campus', 'CampusVenueReservationController@showCampusVenueReservation');
+Route::get('/reservationReports', 'CampusVenueReservationController@showCampusVenueReservationReports');
 Route::post('/campus/add', 'CampusVenueReservationController@postCampusVenueReservationAdd');
 
 Route::post('/campus/update', 'CampusVenueReservationController@postCampusVenueReservationUpdate');
+
+
+
+// organizations renewal
+Route::get('/organizationsRenewal', 'OrganizationsRenewalController@showOrganizationsRenewal');
+Route::get('/OrganizationsRenewalList', 'OrganizationsRenewalController@showOrganizationsRenewalList');
+
+// monitoring of proposal activities
+Route::get('/activities', 'ProposalActivitiesMonitoringController@showProposalActivities');
+Route::get('/addActivity', 'ProposalActivitiesMonitoringController@showAddActivity');
+Route::get('/ActivityDetails', 'ProposalActivitiesMonitoringController@getActivityDetails');
+Route::post('/postAddActivity', 'ProposalActivitiesMonitoringController@postProposalActivitiesAdd');
+Route::post('/postUpdateActivity', 'ProposalActivitiesMonitoringController@postProposalActivitiesUpdate');
+Route::get('/activitiesReports', 'ProposalActivitiesMonitoringController@showProposalActivitiesReports');
 
 
 

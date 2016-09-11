@@ -244,7 +244,7 @@
 							<ul class="nav nav-second-level collapse">
 
 								<li ui-sref-active="active" >
-									<a href="/reservation"> <i class=""></i> <span class="nav-label ng-binding">Reservation Form</span> </a>
+									<a href="/campus"> <i class=""></i> <span class="nav-label ng-binding">Reservation Form</span> </a>
 								</li>
 						</li>
 						<li ui-sref-active="active" >
@@ -277,11 +277,11 @@
 						<a href="#"><i class="fa fa-file"></i> <span class="nav-label ng-binding">Organizations Renewal Management</span><span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level collapse">
 							<li ui-sref-active="active">
-								<a href="/organizations"><i class=""></i> <span class="nav-label ng-binding">List of Organizations</span> </a>
+								<a href="/OrganizationsRenewalList"><i class=""></i> <span class="nav-label ng-binding">List of Organizations</span> </a>
 
 							</li>
 							<li ui-sref-active="active" >
-								<a href="/checklist"> <i class=""></i> <span class="nav-label ng-binding">Checklist of Requirements</span> </a>
+								<a href="/organizationsRenewal"> <i class=""></i> <span class="nav-label ng-binding">Checklist of Requirements</span> </a>
 							</li>
 
 						</ul>
