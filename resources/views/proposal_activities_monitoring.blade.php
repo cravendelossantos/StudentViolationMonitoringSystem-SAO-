@@ -12,7 +12,7 @@
 
 @section('content')
 <div class="row">
-<div id="myModal" class="modal fade" role="dialog">
+<div id="activities_modal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 
 		<!-- Modal content-->
@@ -33,14 +33,14 @@
 						<div class="col-md-6">
 							<div class="form-group ">
 								<label>Organization</label>
-								<input type="text" placeholder="Name of Organization" name="organizationName" id="organizationName" class="form-control" autofocus="" aria-required="true">
+								<output " placeholder="Name of Organization" name="organizationName" id="organizationName" class="form-control" autofocus="" aria-required="true"></output>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Title</label>
-								<input type="text" placeholder="Title of Activity" name="title" id="title" class="form-control">
+								<output placeholder="Title of Activity" name="title" id="title" class="form-control"></output>
 							</div>
 						</div>
 
@@ -93,19 +93,11 @@
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
 
-				<h5>Items List</h5>
+				<h5>Activities</h5>
 
 				<div class="ibox-tools">
 
-					<div class="input-group col-lg-offset-8 col-lg-4">
-
-						<input type="text" class="form-control" id="searchBox" name="searchBox" placeholder="Search for something">
-						<span class="input-group-btn">
-							<button type="button" id="" class="btn btn-primary searchBtn">
-								Go!
-						</span>
-						</button>
-					</div>
+			
 
 				</div>
 
@@ -115,7 +107,7 @@
 				<div class="table-responsive">
 					<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
 
-						<table class="table table-striped table-bordered table-hover lost-and-found-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+						<table class="table table-striped table-bordered table-hover activities-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
 
 							<thead>
 								<tr>
@@ -123,33 +115,10 @@
 									<th>Title of Activity</th>
 									<th>Date</th>
 									<th>Status</th>
-									<th>Action</th>
+							<!-- 		<th>Action</th> -->
 								</tr>
 							</thead>
-							<tbody id="activities">
-								@foreach ($activitiesTable as $row)
-								<tr >
-									<td>{{$row->organization}}</td>
-									<td>{{$row->activity}}</td>
-									<td >{{$row->date}}</td>
-									@if ($row->status == '0')
-									<td style="color:red" >Not Submitted</td>
-									@elseif ($row->status == '1')
-									<td style="color:green">Submitted</td>
-									@endif
-									<td> <button class="ladda-button btn btn-s-m btn-primary" type="button" id="{{$row->id}}">
-											<strong>Edit</strong>
-										</button>
-											<button type="button" class="btn btn-s-m btn-danger"
-												data-dismiss="modal">
-											<strong>Delete</strong>
-										</button>
-									</td>
-
-
-								</tr>
-								@endforeach
-							</tbody>
+						
 						</table>
 
 					</div>
@@ -164,7 +133,7 @@
 <script>
 
 		// $(document).ready(function() {
-		// 	$('#{{$row->id}}').click(function() {
+		// 	$('#').click(function() {
   //       		var row = $(this).each;
 
   //       		$('#myModal #organizationName').val(row.organization);
@@ -175,59 +144,81 @@
   // 			  });
 		// });
 
-		$(document).ready(function(){
+	// 	$(document).ready(function(){
  
-		 $("#{{$row->id}}").click(function(e){
- 		e.preventDefault();
- 		$.ajax({
- 		headers : {
- 				'X-CSRF-Token' : $('input[name="_token"]').val()
- 			},
- 			url: "/ActivityDetails",
- 			type: "GET",
- 			data: {
- 				id : {{$row->id}}		
- 				},
- 		}).done(function(data){
+	// 	 $("#").click(function(e){
+ // 		e.preventDefault();
+ // 		$.ajax({
+ // 		headers : {
+ // 				'X-CSRF-Token' : $('input[name="_token"]').val()
+ // 			},
+ // 			url: "/ActivityDetails",
+ // 			type: "GET",
+ // 			data: {
+ // 				id : id	
+ // 				},
+ // 		}).done(function(data){
 
  
-		 	var msg = "";
- 			if (data.success == false) {
- 				$.each(data.errors, function(k, v) {
- 					msg = msg + v + "\n";
- 					swal("Oops...", msg, "warning");
+	// 	 	var msg = "";
+ // 			if (data.success == false) {
+ // 				$.each(data.errors, function(k, v) {
+ // 					msg = msg + v + "\n";
+ // 					swal("Oops...", msg, "warning");
  
- 				});
+ // 				});
  
- 			} else {
+ // 			} else {
  
- 				var organization = data.response['organization'];
- 				var activity = data.response['activity'];
- 				var date = data.response['date'];
- 				var status = data.response['status'];
+ // 				var organization = data.response['organization'];
+ // 				var activity = data.response['activity'];
+ // 				var date = data.response['date'];
+ // 				var status = data.response['status'];
  				
  
- 				$('#organizationName').val(organization);
- 				$('#title').val(activity);
- 				$('#date').val(date);
- 				$('#status').val(status);	
+ // 				$('#organizationName').val(organization);
+ // 				$('#title').val(activity);
+ // 				$('#date').val(date);
+ // 				$('#status').val(status);	
  
- 			}
+ // 			}
  
- });
+ // });
  
- 	$('#myModal').modal("show");
+ // 	$('#myModal').modal("show");
  
- });
+ // });
  
- });
+ // });
 
 
 
 
 
 
-
+//
+var activities_table = $('.activities-DT').DataTable({
+	"processing": true,
+    "serverSide": true,
+    "ajax": {
+    	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+    	url : "/activities/list",
+		type: "POST",
+			},
+	"bSort" : true,
+	"bFilter" : true,
+	"order": [[ 0, "desc" ]],
+	"rowId" : 'id',	
+	"columns" : [
+		{data : 'organization'},
+		{data : 'activity'},
+		{data : 'date'},
+		{data : 'status'},
+		
+	]
+});
 
 
 
@@ -281,6 +272,57 @@
 			this.reset();
 		});
 	}); 
+
+
+
+
+
+
+
+	//Get item details to Modal
+	$('.activities-DT').on('click', 'tr', function(){
+		var tr_id = $(this).attr('id');
+		
+		$('form#UpdateActvity')[0].reset();
+				$.ajax({
+	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+	url: "/activities/activity_details",
+	type: "GET",
+	data: {
+		id : tr_id
+	},
+}).done(function(data){
+
+	var msg = "";
+			if (data.success == false) {
+				$.each(data.errors, function(k, v) {
+					msg = msg + v + "\n";
+					swal("Oops...", msg, "warning");
+
+				});
+
+			} else {
+
+				if (data.response == null)
+				{
+					return false;
+				}
+				else{
+				var organization = data.response['organization'];
+				var title = data.response['activity'];
+
+				$('#organizationName').val(organization);
+				$('#title').val(title);
+
+				$('#activities_modal').modal('show');
+				
+			}
+			}
+
+});
+	});
 </script>	
 
 @endsection

@@ -12,7 +12,7 @@ use App\Activity;
 use Carbon\Carbon;
 use DateTime;
 use Auth;
-
+use Yajra\Datatables\Facades\Datatables;
 
 class ProposalActivitiesMonitoringController extends Controller
 {
@@ -24,16 +24,19 @@ class ProposalActivitiesMonitoringController extends Controller
 
     public function showProposalActivities()
     {
-        $Activities_table = DB::table('Activities')->orderBy('created_at','desc')->get();
+        //$Activities_table = DB::table('Activities')->orderBy('created_at','desc')->get();
        
-        return view('proposal_activities_monitoring',['activitiesTable'=> $Activities_table]);
+        return view('proposal_activities_monitoring');
     }
 
-        public function showAddActivity()
+    public function getActivitiesTable()
     {
+        return Datatables::eloquent(Activity::query())->make(true);
 
-       
-        return view('proposal_activities_monitoring_add');
+    }    
+     public function showAddActivity()
+    { 
+      return view('proposal_activities_monitoring_add');
     }
 
        public function getActivityDetails(Request $request)

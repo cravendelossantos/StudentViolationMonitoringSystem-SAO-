@@ -60,12 +60,12 @@ Route::get('/OrganizationsRenewalList', 'OrganizationsRenewalController@showOrga
 // monitoring of proposal activities
 Route::get('/activities', 'ProposalActivitiesMonitoringController@showProposalActivities');
 Route::get('/addActivity', 'ProposalActivitiesMonitoringController@showAddActivity');
-Route::get('/getActivityDetails', 'ProposalActivitiesMonitoringController@getActivityDetails');
+// Route::get('/getActivityDetails', 'ProposalActivitiesMonitoringController@getActivityDetails');
 Route::post('/postAddActivity', 'ProposalActivitiesMonitoringController@postProposalActivitiesAdd');
 Route::post('/postUpdateActivity', 'ProposalActivitiesMonitoringController@postProposalActivitiesUpdate');
 Route::get('/activitiesReports', 'ProposalActivitiesMonitoringController@showProposalActivitiesReports');
-
-
+Route::post('/activities/list' , 'ProposalActivitiesMonitoringController@getActivitiesTable');
+Route::get('/activities/activity_details' , 'ProposalActivitiesMonitoringController@getActivityDetails');
 
 
 // violations
