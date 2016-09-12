@@ -11,6 +11,8 @@ use App\User;
 use App\LostAndFound;
 use Carbon\Carbon;
 use DateTime;
+use App\Course;
+
 
 class sysController extends Controller {
 	
@@ -88,9 +90,9 @@ class sysController extends Controller {
 
 	public function postCourse(Request $request)
 	{
-		$course = $request->input('courseDesc');
-		DB::table('courses')->insert(['course' => $course]);	
-		return response()->json(['success' => true, "course"=>$course]);
+	   $course = new Course();
+       $course->description = $request['course_description'];
+       $course->save();
 	}
 	
 

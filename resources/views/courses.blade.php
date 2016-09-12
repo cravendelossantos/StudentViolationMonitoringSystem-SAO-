@@ -25,13 +25,13 @@
 			</div>
 			<div class="ibox-content">
 
-				<form role="form" id="violationForm" method="POST" action="/addCourse">
+				<form role="form" id="violationForm" method="POST" action="/add-course">
 					{!! csrf_field() !!}
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group ">
 								<label>Course</label>
-								<input type="text" placeholder="Course Description" name="courseDesc" class="form-control" autofocus="" aria-required="true">
+								<input type="text" placeholder="Course Description" name="course_description" id="course_description" class="form-control" autofocus="" aria-required="true">
 							</div>
 						</div>
 

@@ -15,10 +15,12 @@ class CreateLostAndFoundsTable extends Migration
         Schema::create('lost_and_founds', function (Blueprint $table) {
             $table->increments('id');
 			$table->timestamps();
+            $table->date('date_endorsed');
 			$table->string('item_description');
 			$table->string('endorser_name');
 			$table->string('founded_at');
 			$table->string('owner_name');
+            $table->string('claimer_name');
 			$table->date('date_claimed');
 			$table->enum('status', array('Unclaimed','Claimed','Donated'));
 			$table->date('disposal_date');
