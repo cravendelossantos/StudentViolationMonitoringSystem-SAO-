@@ -14,9 +14,10 @@ class CreateViolationReportsTable extends Migration
     {
          Schema::create('violation_reports', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
-            $table->integer('student_id');
+            $table->string('student_id');
             $table->integer('violation_id');
+            $table->integer('offense_no');
+            $table->date('date_reported');
         });
     }
 

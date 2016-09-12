@@ -15,7 +15,7 @@
 @section('content')
 
 <div id="LAF_Modal" class="modal fade" role="dialog">
-	<div class="modal-dialog modal-sm">
+	<div class="modal-dialog modal-md">
 
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -27,13 +27,17 @@
 			</div>
 
 			<div class="ibox-content">
-				<form class="form-horizontal suggestTopic">
+				<form class="form-horizontal suggestTopic" id="claim_item">
 					{!! csrf_field() !!}
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<input type="hidden" name="claim_id" id="claim_id">
+
 
 					<div class="form-group claimItem">
-						<label class="col-md-2 control-label">Date Endorsed</label>
-						<div class="col-md-10">
-							<input type="text" class="form-control" name="date_endorsed" id="date_endorsed">
+						
+						<div class="col-md-10 col-md-offset-1">
+						<label class="control-label">Date Endorsed</label>
+							<output class="form-control" name="date_endorsed" id="date_endorsed"></output>
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
 
@@ -41,18 +45,20 @@
 
 
 					<div class="form-group claimItem">
-						<label class="col-md-2 control-label">Item</label>
-						<div class="col-md-10">
-							<input type="text" class="form-control" name="item_description" id="item_description">
+						
+						<div class="col-md-10 col-md-offset-1">
+						<label class="control-label">Item</label>
+							<output class="form-control" name="item_description" id="item_description"></output>
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
 
 					</div>
 
 					<div class="form-group claimItem">
-						<label class="col-md-2 control-label">Owner Name</label>
-						<div class="col-md-10">
-							<input type="text" class="form-control" name="owner_name" id="owner_name">
+						
+						<div class="col-md-10 col-md-offset-1">
+						<label class="control-label">Owner Name</label>
+							<output class="form-control" name="owner_name" id="owner_name"></output>
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
 
@@ -60,29 +66,40 @@
 
 
 					<div class="form-group claimItem">
-						<label class="col-md-2 control-label">Endorsed by</label>
-						<div class="col-md-10">
-							<input type="text" class="form-control" name="endorser_name" id="endorser_name">
+						
+						<div class="col-md-10 col-md-offset-1">
+						<label class="control-label">Endorsed by</label>
+							<output class="form-control" name="endorser_name" id="endorser_name"></output>
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
 
 					</div>
 
-					
 
+					<div class="form-group claimItem">
+						
+						<div class="col-md-10 col-md-offset-1">
+						<label class="control-label">Claimer Name</label>
+								<input type="text" placeholder="Claimer Name" name="claimer_name" id="claimer_name" class="form-control">
 
-				</form>
+							<span class="help-block m-b-none text-danger"></span>
+						</div>
 
+					</div>
+
+	
+							
 			</div>
 
 			<div class="modal-footer">
-				<button class="ladda-button btn btn-w-m btn-primary claimItem" type="button">
+				<button class="ladda-button btn btn-w-m btn-primary claimItem" id="claim_btn" type="button">
 					<strong>Claim</strong>
 				</button>
 				<button type="button" class="btn btn-w-m btn-danger"
 				data-dismiss="modal">
 					<strong>Cancel</strong>
 				</button>
+				</form>
 			</div>
 		</div>
 
@@ -132,6 +149,9 @@
 							</div>
 						</div>
 
+						
+
+
 					</div>
 
 			</div>
@@ -163,21 +183,39 @@
 				<div class="ibox-tools">
 
 				
-
+				
 				</div>
 
 			</div>
 
+
 			<div class="ibox-content" id="table-content">
+												<div class="form-group">
+				Filter
+				<select id="sort_by" name="sort_by"  class="form-control">
+					<option>All</option>
+					<option>Unclaimed</option>
+					<option>Claimed</option>
+					<option>Donated</option>
+				</select>
+
+
+</div>
+
 				<div class="table-responsive">
+
+
+
 					<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+
+
 
 						<table class="table table-striped table-bordered table-hover lost-and-found-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
 
 							<thead>
-								<tr>
-									<th>Item Description</th>
+
 									<th>Date Endorsed</th>
+									<th>Item Description</th>
 									<th>Endorsed by</th>
 									<th>Founded at</th>
 									<th>Owner's Name</th>
@@ -185,43 +223,11 @@
 									<th>Date Claimed</th>
 									<th>Claimed By</th>
 
-								</tr>
+						
 							</thead>
-							<tbody id="items">
-								@foreach ($lostandfoundTable as $row)
-								<tr >
-									<td>{{$row->item_description}}</td>
-									<td>{{$row->created_at}}</td>
-									<td>{{$row->endorser_name}}</td>
-									<td>{{$row->founded_at}}</td>
-									<td>{{$row->owner_name}}</td>
-									@if ($row->status == 'Unclaimed')
-									<td><a href="#" style="color:red" name="" id="{{$row->id}}">{{$row->status}}</a></td>
-									@elseif ($row->status == 'Claimed')
-									<td><a href="#" style="color:green" id="{{$row->id}}">{{$row->status}}</a></td>
-									@elseif ($row->status == 'Donated')
-									<td><a href="#" style="color:blue" id="{{$row->id}}">{{$row->status}}</a></td>
-									@endif
-									<td>{{$row->date_claimed}}</td>
-									<td>{{$row->owner_name}}</td>
 
-								</tr>
-								@endforeach
-							</tbody>
+							
 
-							<tfoot>
-								<tr>
-									<th>Item Description</th>
-									<th>Date Endorsed</th>
-									<th>Endorsed by</th>
-									<th>Founded at</th>
-									<th>Owner's Name</th>
-									<th>Status</th>
-									<th>Date Claimed</th>
-									<th>Claimed By</th>
-
-								</tr>
-							</tfoot>
 						</table>
 
 					</div>
@@ -232,130 +238,4 @@
 	</div>
 </div>
 
-<script>
-
-$(document).ready(function(){
-
-$("#{{ $row->id }}").click(function(e){
-e.preventDefault();
-$.ajax({
-	headers : {
-				'X-CSRF-Token' : $('input[name="_token"]').val()
-			},
-	url: "/lost-and-found/item_details",
-	type: "GET",
-	data: {
-		id : {{$row->id}}
-	},
-}).done(function(data){
-
-	var msg = "";
-			if (data.success == false) {
-				$.each(data.errors, function(k, v) {
-					msg = msg + v + "\n";
-					swal("Oops...", msg, "warning");
-
-				});
-
-			} else {
-
-				var item_description = data.response['item_description'];
-				var date_endorsed = data.response['created_at'];
-				var found_at = data.response['founded_at'];
-				var owner_name = data.response['owner_name'];
-				var endorser_name = data.response['endorser_name'];
-
-				$('#item_description').val(item_description);
-				$('#date_endorsed').val(date_endorsed);
-				$('#owner_name').val(owner_name);
-				$('#found_at').val(found_at);
-				$('#endorser_name').val(endorser_name);
-
-			}
-
-});
-
-	$('#LAF_Modal').modal("show");
-
-});
-
-});
-
-
-
-	$('button#lost_and_found_reportBtn').click(function(e) {
-
-		e.preventDefault();
-
-		$.ajax({
-			headers : {
-				'X-CSRF-Token' : $('input[name="_token"]').val()
-			},
-			type : "POST",
-			url : "/lost-and-found/report-item",
-			data : $('form#reportLostItem').serialize(),
-
-		}).done(function(data) {
-
-			var msg = "";
-			if (data.success == false) {
-				$.each(data.errors, function(k, v) {
-					msg = msg + v + "\n";
-					swal("Oops...", msg, "warning");
-
-				});
-
-			} else if (data.success == true) {
-
-				$('form#reportLostItem').each(function() {
-					this.reset();
-				});
-				$("#table-content").fadeTo("slow", 0.3);
-
-				swal('Success!', 'Item reported', 'success');
-
-				if (data.response['owner_name'] == null) {
-
-					$("#table-content").load("/lost-and-found/table/load").fadeTo("slow", 1);
-
-				} else {
-
-					$("#table-content").load("/lost-and-found/table/load").fadeTo("slow", 1);
-
-				}
-
-			}
-		});
-
-	});
-
-	/*$('button.searchBtn').click(function(e) {
-		e.preventDefault();
-		//var item = $('input#searchBox')
-		$.ajax({
-			headers : {
-				'X-CSRF-Token' : $('input[name="_token"]').val()
-			},
-			type : "GET",
-			url : "/lost-and-found/search",
-			data : $('input#searchBox').serialize(),
-
-		}).done(function(data) {
-
-			$("#table-content").load("/lost-and-found/table/load");
-		});
-	});*/
-
-	$('button#lost_and_found_cancelBtn').click(function() {
-		$('form#reportLostItem').each(function() {
-			this.reset();
-		});
-	}); 
-	
-	
-	
- 
-</script>
-
 @endsection
-

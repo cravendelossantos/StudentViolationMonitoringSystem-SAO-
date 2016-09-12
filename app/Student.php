@@ -8,9 +8,16 @@ use App\Course;
 
 class Student extends Model
 {
+	public $timestamps = false;
+	
 	public function courses()
  	{
-    return $this->hasOne('App\Course');
+    	return $this->hasOne('App\Course');
+	}
+
+	public function violations()
+	{
+		return $this->belongsToMany('App\ViolationReport');
 	}
 }
 	

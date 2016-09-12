@@ -12,18 +12,6 @@
 */	
 
 
-/*
-Route::get('/', function () {
-    return view('login');
-});
-
-*/
-/*Route::get('/index', [
-	'uses' => 'sysController@showIndex',
-	'middleware' => 'roles',
-	'roles' => ['Secretary']
-]);
-*/
 Route::group(['middleware' => 'roles', 'roles' => ['Admin','Secretary']],function(){
 
 Route::post('/get-events' , 'CampusVenueReservationController@getEvents');
@@ -35,17 +23,6 @@ Route::get('/index', 'HomeController@index');
 // Report violation
 Route::get('/report-violation', 'ReportViolationController@showReportViolation');
 
-/*
-Route::get('/report-violation/{id}' , function($id){
-
-
-
-	$students = App\Course::find($id);
-	echo "course id: " .$students->id. "course name galing sa course_tbl:" .$students->description. '<br/>';
-	$course = $students->students;
-echo $course->first_name. $course->last_name. "course id nang student" .$course->course_id.'<br/>';
-	
-});*/
 
 //New student
 
@@ -58,11 +35,12 @@ Route::get('/report-violation/search/student', [
 	]);
 
 
-Route::get('/violation-reports/table/load','ReportViolationController@getViolationReportsTable');
+Route::post('/report-violation/reports','ReportViolationController@getViolationReportsTable');
 Route::get('/report-violation/search/violation', 'ReportViolationController@searchViolation');
 //Post
 Route::post('/report-violation/report', 'ReportViolationController@postReportViolation');
 Route::post('/report-violation/offense-no', 'ReportViolationController@showOffenseNo');
+
 
 
 
@@ -105,7 +83,18 @@ Route::get('/sanctions', 'sysController@showSanctions');
 Route::get('/lost-and-found', [
 	'uses' => 'LostAndFoundController@showLostAndFound'
 ]);
-Route::get('/lost-and-found/table/load','LostAndFoundController@getLostAndFoundTable');
+
+//Lost and Found Tables
+Route::post('/lost-and-founds/items/all', 'LostAndFoundController@getLostAndFoundTable');
+Route::post('/lost-and-founds/items/sort_by=claimed' , 'LostAndFoundController@TableFilterClaimed');
+Route::post('/lost-and-founds/items/sort_by=unclaimed' , 'LostAndFoundController@TableFilterUnclaimed');
+Route::post('/lost-and-founds/items/sort_by=donated' , 'LostAndFoundController@TableFilterDonated');
+
+//Reports
+Route::get('/lost-and-found/statistics', 'LostAndFoundController@showLostAndFoundStatistics');
+Route::get('/lost-and-found/reports', 'LostAndFoundController@showLostAndFoundReports');
+
+
 Route::get('/lost-and-found/search','LostAndFoundController@searchLostAndFound');
 Route::post('/lost-and-found/report-item',[
 	'uses' => 'LostAndFoundController@postLostAndFoundAdd',
@@ -118,7 +107,7 @@ Route::post('/lostandfound/update', 'LostAndFoundController@postLostAndFoundUpda
 
 //Courses
 Route::get('/courses' , 'sysController@showCourses');
-Route::post('/addCourse' , 'sysController@postCourse');
+Route::post('/add-course' , 'sysController@postCourse');
 
 //Violation Statistics
 Route::get('/violation-statistics' , 'ReportViolationController@showStatistics');

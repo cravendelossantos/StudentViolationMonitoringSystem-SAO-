@@ -12,7 +12,7 @@ use App\LostAndFound;
 use App\Student;
 use App\Violation;
 use App\ViolationReport;
-
+use Yajra\Datatables\Facades\Datatables;
 use Carbon\Carbon;
 use DateTime;
 
@@ -27,21 +27,21 @@ class ReportViolationController extends Controller
  	public function showReportViolation()
     {
     	//$violation_reports = ViolationReport::all()
-        $violation_reports = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();
+   /*     $violation_reports = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();*/
 		$courses = DB::table('courses')->get();
 		$violations = Violation::all();
        
-        return view('report_violation', ['violation_reports' => $violation_reports ], ['violations' => $violations])->with(['courses' => $courses]);
+        return view('report_violation', ['violations' => $violations])->with(['courses' => $courses]);
         //course will be autofilled if we already have the student records.
     }
 	
     public function getViolationReportsTable()
     {
-         $violation_reports_table = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();
-
-        //$violation_reports_table = ViolationReport::orderBy('created_at','desc')->get();
-        return view('tables.violation_reports_table', ['violation_reports' => $violation_reports_table ]);
+        return Datatables::eloquent(ViolationReport::query()->leftJoin('students', 'violation_reports.student_id', '=', 'students.student_no')
+            ->join('violations', 'violation_reports.id', '=', 'violations.id')
+                )->make(true);
     }   
+
 
 
     public function newStudentRecord(Request $request)
@@ -52,7 +52,7 @@ class ReportViolationController extends Controller
         ];
 
         $validator = Validator::make($request->all(),[
-            'studentNo' => 'required|alpha_dash|max:255|unique:students_temp,student_id',
+            'studentNo' => 'required|alpha_dash|max:255|unique:students,student_no',
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
             'yearLevel' => 'required',
@@ -66,15 +66,15 @@ class ReportViolationController extends Controller
         }
         else {
            
-          $new_student_record = DB::table('students_temp')->insert([
-                'student_id' => $request['studentNo'],
-                'first_name' => $request['firstName'],
-                'last_name' => $request['lastName'],
-                'year_level' => $request['yearLevel'],
-                'course' => $request['course'],
-                'contact_no' => $request['contactNo']
-
-                ]);
+          $new_student_record = new Student();
+          $new_student_record->student_no = $request['studentNo'];
+          $new_student_record->first_name = ucwords($request['firstName']);
+          $new_student_record->last_name = ucwords($request['lastName']);
+          $new_student_record->year_level = $request['yearLevel'];
+          $new_student_record->course = $request['course'];
+          $new_student_record->contact_no = $request['contactNo'];
+          $new_student_record->date_created = Carbon::now();
+          $new_student_record-> save();
             
             return response()->json(array(['success' => true, 'response' => $new_student_record]));
                 //napasok kahit random na student number
@@ -88,12 +88,12 @@ class ReportViolationController extends Controller
 
         $term = $request->term;
     
-        $data = DB::table('students_temp')->where('student_id', $term)->take(5)->get();
+        $data = Student::where('student_no', $term)->take(5)->get();
         $result=array();
         
         foreach ($data as $key => $value)
         {
-            $result[]=[ 'value' => $value->student_id, 
+            $result[]=[ 'value' => $value->student_no, 
                         'l_name' => $value->last_name, 
                         'f_name' => $value->first_name,
                         'course' => $value->course,
@@ -147,8 +147,9 @@ class ReportViolationController extends Controller
             $student_violation = new ViolationReport();
             $student_violation->student_id = $request['student_number'];
             $student_violation->violation_id = $request['violation_id'];
-            $student_violation->violation_name = $request['violation'];
+            // $student_violation->violation_name = $request['violation'];
             $student_violation->offense_no = $request['offense_number'];
+            $student_violation->date_reported = Carbon::now();
             $student_violation->save();
             
             return response()->json(array(['success' => true, 'response' => $student_violation]));

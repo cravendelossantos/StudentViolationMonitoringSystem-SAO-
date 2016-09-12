@@ -221,19 +221,18 @@
 
 							</ul>
 						</li>
-
-						<li>
+							<li>
 							<a href="#"><i class="fa fa-book"></i> <span class="nav-label ng-binding">Lost and Found</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li ui-sref-active="active">
-									<a href="/lostandfoundStatistics"> <i class=""></i> <span class="nav-label ng-binding">Statistics</span> </a>
+									<a href="/lost-and-found/statistics"> <i class=""></i> <span class="nav-label ng-binding">Statistics</span> </a>
 								</li>
 
 								<li ui-sref-active="active">
 									<a href="/lost-and-found"><i class=""></i> <span class="nav-label ng-binding">Add / Claim Items</span> </a>
 								</li>
 								<li ui-sref-active="active" >
-									<a href="/lostandfoundReports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
+									<a href="/lost-and-found/reports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
 								</li>
 
 							</ul>
