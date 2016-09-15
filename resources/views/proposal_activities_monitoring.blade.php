@@ -110,14 +110,15 @@
 						<table class="table table-striped table-bordered table-hover activities-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
 
 							<thead>
-								<tr>
+						
 									<th>Organization</th>
 									<th>Title of Activity</th>
 									<th>Date</th>
 									<th>Status</th>
-							<!-- 		<th>Action</th> -->
-								</tr>
+									<!-- <th>Action</th> -->
+						
 							</thead>
+							
 						
 						</table>
 
@@ -216,12 +217,17 @@ var activities_table = $('.activities-DT').DataTable({
 		{data : 'activity'},
 		{data : 'date'},
 		{data : 'status'},
+/*		{"data": null ,"defaultContent":"<button>View</button>"},*/
 		
 	]
 });
 
 
-
+   $('#table-content tbody').on('click','button', function(e)
+        {
+        	e.preventDefault();
+        	alert("Test");
+                });
 
 
 

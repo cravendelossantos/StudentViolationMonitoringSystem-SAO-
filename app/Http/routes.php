@@ -93,7 +93,9 @@ Route::post('/lost-and-founds/items/sort_by=donated' , 'LostAndFoundController@T
 //Reports
 Route::get('/lost-and-found/statistics', 'LostAndFoundController@showLostAndFoundStatistics');
 Route::get('/lost-and-found/reports', 'LostAndFoundController@showLostAndFoundReports');
+Route::post('/lost-and-found/reports/list', 'LostAndFoundController@postLostAndFoundReportsTable');
 
+Route::post('/lost-and-found/reports/stats', 'LostAndFoundController@postLostAndFoundStatistics');
 
 Route::get('/lost-and-found/search','LostAndFoundController@searchLostAndFound');
 Route::post('/lost-and-found/report-item',[
@@ -115,6 +117,11 @@ Route::get('/violation-statistics' , 'ReportViolationController@showStatistics')
 
 //Sanctions Monitoring
 Route::get('/sanctions', 'SanctionController@showSanctions');
+
+
+//Locker Management
+Route::get('/lockers' , 'LockerManagementController@showLockers');
+
 
 //SMS
 Route::get('/text-messaging', 'sysController@showSMS');

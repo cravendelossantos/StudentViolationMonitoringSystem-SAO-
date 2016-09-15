@@ -8,6 +8,16 @@ $('#data_1 .input-group.date').datepicker({
 });
 
 			
+   $('#data_4 .input-group.date').datepicker({
+   //   	todayBtn : "linked",
+  		format : 'yyyy-mm',
+                minViewMode: 1,
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            });
+
 
 		
 
@@ -453,7 +463,8 @@ var lost_and_found_table = $('.lost-and-found-DT').DataTable({
 		{data : 'status'},
 		{data : 'date_claimed'},
 		{data : 'claimer_name'},
-	]
+	],
+	
 });
 
 //Report Item
@@ -624,58 +635,225 @@ $('select#sort_by').change(function(e){
 	
 });
 
+//LAF Reports
+LAF_currentMonthReports();
+
+//load reports on date change
+$('#month').on('change', function(){
 
 
-//LAF reports
+ $('#try').show();
+
+var a  = $('#month').val();
+$.ajax({
+  headers : {
+        'X-CSRF-Token' : $('input[name="_token"]').val()
+      },
+       	url : "/lost-and-found/reports/stats",
+   type: 'POST',
+   	data : {month : a},
+   async: false,
+   success: function(response){
+     items = response;
+
+    
+   }
+});
+
+    var data = [{
+        label: "UNCLAIMED",
+        data: items['unclaimed'],
+        color: "#d3d3d3",
+    }, {
+        label: "CLAIMED",
+        data: items['claimed'],
+        color: "#54cdb4",
+    }, {
+        label: "DONATED",
+        data: items['donated'],
+        color: "#1ab394",
+    }, /*{
+        label: "TOTAL",
+        data: 52,
+        color: "#1ab394",
+    }*/];
+
+    var plotObj = $.plot($("#flot-pie-chart"), data, {
+        series: {
+            pie: {
+                show: true
+            }
+        },
+        grid: {
+            hoverable: true
+        },
+        tooltip: true,
+        tooltipOpts: {
+        	 //percentage content: "%y.0, %s", // show value to 0 decimals
+            content: function(label,x,y){
+    return y+" item/s "+ "(" + label + ")";
+},
+            shifts: {
+                x: 20,
+                y: 0
+            },
+            defaultTheme: false
+        }
+    });
+
+
+	
+$('.lost-and-found-reports-DT').DataTable().destroy();
 $('.lost-and-found-reports-DT').DataTable({
-	"processing": true,
-    "serverSide": true,
-    "ajax": {
+
+	"ajax": {
     	headers : {
 				'X-CSRF-Token' : $('input[name="_token"]').val()
 			},
-    	url : "/lost-and-founds/items/all",
+    	url : "/lost-and-found/reports/list",
 		type: "POST",
-			},
-	"bSort" : true,
-	"bFilter" : true,
-	"order": [[ 0, "desc" ]],
-	"rowId" : 'id',	
-	"columns" : [
-		{data : 'date_endorsed'},
-		{data : 'item_description'},
-		{data : 'endorser_name'},
-		{data : 'founded_at'},
-		{data : 'owner_name'},
-		{data : 'status'},
-		{data : 'date_claimed'},
-		{data : 'claimer_name'},
+		data : {month : a},
+},
+"columns" : [
+{data: 'claimed'},
+{data: 'unclaimed'},
+{data: 'donated'},
+{data: 'total'},
 	],
-	dom : '<"html5buttons"B>lTfgtip',
+
+	dom : '<"html5buttons"B>Tgtip',
 	buttons : [{
 		extend : 'csv',
-		title : 'Lost and Found Reports',
+		title : 'LOST AND FOUND ITEMS',
 	}, {
 		extend :'excel',
-		title : 'Lost and Found Reports'	
-	} , {
-		extend : 'print',
-		title : 'Lost and Found Reports',
-		customize : function(win) {
-			$(win.document.body).addClass('white-bg');
-			$(win.document.body).css('font-size', '8px');
-			$(win.document.body).find('table').addClass('compact').css('font-size', 'inherit');
-		}
+		title : 'LOST AND FOUND ITEMS',
 	} , {
 		extend : 'pdf',
 		title : 'Lost and Found Reports',
+	} , {
+		extend : 'print',
+		title : 'LOST AND FOUND ITEMS',
+		customize : function(win) {
+			$(win.document.body).addClass('white-bg');
+			$(win.document.body).css('font-size', '8px').prepend('<label>Text</label>');
+			$(win.document.body).find('table').addClass('compact').css('font-size', 'inherit');
+		}
 	}]
-
+});
+$('#try').hide();
 });
 
 
+//load current month reports
 
 
+function LAF_currentMonthReports() {
+
+var d = new Date(),
+
+    n = d.getMonth(),
+
+    y = d.getFullYear();
+
+var current_date = n + y;
+
+$.ajax({
+  headers : {
+        'X-CSRF-Token' : $('input[name="_token"]').val()
+      },
+       	url : "/lost-and-found/reports/stats",
+   type: 'POST',
+   	data : {month : current_date},
+   async: false,
+   success: function(response){
+     items = response;
+
+    
+   }
+});
+
+    var data = [{
+        label: "UNCLAIMED",
+        data: items['unclaimed'],
+        color: "#d3d3d3",
+    }, {
+        label: "CLAIMED",
+        data: items['claimed'],
+        color: "#54cdb4",
+    }, {
+        label: "DONATED",
+        data: items['donated'],
+        color: "#1ab394",
+    }, /*{
+        label: "TOTAL",
+        data: 52,
+        color: "#1ab394",
+    }*/];
+
+    var plotObj = $.plot($("#flot-pie-chart"), data, {
+        series: {
+            pie: {
+                show: true
+            }
+        },
+        grid: {
+            hoverable: true
+        },
+        tooltip: true,
+        tooltipOpts: {
+        	 //percentage content: "%y.0, %s", // show value to 0 decimals
+            content: function(label,x,y){
+    return y+" Items "+ "(" + label + ")";
+},
+            shifts: {
+                x: 20,
+                y: 0
+            },
+            defaultTheme: false
+        }
+    });
+
+
+    $('.lost-and-found-reports-DT').DataTable({
+
+	"ajax": {
+    	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+    	url : "/lost-and-found/reports/list",
+		type: "POST",
+		data : {month : current_date},
+},
+"columns" : [
+{data: 'claimed'},
+{data: 'unclaimed'},
+{data: 'donated'},
+{data: 'total'},
+	],
+
+	dom : '<"html5buttons"B>Tgtip',
+	buttons : [{
+		extend : 'csv',
+		title : 'LOST AND FOUND ITEMS',
+	}, {
+		extend :'excel',
+		title : 'LOST AND FOUND ITEMS',
+	} , {
+		extend : 'pdf',
+		title : 'Lost and Found Reports',
+	} , {
+		extend : 'print',
+		title : 'LOST AND FOUND ITEMS',
+		customize : function(win) {
+			$(win.document.body).addClass('white-bg');
+			$(win.document.body).css('font-size', '8px').prepend('<label>Text</label>');
+			$(win.document.body).find('table').addClass('compact').css('font-size', 'inherit');
+		}
+	}]
+});
+
+}
 
 
 

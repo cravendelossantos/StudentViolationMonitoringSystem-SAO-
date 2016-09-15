@@ -118,6 +118,7 @@ class LostAndFoundController extends Controller
         ]);
 			
 			}
+			//modal claimer name enter. page reloads
 
 		}
 		public function showLostAndFoundStatistics()
@@ -129,9 +130,93 @@ class LostAndFoundController extends Controller
 		{
 			return view('lost_and_found_reports');
 		}
-		
-	
-	
+
+		public function postLostAndFoundReportsTable(Request $request)
+		{
+
+		$requested_date = $request['month'];
+		$date_start = Carbon::parse($requested_date)->startOfMonth();
+		$date_end = Carbon::parse($requested_date)->endOfMonth();  
+
+			$claimed = LostAndFound::where('status', 'claimed')
+					->whereBetween('created_at', [$date_start, $date_end])
+					->count();
+
+			$unclaimed = LostAndFound::where('status', 'unclaimed')
+					->whereBetween('created_at', [$date_start, $date_end])
+					->count();
+
+			$donated = LostAndFound::where('status', 'donated')
+					->whereBetween('created_at', [$date_start, $date_end])
+					->count();
+
+
+			$total = LostAndFound::whereBetween('created_at', [$date_start, $date_end])
+					->count();
+			
+
+			
+
+			//into objects..
+			$data = [
+						[	'claimed' => $claimed, 
+							'unclaimed' => $unclaimed,
+							'donated' => $donated,  
+							'total' => $total, 
+							'from'=>$date_start, 
+							'to'=>$date_end
+						]
+					];
+			
+
+			return response()->json(['data' => $data]);
+
+
+		}
+
+		public function postLostAndFoundStatistics(Request $request)
+		{
+
+			/*$claimed = LostAndFound::where('status', 'claimed')
+					->whereBetween('created_at', [$date_start, $date_end])
+					->count();
+
+			$unclaimed = LostAndFound::where('status', 'unclaimed')
+					->whereBetween('created_at', [$date_start, $date_end])
+					->count();
+
+			$total = LostAndFound::whereBetween('created_at', [$date_start, $date_end])
+					->count();*/
+
+		$requested_date = $request['month'];
+		$date_start = Carbon::parse($requested_date)->startOfMonth();
+		$date_end = Carbon::parse($requested_date)->endOfMonth();  
+
+
+
+			$claimed = LostAndFound::where('status', 'claimed')
+					->whereBetween('created_at', [$date_start, $date_end])
+					->count();
+
+			$unclaimed = LostAndFound::where('status', 'unclaimed')
+					->whereBetween('created_at', [$date_start, $date_end])
+					->count();
+
+			$donated = LostAndFound::where('status', 'donated')
+					->whereBetween('created_at', [$date_start, $date_end])
+					->count();
+
+				$data= [
+							'claimed' => $claimed, 
+							'unclaimed' => $unclaimed, 
+							'donated' => $donated, 
+						
+					];
+			
+
+      return response()->json($data); 
+
+		}
 	
 	
 }
