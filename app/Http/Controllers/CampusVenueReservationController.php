@@ -47,9 +47,13 @@ class CampusVenueReservationController extends Controller
         $events[] = array(
           'id' => $key->id,
           'title' => $key->title,
+          'venue' => $key->venue,
+          'organization' => $key->organization,
+          'status' => $key->status,
           'start' => $key->start,
           'end' => $key->end,
-          'color' => $key->color
+          'remark_status' => $key->remark_status,
+          'cvf_no' => $key->cvf_no,
           ); 
       }
 
@@ -78,9 +82,13 @@ class CampusVenueReservationController extends Controller
           // 'remark_status' = 'null';
 
             'title' => $request['title'],
+            'venue' => $request['venue'],
+            'organization' => $request['organization'],
+            'status' => $request['status'],
             'start' => $request['start'],
             'end'   => $request['end'],
-            'color' => $request['color'],
+            'remark_status' => $request['remark_status'],
+            'cvf_no' => $request['cvf_no']
 
             ]);
 
@@ -100,13 +108,16 @@ class CampusVenueReservationController extends Controller
      public function postCampusVenueReservationUpdate(Request $request)
     {
 
-          $event = DB::table('events')->update([ 
-            'id'    => $request['id'], 
+
+
+          $event = DB::table('events')->where('id', $request['id'])->update([ 
             'title' => $request['title'],
-            'start' => $request['start'],
-            'end'   => $request['end'],
-            'color' => $request['color'],
-            ])->where('id', '=', 'id');
+            'status' => $request['status'],
+            
+
+
+
+            ]);
 
 
        

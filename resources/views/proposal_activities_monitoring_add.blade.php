@@ -71,7 +71,7 @@
 			</div>
 
 			<div class="ibox-footer">
-				<button class="btn btn-w-m btn-primary" id="lost_and_found_reportBtn" type="button">
+				<button class="btn btn-w-m btn-primary" id="add_proposalBtn" type="button">
 					<strong>Add</strong>
 				</button>
 				<button class="btn btn-w-m btn-danger" id="lost_and_found_cancelBtn" type="button">
@@ -88,7 +88,7 @@
 
 
 <script>
-	$('button#lost_and_found_reportBtn').click(function(e) {
+	$('button#add_proposalBtn').click(function(e) {
 
 		e.preventDefault();
 

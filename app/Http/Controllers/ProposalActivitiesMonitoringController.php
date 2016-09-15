@@ -77,32 +77,26 @@ class ProposalActivitiesMonitoringController extends Controller
     }
 
         public function postProposalActivitiesUpdate(Request $request)
-    {
-            
-            
-            $validator = Validator::make($request->all(),[
-            'organizationName' => 'required|string|max:255',
-            'title' => 'required|string|max:255',
-            'date' => 'required|string'
-           
-        ]);
+  {
+    $validator = Validator::make($request->all(),[
+          'organizationName' => 'required|alpha|max:255',                   
+      ]);
 
         if ($validator->fails()) {
             return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
           
         }
-        else {
-    
-          $activity->organization =  $request['organizationName'];
-          $activity->activity = $request['title'];
-          $activity->date = $request['date'];
-          $activity->status = $request['status'];
-          $activity->save();
-        return response()->json(array(
-            'success' => true,
-            'response' => $activity
-        ));
-        }
+    else {
+  
+      $activities = DB::table('activities')->where('id', $request['update_id'])->update([     
+            'organization' => $request['organizationName'],
+            'activity' => $request['title'],
+            'date' => $request['date'],
+            'status' => $request['status'],          
+        ]);
+      
+      }
+
     }
     
  
