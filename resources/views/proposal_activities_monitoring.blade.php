@@ -26,21 +26,22 @@
 
 			<div class="ibox-content">
 
-				<form role="form" id="UpdateActvity" method="POST" action="/ActivityDetails">
+				<form role="form" id="UpdateActvity" method="POST" action="/postUpdateActivity">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<input type="hidden" name="update_id" id="update_id">
 
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group ">
 								<label>Organization</label>
-								<output " placeholder="Name of Organization" name="organizationName" id="organizationName" class="form-control" autofocus="" aria-required="true"></output>
+								<input " placeholder="Name of Organization" name="organizationName" id="organizationName" class="form-control" autofocus="" aria-required="true"></output>
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Title</label>
-								<output placeholder="Title of Activity" name="title" id="title" class="form-control"></output>
+								<input placeholder="Title of Activity" name="title" id="title" class="form-control"></output>
 							</div>
 						</div>
 
@@ -60,8 +61,8 @@
 								
                                     <div class="col-sm-10">
                                      
-                                        <div class="radio i-checks"><label> <input type="radio" disabled="" value="1" name="status" id ="status"> <i>Done&nbsp &nbsp &nbsp</i> </label>    
-                                        <label> <input type="radio" disabled="" checked=""  value="0" name="status" id="status"> <i> To be Submitted</i></label></div>
+                                        <div class="radio i-checks"><label> <input type="radio"  value="1" name="status" id="status"> <i>Submitted&nbsp &nbsp &nbsp</i> </label>    
+                                        <label> <input type="radio" value="0" name="status" id="status1"> <i> To be Submitted</i></label></div>
                                     
                                     </div>
                                 
@@ -74,7 +75,7 @@
 			</div>
 
 			<div class="modal-footer">
-				<button class="ladda-button btn btn-w-m btn-primary claimItem" type="button">
+				<button class="ladda-button btn btn-w-m btn-primary claimItem" id="update_proposalBtn" type="button">
 					<strong>Save</strong>
 				</button>
 				<button type="button" class="btn btn-w-m btn-danger"
@@ -219,7 +220,18 @@ var activities_table = $('.activities-DT').DataTable({
 		{data : 'status'},
 /*		{"data": null ,"defaultContent":"<button>View</button>"},*/
 		
-	]
+	],
+	"columnDefs":[{
+		"targets":3, 
+		"render":function(data,type,full,meta){
+			console.log("data = " +data);
+			if(data == 0){
+				return '<p style="color:red"> Not Submitted </p>';
+			} else{
+				return '<p style="color:green"> Submitted </p>';
+			}
+		}
+}]
 });
 
 
@@ -233,7 +245,7 @@ var activities_table = $('.activities-DT').DataTable({
 
 
 
-	$('button#lost_and_found_reportBtn').click(function(e) {
+	$('button#update_proposalBtn').click(function(e) {
 
 		e.preventDefault();
 
@@ -242,8 +254,8 @@ var activities_table = $('.activities-DT').DataTable({
 				'X-CSRF-Token' : $('input[name="_token"]').val()
 			},
 			type : "POST",
-			url : "/postAddActivity",
-			data : $('form#AddActvity').serialize(),
+			url : "/postUpdateActivity",
+			data : $('form#UpdateActvity').serialize(),
 
 		}).done(function(data) {
 
@@ -255,15 +267,18 @@ var activities_table = $('.activities-DT').DataTable({
 
 				});
 
-			} else if (data.success == true) {
+			} else {
 
-				$('form#AddActvity').each(function() {
-					this.reset();
-				});
-				$("#table-content").fadeTo("slow", 0.3);
-
-				swal('Success!', 'Added Proposal', 'success');
-
+				$('#activities_modal').modal('hide');
+				swal({   
+			 	title: "Success!",  
+			 	 text: "Proposal Updated",   
+			 	 timer: 2000, 
+			 	 type: "success",  
+			 	 showConfirmButton: false 
+			 	});
+				activities_table.ajax.reload();
+				activi
 	
 
 			}
@@ -316,11 +331,26 @@ var activities_table = $('.activities-DT').DataTable({
 					return false;
 				}
 				else{
+				var update_id = data.response['id'];	
 				var organization = data.response['organization'];
 				var title = data.response['activity'];
+				var date = data.response['date'];
+				var status = data.response['status'];
+
+				$('#update_id').val(update_id);
+				if (status ==0){
+				$('#status1').prop("checked", true);
+				console.log('HI');
+				} else {
+				console.log('HI123');
+				$('#status').prop("checked", true);
+				}
+
 
 				$('#organizationName').val(organization);
 				$('#title').val(title);
+				$('#date').val(date);
+				
 
 				$('#activities_modal').modal('show');
 				
