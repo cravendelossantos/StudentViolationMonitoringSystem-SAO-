@@ -213,7 +213,8 @@
 						<table class="table table-striped table-bordered table-hover lost-and-found-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
 
 							<thead>
-
+				<tr><th colspan="10"><center>Claiming Period: Within 60 days from the date of endorsement to SAO</center></th></tr>
+				<tr>
 									<th>Date Endorsed</th>
 									<th>Item Description</th>
 									<th>Endorsed by</th>
@@ -223,7 +224,7 @@
 									<th>Date Claimed</th>
 									<th>Claimed By</th>
 
-						
+					</tr>	
 							</thead>
 
 							

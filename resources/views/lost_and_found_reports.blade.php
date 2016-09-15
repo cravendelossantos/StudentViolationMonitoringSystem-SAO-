@@ -15,13 +15,24 @@
 @section('content')
 
 <div class="animated fadeInLeft">
+	<div id="try" style="display:none">
+									<div class="sk-spinner sk-spinner-wave">
+                                    <div class="sk-rect1"></div>
+                                    <div class="sk-rect2"></div>
+                                    <div class="sk-rect3"></div>
+                                    <div class="sk-rect4"></div>
+                                    <div class="sk-rect5"></div>
+                                </div>
 
-<div class="col-md-12">
+                                </div>
 
+		<div class="ibox float-e-margins">
 <div class="ibox-title">
 <label>Generate Reports</label>
 
 </div>
+
+		<div class="ibox float-e-margins">
 <div class="ibox-content">
 
 {!! csrf_field() !!}
@@ -29,18 +40,35 @@
 
 
 
-									<div class="form-group">
-				Filter
-				<select id="sort_by" name="sort_by"  class="form-control">
-					<option>All</option>
-					<option>Unclaimed</option>
-					<option>Claimed</option>
-					<option>Donated</option>
-				</select>
+<div class="row col-md-12">
+
+			
+<div class="form-group" id="data_4">
+                                <label>Select month</label>
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="month" name="month" class="form-control">
+                                </div>
+                            </div>
+          </div>
 
 
-</div>
+<div class="row">
+<div class="col-md">
+<div class="ibox-content">
+  <div class="flot-chart">
+                                <div class="flot-chart-pie-content" id="flot-pie-chart"></div>
+                            </div>
+    </div>
+    </div>
+    </div>
 
+
+
+
+
+
+<div class="row ">
+<div class="col-md-10 col-md-offset-1">
 	<div class="table-responsive">
 
 
@@ -52,16 +80,12 @@
 						<table class="table table-striped table-bordered table-hover lost-and-found-reports-DT DataTable" id="asd" aria-describedby="DataTables_Table_0_info" role="grid">
 
 							<thead>
-
-									<th>Date Endorsed</th>
-									<th>Item Description</th>
-									<th>Endorsed by</th>
-									<th>Founded at</th>
-									<th>Owner's Name</th>
-									<th>Status</th>
-									<th>Date Claimed</th>
-									<th>Claimed By</th>
-
+									<tr>
+									<th>CLAIMED</th>
+									<th>UNCLAIMED</th>
+										<th>DONATED</th>
+										<th>TOTAL NO OF LOST AND FOUND ITEMS</th>
+									</tr>
 						
 							</thead>
 
@@ -72,13 +96,60 @@
 					</div>
 				</div>
 							</div>
+									</div>
 
-<div class="ibox-footer">
-
-
+<!-- <div class="ibox-footer">
 </div>
+ -->
+				</div>
+				</div>
+    </div>			
 
-				</div>
-				</div>
+
+
+<style>
+.sk-spinner-wave.sk-spinner {
+    margin: 0 auto;
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    font-size: 10px;
+     position: fixed;
+  z-index: 999;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+   
+}   
+
+#try{
+	width: auto;
+	height: auto;
+	 position: fixed;
+  z-index: 999;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+	background-color: #f3f3f4;
+} 
+#try2{
+	width: auto;
+	height: auto;
+	 position: fixed;
+  z-index: 999;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+	background-color:#f3f3f4;
+} 
+</style>
 @endsection
-
