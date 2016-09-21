@@ -30,10 +30,32 @@
 				<form role="form" id="violationForm" method="POST" action="/violation">
 					{!! csrf_field() !!}
 					<div class="row">
+							<div class="col-md-6">
+							<div class="form-group">
+								<label>Violation Name</label>
+								<input type="text" placeholder="Violation name" name="violationName" class="form-control">
+							</div>
+						</div>
+
+	<div class="col-md-6">
+							<div class="form-group">
+								<label>First Offense</label>
+								<input type="text" placeholder="Sanction" name="first_offense_sanction" class="form-control">
+							</div>
+						</div>
+					
 						<div class="col-md-6">
-							<div class="form-group ">
-								<label>Violation ID</label>
-								<input type="text" placeholder="Violation ID" name="violationNo" class="form-control" autofocus="" aria-required="true">
+							<div class="form-group">
+								<label>Description</label>
+								<input type="text" placeholder="Description" name="violationDescription" class="form-control">
+							</div>
+						</div>
+
+
+							<div class="col-md-6">
+							<div class="form-group">
+								<label>Second Offense</label>
+								<input type="text" placeholder="Sanction" name="second_offense_sanction" class="form-control">
 							</div>
 						</div>
 
@@ -41,32 +63,24 @@
 							<div class="form-group">
 								<label> Offense Level</label>
 								<!--	<input type="text" placeholder="Company" name="" class="form-control" name="">-->
-								<select class="form-control" name="violationOffenseLevel">
-									<option autofocus="" disabled selected > Less Serious</option>
-									<option>Minor</option>
-									<option>Major</option>
+								<select class="form-control" name="offense_level">
+									<option value="1"> Less Serious</option>
+									<option value="2">Serious</option>
+									<option value="3">Very Serious</option>
 
 								</select>
 							</div>
 						</div>
-						<div class="col-md-6">
+
+					
+
+							<div class="col-md-6">
 							<div class="form-group">
-								<label>Violation Name</label>
-								<input type="text" placeholder="Violation name" name="violationName" class="form-control">
+								<label>Third Offense</label>
+								<input type="text" placeholder="Sanction" name="third_offense_sanction" class="form-control">
 							</div>
 						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Description</label>
-								<input type="text" placeholder="Description" name="violationDescription" class="form-control">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Sanction</label>
-								<input type="text" placeholder="Sanction" name="violationSanction" class="form-control">
-							</div>
-						</div>
+
 
 					</div>
 
@@ -80,7 +94,7 @@
 			</div>
 
 		</div>
-		
+			
 		
 
 		<div class="ibox">
@@ -115,8 +129,8 @@
 									<td>{{$row->name}}</td>
 									<td>{{$row->offense_level}}</td>
 									<td>{{$row->description}}</td>
-									<td>{{$row->sanction}}</td>
-									<td>{{$row->date_created}}</td>
+									<!-- <td></td> -->
+									<td>{{$row->created_at}}</td>
 
 								</tr>
 							@endforeach

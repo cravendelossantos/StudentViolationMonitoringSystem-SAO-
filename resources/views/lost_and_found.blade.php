@@ -30,7 +30,7 @@
 				<form class="form-horizontal suggestTopic" id="claim_item">
 					{!! csrf_field() !!}
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
-				<input type="hidden" name="claim_id" id="claim_id">
+				<input type="hidden" nafme="claim_id" id="claim_id">
 
 
 					<div class="form-group claimItem">
@@ -240,3 +240,4 @@
 </div>
 
 @endsection
+

@@ -43,16 +43,33 @@
 
 							<div class="col-md-6">
 
-								<div class="form-group">
-									
+									<input type="hidden" name="student_number" id="student_number">
+										
+										
+								
+						<div class="form-group" >
+
 									<label>Student No.</label>	
 									<a class="btn btn-white btn-xs" id="new" style="display:none" data-toggle="modal" data-target="#myModal"><i class="fa fa-male"></i> New Record</a>
-									<input type="hidden" name="student_number" id="student_number">
-									<input type="text" placeholder="Student No." name="student_no" id="student_no" class="form-control" >
+										<div class="input-group">
+      <input type="text" class="form-control" placeholder="Student No." name="student_no" id="student_no" class="form-control" >
+      <span class="input-group-btn">
+        <button class="btn btn-default" id="find_student" type="button">Find</button>
+      </span>
+    </div>
+									<!-- 
+									<label id="student_number_error" class="error"></label> -->
 								
-									<label id="student_number_error" class="error"></label>
-								</div>
+</div>
+				
+						<div class="form-group" id="violation_date_picker">
+			
 
+                                <label>Date Committed</label>
+                                <div class="input-group date" id="data_1">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="date_committed" name="date_committed" class="form-control">
+                                </div>
+                            </div>
 									
 								<section id="student_info" style="">
 
@@ -101,8 +118,13 @@
 										@endforeach
 								
 									</select>
+									</div>
+	<div class="form-group" style="margin-top:20px;">
+									<label>Complainant</label>
+									<input type="text" class="form-control" name="complainant" id="complainant" placeholder="Complainant">
+
 								</div>
-								<br>
+							
 
 								<section id="violation_details" style="display">
 									<div class="col-md-12">
@@ -125,7 +147,8 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label>Sanction</label>
-											<output id="violation_sanction"></output>
+											<output id="violation_sanction" name="violation_sanction"></output>
+											<input type="hidden" id="sanction"  name="sanction">
 											</p>
 										</div>
 									</div>
@@ -183,7 +206,7 @@
 									<th>Last Name</th>
 									<th>Violation</th>
 									<th>Offense Number</th>
-									<th>Year / Course</th>
+									<th>Course</th>
 								
 								
 

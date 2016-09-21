@@ -145,7 +145,7 @@
 
 		<div id="wrapper">
 
-			<nav class="navbar-default navbar-static-side" id="nav" role="navigation">
+			<nav class="navbar-default navbar-static-side " id="nav" role="navigation">
 				<div class="fixed-nav">
 
 					<ul side-navigation="" class="nav metismenu" id="side-menu" style="display: block;">
@@ -286,10 +286,27 @@
 						</ul>
 					</li>
 
-
-						<li >
-							<a href="/text-messaging"><i class="fa fa-mobile"></i> <span class="nav-label ng-binding">Text Messaging</span> </a>
+					<li >
+							<a href="/academic-calendar"><i class="fa fa-calendar"></i> <span class="nav-label ng-binding">Academic Calendar</span> </a>
 						</li>
+
+							<li >
+								<a href="/text-messaging"><i class="fa fa-mobile"></i> <span class="nav-label ng-binding">Text Messaging</span> </a>
+							</li>
+
+							<li>
+						<a href="#"><i class="fa fa-exchange"></i> <span class="nav-label ng-binding">Import/Export Records</span><span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level collapse">
+							<li ui-sref-active="active">
+								<a href="/student-records"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Student Records</span> </a>
+
+							</li>
+							<li ui-sref-active="active" >
+								<a href="/violation-records"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Violation Records</span> </a>
+							</li>
+
+						</ul>
+					</li>
 
 					<li>
 						<a href="#"><i class="fa fa-cog"></i> <span class="nav-label ng-binding">Settings</span><span class="fa arrow"></span></a>

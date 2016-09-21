@@ -18,7 +18,10 @@ class CreateViolationsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->enum('offense_level', array('Less Serious', 'Serious', 'Very Serious'));
-            $table->string('sanction');
+        
+            $table->string('first_offense_sanction');
+            $table->string('second_offense_sanction');
+            $table->string('third_offense_sanction');
         });
     }
 

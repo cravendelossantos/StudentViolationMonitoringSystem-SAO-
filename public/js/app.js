@@ -7,6 +7,16 @@ $('#data_1 .input-group.date').datepicker({
 	format : 'yyyy-mm-dd'
 });
 
+
+$('#violation_date_picker .input-group.date').datepicker({
+	todayBtn : "linked",
+	keyboardNavigation : false,
+	forceParse : false,
+	calendarWeeks : true,
+	autoclose : true,
+	format : 'yyyy-mm-dd'
+});
+
 			
    $('#data_4 .input-group.date').datepicker({
    //   	todayBtn : "linked",
@@ -44,7 +54,7 @@ var violation_reports_table = $('.violation-reports-DT').DataTable({
 		{data : 'last_name'},
 		{data : 'name'},
 		{data : 'offense_no'},
-		{data : 'year_level'},
+		{data : 'course'},
 
 		
 	]
@@ -145,7 +155,7 @@ $('button#report_btn').click(function(e){
 });
 
 
-
+/*
 $('#student_no').keydown(function() {
 	
 		var search = $('#student_no').autocomplete({
@@ -194,13 +204,13 @@ $('#student_no').keydown(function() {
 
 			});
 		
+*/
 
 
 
-
-	$('#student_no').on('blur change', function(e){
+	$('#find_student').on('click', function(e){
 			e.preventDefault();
-
+			
 
 			var stud_no = $('#student_no').val();
 
@@ -259,7 +269,7 @@ $('#student_no').keydown(function() {
 				$('#first_name').val(f_name).attr("readonly",true);
 				//$('#course').val(ui.item.course);
 				$('#year_level').val(year_level + "/" + course).attr("readonly",true);
-				countOffense();
+				//countOffense();
 			}
 
 			});
@@ -376,13 +386,14 @@ $('#new_student_btn').click(function(e){
 				$('#violation_id').val(violation_id);
 				$('#violation_offense_level').val(violation_offense_level);
 				$('#violation_description').val(violation_description);
-				$('#violation_sanction').val(violation_sanction);
+				//$('#violation_sanction').val(violation_sanction);
 				//$('#violation_details').show();
 				countOffense();
-			
-	
+
 			}
 
+
+	
 		});
 
 	});
@@ -399,7 +410,7 @@ function countOffense()
 					data : $('form#reportViolationForm').serialize(),
 				}).done(function(data){
 
-
+					var sanction = data.sanction['sanction'];	
 				var offense_no = data.response;
 				if (offense_no != null)	{
 					offense_no += 1;
@@ -415,15 +426,20 @@ function countOffense()
 					}
 				$('#committed_offense_number').val(offense_no);	
 				$('#offense_number').val(offense_no);	
+				$('#sanction').val(sanction);
+				$('#violation_sanction').val(sanction);
 				} else {
-				$('#violation_offense_level').attr("style", "color:#cccc00")
+				$('#violation_offense_level').attr("style", "color:#cccc00");
 				$('#committed_offense_number').val(1);
 				$('#offense_number').val(1);
+				$('#sanction').val(sanction);
+				$('#violation_sanction').val(sanction);
 				}
 
 				//alert(	$('#committed_offense_number').val());
-			
+			 
 				});
+				
 			}
 
 
@@ -636,7 +652,7 @@ $('select#sort_by').change(function(e){
 });
 
 //LAF Reports
-LAF_currentMonthReports();
+
 
 //load reports on date change
 $('#month').on('change', function(){
@@ -748,103 +764,73 @@ $('#try').hide();
 //load current month reports
 
 
-function LAF_currentMonthReports() {
 
-var d = new Date(),
+//Locker Management
 
-    n = d.getMonth(),
+	$('#add_locker_btn').click(function(e){
+		e.preventDefault();
 
-    y = d.getFullYear();
+		$.ajax({
+			url : '/lockers/add',
+			type: 'POST',
+			data: $('#add_locker_form').serialize(),
+			success: function(data){
+				console.log(data);
+			},
+			error: function(data){
 
-var current_date = n + y;
-
-$.ajax({
-  headers : {
-        'X-CSRF-Token' : $('input[name="_token"]').val()
-      },
-       	url : "/lost-and-found/reports/stats",
-   type: 'POST',
-   	data : {month : current_date},
-   async: false,
-   success: function(response){
-     items = response;
-
-    
-   }
-});
-
-    var data = [{
-        label: "UNCLAIMED",
-        data: items['unclaimed'],
-        color: "#d3d3d3",
-    }, {
-        label: "CLAIMED",
-        data: items['claimed'],
-        color: "#54cdb4",
-    }, {
-        label: "DONATED",
-        data: items['donated'],
-        color: "#1ab394",
-    }, /*{
-        label: "TOTAL",
-        data: 52,
-        color: "#1ab394",
-    }*/];
-
-    var plotObj = $.plot($("#flot-pie-chart"), data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        grid: {
-            hoverable: true
-        },
-        tooltip: true,
-        tooltipOpts: {
-        	 //percentage content: "%y.0, %s", // show value to 0 decimals
-            content: function(label,x,y){
-    return y+" Items "+ "(" + label + ")";
-},
-            shifts: {
-                x: 20,
-                y: 0
-            },
-            defaultTheme: false
-        }
-    });
+			}
+		});
+	});
 
 
-    $('.lost-and-found-reports-DT').DataTable({
 
-	"ajax": {
+
+
+
+
+
+
+//Student Records
+
+	var student_records_table = $('.student-records-DT').DataTable({
+	"processing": true,
+    "serverSide": true,
+    "ajax": {
     	headers : {
 				'X-CSRF-Token' : $('input[name="_token"]').val()
 			},
-    	url : "/lost-and-found/reports/list",
+    	url : "/student-records/list",
 		type: "POST",
-		data : {month : current_date},
-},
-"columns" : [
-{data: 'claimed'},
-{data: 'unclaimed'},
-{data: 'donated'},
-{data: 'total'},
-	],
+			},
+	"bSort" : true,
+	"bFilter" : true,
+	"order": [[ 0, "desc" ]],
+	"rowId" : 'id',	
+	"columns" : [
 
-	dom : '<"html5buttons"B>Tgtip',
+		{data : 'student_no'},
+		{data : 'first_name'},
+		{data : 'last_name'},
+		{data : 'course'},
+		{data : 'year_level'},
+		{data : 'contact_no'},
+
+		
+	],
+	dom : '<"html5buttons"B>lTfgtip',
 	buttons : [{
 		extend : 'csv',
-		title : 'LOST AND FOUND ITEMS',
+		title : 'STUDENT RECORDS',
 	}, {
 		extend :'excel',
-		title : 'LOST AND FOUND ITEMS',
+		title : 'STUDENT RECORDS',
 	} , {
 		extend : 'pdf',
-		title : 'Lost and Found Reports',
+		title : 'STUDENT RECORDS',
 	} , {
 		extend : 'print',
-		title : 'LOST AND FOUND ITEMS',
+		title : 'STUDENT RECORDS',
 		customize : function(win) {
 			$(win.document.body).addClass('white-bg');
 			$(win.document.body).css('font-size', '8px').prepend('<label>Text</label>');
@@ -853,13 +839,144 @@ $.ajax({
 	}]
 });
 
-}
+
+
+
+//Student Records
+
+	var violation_records_table = $('.violation-records-DT').DataTable({
+	"processing": true,
+    "serverSide": true,
+    "ajax": {
+    	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+    	url : "/violation-records/list",
+		type: "POST",
+			},
+	"bSort" : true,
+	"bFilter" : true,
+	"order": [[ 0, "desc" ]],
+	"rowId" : 'id',	
+	"columns" : [
+
+		{data : 'name'},
+		{data : 'description'},
+		{data : 'offense_level'},
+		{data : 'first_offense_sanction'},
+		{data : 'second_offense_sanction'},
+		{data : 'third_offense_sanction'},
+		
+	],
+	dom : '<"html5buttons"B>lTfgtip',
+	buttons : [{
+		extend : 'csv',
+		title : 'VIOLATION RECORDS',
+	}, {
+		extend :'excel',
+		title : 'VIOLATION RECORDS',
+	} , {
+		extend : 'pdf',
+		title : 'VIOLATION RECORDS',
+	} , {
+		extend : 'print',
+		title : 'STUDENT RECORDS',
+		customize : function(win) {
+			$(win.document.body).addClass('white-bg');
+			$(win.document.body).css('font-size', '8px').prepend('<label>Text</label>');
+			$(win.document.body).find('table').addClass('compact').css('font-size', 'inherit');
+		}
+	}]
+});	
+
+/*$("#import_btn").on('submit',(function(e) {
+		e.preventDefault();
 
 
 
 
+		console.log($('#import_file'));
+console.log(this);
+		$.ajax({
+			headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+			url: '/violation-records/importExcel',
+			type: 'POST',
+			data : $('#import_file'),
+		success : function(response){
+			console.log(data);
+			console.log(response);
+		
+		},
+		error : function(response){
+
+		}	
+	});
+		}));
+*/
+
+$('#truncate_btn').click(function(e){
+	e.preventDefault();
+
+	swal({title: "Are you sure?",   
+			text: "This will empty the violation records",   
+			type: "warning",   
+			showCancelButton: true,   
+			confirmButtonColor: "#DD6B55",   
+			confirmButtonText: "Proceed",   
+			cancelButtonText: "Cancel",   
+			closeOnConfirm: false,   
+			closeOnCancel:true  }, 
+			function(isConfirm){   
+				if (isConfirm) {  
+				$.ajax({
+		headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+		url : '/violation-records/truncate',
+		type: 'POST',
+		success : function(response){
+		if (response.success == true){
+			swal({   
+			 	title: "Success!",  
+			 	 text: "Table truncated",   
+			 	 timer: 2000, 
+			 	 type: "success",  
+			 	 showConfirmButton: false,
+
+			 	});
+			 	violation_records_table.ajax.reload();
+		}
+		else if (response.success == false) {
+			var msg="";
+				$.each(response.errors, function(k, v) {
+					msg = msg + v + "\n";
+					swal("Failed", msg, "error");  
+
+				});
 
 
+
+
+ 
+		}
+				
+	
+		},
+/*		error : function(response){
+			if (response.success == false){
+			
+			}
+		}*/
+	});  		 
+				} 
+			/*	else {     
+					alert closed 
+				} */
+			});
+	
+})
 
 // DataTables
 //with Buttons

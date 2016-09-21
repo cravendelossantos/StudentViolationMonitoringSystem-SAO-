@@ -38,7 +38,7 @@ class ReportViolationController extends Controller
     public function getViolationReportsTable()
     {
         return Datatables::eloquent(ViolationReport::query()->leftJoin('students', 'violation_reports.student_id', '=', 'students.student_no')
-            ->join('violations', 'violation_reports.id', '=', 'violations.id')
+            ->join('violations', 'violation_reports.violation_id', '=', 'violations.id')
                 )->make(true);
     }   
 
@@ -52,7 +52,8 @@ class ReportViolationController extends Controller
         ];
 
         $validator = Validator::make($request->all(),[
-            'studentNo' => 'required|alpha_dash|max:255|unique:students,student_no',
+
+            'studentNo' => array('required', 'regex:/^[0-9\s-]+$/', 'unique:students,student_no'),
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
             'yearLevel' => 'required',
@@ -111,8 +112,28 @@ class ReportViolationController extends Controller
     $violation_id = $request['violation_id'];
     $data = DB::table('violation_reports')->where('student_id', $student_number)->where('violation_id', $violation_id)->max('offense_no');
 
-
-    return response(['response' => $data]);
+ 
+    if ($data == null)
+    {
+       $sanction = DB::table('violations')->select('first_offense_sanction as sanction')->where('id', $violation_id)->first(); 
+    }
+     else if ($data == 1)
+    {
+       $sanction = DB::table('violations')->select('second_offense_sanction as sanction')->where('id', $violation_id)->first(); 
+    }
+    else if ($data == 2)
+    {
+       $sanction = DB::table('violations')->select('third_offense_sanction as sanction')->where('id', $violation_id)->first(); 
+    }
+ /*   else if ($data == 3)
+    {
+       $sanction = DB::table('violations')->select('third_offense_sanction as sanction')->where('id', $violation_id)->first();
+    }*/
+    else if ($data == 3)
+    {
+        $sanction = array('sanction' => "Elevated to Serious Offense");
+    }
+    return response(array('response' => $data, 'sanction' => $sanction));
    }
 
     public function searchViolation(Request $request)
@@ -136,6 +157,8 @@ class ReportViolationController extends Controller
 		$validator = Validator::make($request->all(),[
         	'student_number' => 'required|alpha_dash|max:255',
             'violation' => 'required|string|max:255',
+            'date_committed' => 'required|date',
+            'complainant' => 'required',
 	    ],$messages);
      
         if ($validator->fails()) {
@@ -144,16 +167,20 @@ class ReportViolationController extends Controller
         }
 		else {
 	       
+            $data_committed = Carbon::parse($request['date_committed']);
+
             $student_violation = new ViolationReport();
             $student_violation->student_id = $request['student_number'];
             $student_violation->violation_id = $request['violation_id'];
             // $student_violation->violation_name = $request['violation'];
+            $student_violation->complainant = $request['complainant'];
+            $student_violation->sanction = $request['sanction'];
             $student_violation->offense_no = $request['offense_number'];
-            $student_violation->date_reported = Carbon::now();
+            $student_violation->date_reported = $data_committed;
             $student_violation->save();
             
             return response()->json(array(['success' => true, 'response' => $student_violation]));
-		      	//napasok kahit random na student number
+		      
 		}
 	}
 

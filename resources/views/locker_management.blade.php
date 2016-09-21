@@ -14,75 +14,84 @@
 
 
 <div class="row">
-	<div class="col-md-12 animated fadeInRight">
-		<div class="col-lg-12">
-                <div class="ibox float-e-margins">
+	<div class="col-lg-12">
+		<div class="ibox float-e-margins">
 
-                    <div class="ibox-content">
+			<div class="ibox-title">
+				<h5>Report Lost Item</h5>
+				<div class="ibox-tools">
 
-                        <h2></h2>
+				</div>
+			</div>
+			<div class="ibox-content">
 
-                        <div class="row">
-                        <div class="col-md-6">
-                      <select class="form-control">
-	<option>JPL</option>
-<option>SHL</option>
+				<form role="form" id="add_locker_form" method="POST" action="/lockers/add">
+				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                          </select>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group ">
+								<label>No of lockers</label>
+								<input type="number" placeholder="Item Description" name="no_of_lockers" id="no_of_lockers" class="form-control" autofocus="" aria-required="true">
+							</div>
+						</div>
 
-                          </div>
-<div class="col-md-6">
-<select class="form-control"> 
-	<option>1st Floor</option>
-	<option>2nd Floor</option>
-	<option>3rd Floor</option>
-	<option>4th Floor</option>
-</select>
+						<div class="col-md-6">
+
+						
+							<div class="form-group">
+								<label>Location</label>
+								<select name="floor_no" id="floor_no" class="form-control">
+									<option>1st Floor</option>
+									<option>2nd Floor</option>
+									<option>3rd Floor</option>
+									<option>4th Floor</option>
+								</select>
+
+									<select name="location" id="location" class="form-control">
+									<option>JPL</option>
+									<option>SHL</option>
+								</select>
+							
+							</div>
+
+
+
+						</div>
+
+						
+						
+
+
+					</div>
+
+			</div>
+
+			<div class="ibox-footer">
+				<button class="btn btn-w-m btn-primary" id="add_locker_btn" type="button">
+					<strong>Save</strong>
+				</button>
+				<button class="btn btn-w-m btn-danger" id="add_locker_cancelBtn" type="button">
+					<strong>Cancel</strong>
+				</button>
+				<input type="hidden" value="{{Session::token()}}" name="_token">
+				</form>
+			</div>
+
+		</div>
+
+	</div>
 </div>
-</div>
 
-
-                        <div class="lightBoxGallery">
-                           	@foreach ($lockers as $locker)
-
-
-
-		@if ($locker->status == "Damaged")
-		<a value="{{ $locker->id }}"><img class="locker-damaged" src="/img/locker.png"/></a>
-
-		@elseif ($locker->status == "Available")
-		<a value="{{ $locker->id }}"><img class="locker-available" src="/img/locker.png"/></a>
-
-		@elseif ($locker->status == "Occupied")
-		<a value="{{ $locker->id }}"><img class="locker-occupied" src="/img/locker.png"/></a>
-
-		@endif
-
-		@endforeach
-
-                            <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
-                            <div id="blueimp-gallery" class="blueimp-gallery">
-                          
-                                <h3 class="title"></h3>
-                          
-                                <ol class="indicator"></ol>
-                            </div>
-
-                        </div>
-
-                    </div>
-       
-	
-		</div>	
-		</div>
-		</div>
-
-		</div>
 
 
 
 
 @endsection
+
+<script>
+	
+</script>
 
 <style>
 	
