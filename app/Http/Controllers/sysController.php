@@ -51,11 +51,13 @@ class sysController extends Controller {
 	public function postViolation(Request $request)
 	{
 		$validator = Validator::make($request->all(),[
-        	'violationNo' => 'required|numeric|max:255|unique:violations,violation_id',
-            'violationOffenseLevel' => 'required|alpha|max:255',
+        	
+            'offense_level' => 'required|max:255',
             'violationName' => 'required|max:255',
             'violationDescription' => 'required|max:255',            
-      		'violationSanction' => 'required|max:255',
+      		'first_offense_sanction' => 'required|max:255',
+            'second_offense_sanction' => 'required|max:255',
+            'third_offense_sanction' => 'required|max:255',
 	    ]);
 
         if ($validator->fails()) {
@@ -65,12 +67,14 @@ class sysController extends Controller {
 		else {
 	
 			$violation = DB::table('violations')->insert([			
-            'violation_id' => $request['violationNo'],
-            'offense_level' => $request['violationOffenseLevel'],
+            
+            'offense_level' => $request['offense_level'],
             'name' => $request['violationName'],
             'description' => $request['violationDescription'],
-            'sanction' => $request['violationSanction'],
- 	        'date_created' => Carbon::now(),
+            'first_offense_sanction' => $request['first_offense_sanction'],
+            'second_offense_sanction' => $request['second_offense_sanction'],
+ 	        'third_offense_sanction' => $request['third_offense_sanction'],
+            'created_at' => Carbon::now(),
         ]);
 			
 		}

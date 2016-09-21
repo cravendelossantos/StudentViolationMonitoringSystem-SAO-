@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
-<!DOCTYPE html>
-@section('title', 'SAO | Home')
+
+@section('title', 'SAO | Academic Calendar')
 
 @section('header-page')
 <div class="row">
   <div class="col-md-12">
-    <h1>Campus Venue Reservation</h1>
+    <h1>Academic Calendar</h1>
   </div>
 </div>
 
@@ -16,95 +16,29 @@
 @section('content')
 
 
-<!-- <div id="wrapper">
 
-<div class="wrapper wrapper-content">
-    <div class="row animated fadeInDown">
-        <div class="col-lg-3">
+
+ 
+        <div class="row animated fadeInDown ">
+          <div class="col-lg-12 ">
+
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Add Event</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
 
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                 <label for="title">Title</label>
-                      <input type="text" name="title" class="form-control" id="title" placeholder="Title">
-                <label for="title">Venue</label>
-                      <input type="text" name="title" class="form-control" id="title" placeholder="Title">
-                <label for="title">Organizer</label>
-                      <input type="text" name="title" class="form-control" id="title" placeholder="Title">
-                <label for="title">Date</label>
-                      <input type="text" name="title" class="form-control" id="title" placeholder="Title">
-                <label for="title">Day</label>
-                      <input type="text" name="title" class="form-control" id="title" placeholder="Title">
-                <label for="title">CVF no.</label>
-                      <input type="text" name="title" class="form-control" id="title" placeholder="Title">    
-                                  <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Add Reservation</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-
-              </div>
-
-                    
-                
-                
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-9">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Striped Table </h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#">Config option 1</a>
-                            </li>
-                            <li><a href="#">Config option 2</a>
-                            </li>
-                        </ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <div id="calendar"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-</div> -->
-
- <div class="container">
-
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>Calendar</h1>
+            <div class="ibox-content">
+            <div class="text-center">
+                <h1></h1>
                 <div id="calendar" class="col-centered">
                 </div>
             </div>
-            
+            </div>
         </div>
+            </div>  
+
+                </div>
         <!-- row -->
         
-        <!-- Modal -->
+    <div class="container">
+         <!-- Modal -->
         <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -291,7 +225,7 @@ $.ajax({
   headers : {
         'X-CSRF-Token' : $('input[name="_token"]').val()
       },
-    url: '/get-events',
+    url: '/academic-calendar/events',
    type: 'POST',
    data: 'type=fetch',
    async: false,
@@ -322,8 +256,8 @@ $.ajax({
 
 			select: function(start, end) {
         
-        $('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
-        $('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
+        $('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD'));
+        $('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD '));
         $('#ModalAdd').modal('show');
       },
             eventRender: function(event, element) {
@@ -381,9 +315,9 @@ $.ajax({
   
 
             function edit(event){
-      start = event.start.format('YYYY-MM-DD HH:mm:ss');
+      start = event.start.format('YYYY-MM-DD HH');
       if(event.end){
-        end = event.end.format('YYYY-MM-DD HH:mm:ss');
+        end = event.end.format('YYYY-MM-DD');
       }else{
         end = start;
       }

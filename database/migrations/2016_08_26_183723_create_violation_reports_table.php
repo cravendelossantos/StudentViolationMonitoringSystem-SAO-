@@ -17,6 +17,8 @@ class CreateViolationReportsTable extends Migration
             $table->string('student_id');
             $table->integer('violation_id');
             $table->integer('offense_no');
+            $table->string('sanction');   
+            $table->string('complainant');
             $table->date('date_reported');
         });
     }

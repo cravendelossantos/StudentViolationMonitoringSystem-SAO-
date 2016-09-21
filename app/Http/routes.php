@@ -121,7 +121,7 @@ Route::get('/sanctions', 'SanctionController@showSanctions');
 
 //Locker Management
 Route::get('/lockers' , 'LockerManagementController@showLockers');
-
+Route::post('lockers/add' , 'LockerManagementController@addLockers');
 
 //SMS
 Route::get('/text-messaging', 'sysController@showSMS');
@@ -154,3 +154,25 @@ Route::post('/register', 'Auth\AuthController@postRegister');
 Route::get('/error401/permission-denied', function(){
 	return view('errors.401');
 });
+
+//Excel Import
+/*Route::get('importExport', 'ImportExcelController@importExport');
+Route::get('downloadExcel/{type}', 'ImportExcelController@downloadExcel');
+Route::post('importExcel', 'ImportExcelController@importExcel');*/
+
+Route::get('/student-records', 'StudentRecordsController@importExport');
+Route::get('/student-records/downloadExcel/{type}', 'StudentRecordsController@downloadExcel');
+Route::post('/student-records/importExcel', 'StudentRecordsController@importExcel');
+Route::post('/student-records/list', 'StudentRecordsController@getStudentRecordsTable');
+
+Route::get('/violation-records', 'ViolationRecordsController@importExport');
+Route::get('/violation-records/downloadExcel/{type}', 'ViolationRecordsController@downloadExcel');
+Route::post('/violation-records/truncate' , 'ViolationRecordsController@truncateViolationRecords');
+Route::post('/violation-records/importExcel', 'ViolationRecordsController@importExcel');
+Route::post('/violation-records/list', 'ViolationRecordsController@getViolationRecordsTable');
+
+
+
+//Academic Calendar
+Route::get('/academic-calendar' , 'AcademicCalendarController@showCalendar');
+Route::post('/academic-calendar/events' , 'AcademicCalendarController@postEvents');

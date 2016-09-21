@@ -109,11 +109,26 @@ class CampusVenueReservationController extends Controller
     {
 
 
+        $validator = Validator::make($request->all(),[
+            // 'title' => 'required',
+          'id' => 'required',
+            'start' =>  'required',
+            'end' => 'required',
+        ]);
+     
+        if ($validator->fails()) {
+            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
+          
+        }
+        else {
+           
+
 
           $event = DB::table('events')->where('id', $request['id'])->update([ 
-            'title' => $request['title'],
+            //'title' => $request['title'],
             'status' => $request['status'],
-            
+            'start' => $request['start'],
+            'end' => $request['end'],
 
 
 
@@ -127,7 +142,7 @@ class CampusVenueReservationController extends Controller
         ));
     }
 
-
+}
 
 
 

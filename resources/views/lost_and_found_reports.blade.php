@@ -105,7 +105,117 @@
 				</div>
     </div>			
 
+<script type="text/javascript">
+  function LAF_currentMonthReports() {
 
+var d = new Date(),
+
+    n = d.getMonth(),
+
+    y = d.getFullYear();
+
+var current_date = n + y;
+
+$.ajax({
+  headers : {
+        'X-CSRF-Token' : $('input[name="_token"]').val()
+      },
+        url : "/lost-and-found/reports/stats",
+   type: 'POST',
+    data : {month : current_date},
+   async: false,
+   success: function(response){
+     items = response;
+
+    
+   }
+});
+
+    var data = [{
+        label: "UNCLAIMED",
+        data: items['unclaimed'],
+        color: "#d3d3d3",
+    }, {
+        label: "CLAIMED",
+        data: items['claimed'],
+        color: "#54cdb4",
+    }, {
+        label: "DONATED",
+        data: items['donated'],
+        color: "#1ab394",
+    }, /*{
+        label: "TOTAL",
+        data: 52,
+        color: "#1ab394",
+    }*/];
+
+    var plotObj = $.plot($("#flot-pie-chart"), data, {
+        series: {
+            pie: {
+                show: true
+            }
+        },
+        grid: {
+            hoverable: true
+        },
+        tooltip: true,
+        tooltipOpts: {
+           //percentage content: "%y.0, %s", // show value to 0 decimals
+            content: function(label,x,y){
+    return y+" Items "+ "(" + label + ")";
+},
+            shifts: {
+                x: 20,
+                y: 0
+            },
+            defaultTheme: false
+        }
+    });
+
+
+    $('.lost-and-found-reports-DT').DataTable({
+
+  "ajax": {
+      headers : {
+        'X-CSRF-Token' : $('input[name="_token"]').val()
+      },
+      url : "/lost-and-found/reports/list",
+    type: "POST",
+    data : {month : current_date},
+},
+"columns" : [
+{data: 'claimed'},
+{data: 'unclaimed'},
+{data: 'donated'},
+{data: 'total'},
+  ],
+
+  dom : '<"html5buttons"B>Tgtip',
+  buttons : [{
+    extend : 'csv',
+    title : 'LOST AND FOUND ITEMS',
+  }, {
+    extend :'excel',
+    title : 'LOST AND FOUND ITEMS',
+  } , {
+    extend : 'pdf',
+    title : 'Lost and Found Reports',
+  } , {
+    extend : 'print',
+    title : 'LOST AND FOUND ITEMS',
+    customize : function(win) {
+      $(win.document.body).addClass('white-bg');
+      $(win.document.body).css('font-size', '8px').prepend('<label>Text</label>');
+      $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit');
+    }
+  }]
+});
+
+}
+
+
+
+</script>
 
 <style>
 .sk-spinner-wave.sk-spinner {
