@@ -22,13 +22,8 @@ class AcademicCalendarController extends Controller
         $events[] = array(
           'id' => $key->id,
           'title' => $key->title,
-          'venue' => $key->venue,
-          'organization' => $key->organization,
-          'status' => $key->status,
           'start' => $key->start,
           'end' => $key->end,
-          'remark_status' => $key->remark_status,
-          'cvf_no' => $key->cvf_no,
           ); 
       }
 

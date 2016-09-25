@@ -37,11 +37,17 @@ Route::get('/report-violation/search/student', [
 
 Route::post('/report-violation/reports','ReportViolationController@getViolationReportsTable');
 Route::get('/report-violation/search/violation', 'ReportViolationController@searchViolation');
-//Post
+
+//Gets the request/function, validates the fields.
+Route::get('/report-violation/report', 'ReportViolationController@getReportViolation');
 Route::post('/report-violation/report', 'ReportViolationController@postReportViolation');
+
+//Post
+
+Route::post('report-violation/serious/elevate', 'ReportViolationController@elevateToSerious');
 Route::post('/report-violation/offense-no', 'ReportViolationController@showOffenseNo');
 
-
+Route::post('/get-violation/list', 'ReportViolationController@getViolations');
 
 
 // Community Service
@@ -78,6 +84,8 @@ Route::post('/violation', 'sysController@postViolation');
 
 // Sanction Monitoring
 Route::get('/sanctions', 'sysController@showSanctions');
+Route::get('/sanctions/search/student' , 'SanctionController@searchStudent');
+Route::post('/sanctions/student-violation/records' ,  'SanctionController@showStudentViolations');
 
 // Lost and Found 
 Route::get('/lost-and-found', [
@@ -122,6 +130,10 @@ Route::get('/sanctions', 'SanctionController@showSanctions');
 //Locker Management
 Route::get('/lockers' , 'LockerManagementController@showLockers');
 Route::post('lockers/add' , 'LockerManagementController@addLockers');
+Route::post('/lockers/all' , 'LockerManagementController@showLockersTable');
+Route::get('/locker/details' , 'LockerManagementController@getLockerDetails');
+Route::post('/locker/update-status' , 'LockerManagementController@updateLocker');
+
 
 //SMS
 Route::get('/text-messaging', 'sysController@showSMS');

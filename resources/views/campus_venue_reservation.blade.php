@@ -455,8 +455,8 @@ $.ajax({
          type: "success",  
          showConfirmButton: false 
         });
-        calendar1.ajax.reload();
-         $('#calendar').fullCalendar( 'refetchEvents' );
+      /*$('#calendar').fullCalendar().ajax.reload();*/
+         $('#calendar').fullCalendar( 'refetchEvents', events);
   
 
       }

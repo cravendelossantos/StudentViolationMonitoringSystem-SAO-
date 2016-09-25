@@ -60,6 +60,47 @@ var violation_reports_table = $('.violation-reports-DT').DataTable({
 	]
 });
 
+getViolation();
+offenseLevelChange();
+function getViolation()
+{
+	$.ajax({
+		headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+		url : '/get-violation/list',
+		type: 'POST',
+		data: {offense_level : $('#offense_level').val(),},
+
+	}).done(function(data){
+	
+	
+		$.each(data.violations, function(key, value){
+				// $('#violation_selection').val(data.violations[key].name);
+			   $('#violation_selection').append($("<option></option>").attr("value",value.name).text(value.name));
+		});
+		
+
+	});
+}
+
+
+
+function offenseLevelChange()
+{
+
+$('#offense_level').on('change', function(e){
+	$('#violation_selection').find('option').remove();
+
+	   $('#violation_selection')
+         .append($("<option selected='' disabled=''></option>")
+                    .attr("value", '0')
+                    .text('Select violation'));
+getViolation();
+
+
+});
+}
 
 $('#report_btn').prop('disabled', true);
 
@@ -91,21 +132,28 @@ $('button#report_btn').click(function(e){
 		headers : {
 				'X-CSRF-Token' : $('input[name="_token"]').val()
 			},
-			type : "POST",
+			type : "GET",
 			url : "/report-violation/report",
 			data : $('form#reportViolationForm').serialize(),
-			}).done(function(data){
-		
-			var msg = "";
-			if (data.success == false) {
-				$.each(data.errors, function(k, v) {
+
+			}).fail(function(data){
+				//        var errors = data.responseText;
+				 var errors = $.parseJSON(data.responseText);
+				var msg="";
+				
+				$.each(errors.errors, function(k, v) {
 					msg = msg + v + "\n";
 					swal("Oops...", msg, "warning");
 
 				});
 
 
-			} else {
+	
+			}).done(function(data){
+		
+			var msg = "";
+
+
 			
 				swal({   
 					title: "Are you sure?",   
@@ -116,19 +164,32 @@ $('button#report_btn').click(function(e){
 				    confirmButtonText: "Save",   
 				    closeOnConfirm: false 
 				}, function(){  
-			 swal({   
-			 	title: "Success!",  
+					$.ajax({
+						headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+			type : "POST",
+			url : "/report-violation/report",
+			data : $('form#reportViolationForm').serialize(),
+					}).done(function(data){
+							 swal({   
+			 			title: "Success!",  
 			 	 text: "Violation Reported",   
 			 	 timer: 1000, 
 			 	 type: "success",  
 			 	 showConfirmButton: false 
+
+	
 			 	});
-			   	violation_reports_table.ajax.reload();
-				
+
+
 						$('form#reportViolationForm').each(function() {
 					this.reset();
 				});	
-						$('#offense_number').val("");
+			   	violation_reports_table.ajax.reload();
+				
+
+							$('#offense_number').val("");
 						$('#committed_offense_number').val("");
 						$('#offense_level').val("");
 						$('#student_number').val("");
@@ -139,72 +200,11 @@ $('button#report_btn').click(function(e){
 				$('#first_name').val("").attr("readonly",false);
 				
 				$('#year_level').val("").attr("readonly",false);
-
-
-			   		});
-
-
-
-
-			
-
-			
-
-			}
+					});
+   		});
 	});
 });
 
-
-/*
-$('#student_no').keydown(function() {
-	
-		var search = $('#student_no').autocomplete({
-
-		source : '/report-violation/search/student',
-		minlength: 3,
-		autoFocus: true,
-		delay: 100,
-
-		select:function(e, ui) {
-
-		search.on('change', function(){
-
-
-			$('#last_name').val("").attr("readonly",false);
-			$('#first_name').val("").attr("readonly",false);
-			$('#year_level').val("").attr("readonly",false);
-			$('#student_number').val("").attr("readonly",false);
-			$('#committed_offense_number').val("");
-		});
-			
-
-			$('#student_number').val(ui.item.value);
-			$('#last_name').val(ui.item.l_name);
-			$('#first_name').val(ui.item.f_name);
-			//$('#course').val(ui.item.course);
-			$('#year_level').val(ui.item.year_level + "/" + ui.item.course);
-			countOffense();
-			
-		},
-		 focus: function( e, ui ) {
-
-
-			$('#student_number').val(ui.item.value);
-			$('#last_name').val(ui.item.l_name);
-			$('#first_name').val(ui.item.f_name);
-			//$('#course').val(ui.item.course);
-			$('#year_level').val(ui.item.year_level + "/" + ui.item.course);
-
-		 }
-		
-
-	});
-
-		$('#report_btn').prop('disabled', false);
-
-			});
-		
-*/
 
 
 
@@ -346,10 +346,7 @@ $('#new_student_btn').click(function(e){
 
 
 	//ajax
-})
-
-
-
+});
 
 
 
@@ -361,6 +358,8 @@ $('#new_student_btn').click(function(e){
 	$('#violation_selection').on('change select', function(e) {
 		e.preventDefault();
 
+
+		
 		$.ajax({
 			headers : {
 				'X-CSRF-Token' : $('input[name="_token"]').val()
@@ -371,11 +370,12 @@ $('#new_student_btn').click(function(e){
 				violation : $('#violation_selection').val()
 			},
 		}).done(function(data) {
+			console.log($('#violation_selection').val());
 			x();
 			var violation_id = data.response['id'];
 			var violation_offense_level = data.response['offense_level'];
 			var violation_description = data.response['description'];
-			var violation_sanction = data.response['sanction'];
+			//var violation_sanction = data.response['sanction'];
 
 
 	
@@ -399,6 +399,7 @@ $('#new_student_btn').click(function(e){
 	});
 
 
+
 function countOffense()
 {
 		$.ajax({
@@ -411,30 +412,85 @@ function countOffense()
 				}).done(function(data){
 
 					var sanction = data.sanction['sanction'];	
-				var offense_no = data.response;
-				if (offense_no != null)	{
-					offense_no += 1;
-					if (offense_no > 3 && offense_no <=6 && $('#violation_offense_level').val('Less Serious'))
+				var offense_no = data.offense_no;
+				var diff_offense_no = data.diff_type_offense;
+				
+				// if (offense_no != null)	{
+				// 	offense_no += 1;
+
+				var current_offense_no = parseInt(offense_no);
+
+				//check if 4th same type
+					if (offense_no > 3 /*&& offense_no <=6 && $('#violation_offense_level').val('Less Serious')*/)
 					{
-						$('#violation_offense_level').attr("style", "color:orange").val('Serious');
+						$('#same_type').val(offense_no);
+						$('#diff_type').val(diff_offense_no);
 						
+						//swal("Warning!", 'The student with student number ' + $('#student_number').val() + ' committed ' + (current_offense_no-1) +' same type of ' +  $('#offense_level').val() + ' offense. \n The violation will elevate to Serious offense.' ,  "warning");
+						$('#offense_level').prop('selectedIndex', 2);
+							$('#violation_selection').find('option').remove();	
+							  $('#violation_selection')
+        					 .append($("<option selected='' disabled=''></option>")
+                    .attr("value", '0')
+                    .text('Select violation'));
+
+         				
+						//getViolation();
+						offenseLevelChange();
+						//same type
+						elevateToSeriousSame();
+
 					}
-					else if (offense_no >6 && $('#violation_offense_level').val('Serious'))
-					{
-						$('#violation_offense_level').attr("style", "color:red").val('Very Serious');
+				if (diff_offense_no == 2 )
+					{		
+					
+						var current_diff_offense_no = parseInt(diff_offense_no);
+						swal("Warning!", 'The student with student number ' + $('#student_number').val() + ' committed ' + (current_diff_offense_no) +' different types of ' +  $('#offense_level').val() + ' offense. \n The violation will elevate to  Serious offense if you submmitted this report.' ,  "warning");
+						//$('#offense_warning').html("Commission of" +  a + $('#offense_level').val() + " offenses");
+					
+				
+					}
+					 if (diff_offense_no == 3)
+
+					{	
+				
+						$('#offense_level').prop('selectedIndex', 2);
+							$('#violation_selection').find('option').remove();	
+							  $('#violation_selection')
+         .append($("<option selected='' disabled=''></option>")
+                    .attr("value", '0')
+                    .text('Select violation'));
+
+         				
+						//getViolation();
+						offenseLevelChange();
+						elevateToSeriousDiff();}
+				// 	else if (offense_no >6 && $('#violation_offense_level').val('Serious'))
+				// 	{
+				// 		$('#violation_offense_level').attr("style", "color:red").val('Very Serious');
 	
-					}
-				$('#committed_offense_number').val(offense_no);	
-				$('#offense_number').val(offense_no);	
+				// 	}
+				// $('#committed_offense_number').val(offense_no);	
+				// $('#offense_number').val(offense_no);	
+				// $('#sanction').val(sanction);
+				// $('#violation_sanction').val(sanction);
+				// } 
+				$('#offense_number').val(offense_no);
+				$('#committed_offense_number').val(offense_no);
+
 				$('#sanction').val(sanction);
 				$('#violation_sanction').val(sanction);
-				} else {
-				$('#violation_offense_level').attr("style", "color:#cccc00");
-				$('#committed_offense_number').val(1);
-				$('#offense_number').val(1);
-				$('#sanction').val(sanction);
-				$('#violation_sanction').val(sanction);
-				}
+				
+				// else {
+				// $('#violation_offense_level').attr("style", "color:#cccc00");
+				// $('#committed_offense_number').val(1);
+				// $('#offense_number').val(offense_no);
+				// $('#sanction').val(sanction);
+				// $('#violation_sanction').val(sanction);
+
+
+
+				// }
 
 				//alert(	$('#committed_offense_number').val());
 			 
@@ -444,7 +500,56 @@ function countOffense()
 
 
 
+function elevateToSeriousDiff()
+{
+	var data = 'Commission of three less serious ';
+	$.ajax({
+			headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+				},
+		url : 'report-violation/serious/elevate',
+		type: 'POST',
+		data: {name : data},
+	}).done(function (data){
+		console.log(data.violation.description);
 
+				// $('#violation_selection').val(data.violations[key].name);
+			   $('#violation_selection')
+         .append($("<option></option>")
+                    .attr("value",data.violation.name)
+                    .text(data.violation.name));
+
+         $('#violation_selection').prop('selectedIndex', 0);
+	
+	});
+
+
+}
+
+function elevateToSeriousSame()
+{
+	var data = 'Repeated commision of less serious';
+	$.ajax({
+			headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+				},
+		url : 'report-violation/serious/elevate',
+		type: 'POST',
+		data: {name : data},
+	}).done(function (data){
+		console.log(data.violation.name);
+
+				// $('#violation_selection').val(data.violations[key].name);
+			   $('#violation_selection')
+         .append($("<option></option>")
+                    .attr("value",data.violation.description)
+                    .text(data.violation.name));
+
+         $('#violation_selection').prop('selectedIndex', 0);
+	
+	});
+
+}
 
 
 
@@ -766,13 +871,51 @@ $('#try').hide();
 
 
 //Locker Management
+function lockerRange()
+{
+	var num = parseInt($('#no_of_lockers').val());
+	var from = parseInt($('#from').val());
+
+	var val = num + from;
+	$('#to').val(val - 1);
+
+}
+
+$('#new_location').hide();
+$('#m_lessee').hide();
+
+
+$('#from').on('input', function (){
+	lockerRange();
+});
+
+$('#no_of_lockers').on('input', function (){
+	lockerRange();
+});
+
+
+$('#location').change(function (e){
+	var building = $('#location').val();
+
+	if (building == 'new')
+	{
+		$('#new_location').show();
+	} else {
+
+		$('#new_location').hide();
+
+	}
+
+});
+
+
 
 	$('#add_locker_btn').click(function(e){
 		e.preventDefault();
 
 		$.ajax({
 			url : '/lockers/add',
-			type: 'POST',
+			type: 'POST',	
 			data: $('#add_locker_form').serialize(),
 			success: function(data){
 				console.log(data);
@@ -784,7 +927,145 @@ $('#try').hide();
 	});
 
 
+var lockers_table = $('.lockers-DT').DataTable({
+	"processing": true,
+    "serverSide": true,
+    "ajax": {
+    	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+    	url : "/lockers/all",
+		type: "POST",
+			},
+	"bSort" : true,
+	"bFilter" : true,
+	"order": [[ 0, "desc" ]],
+	"rowId" : 'id',	
+	"columns" : [
 
+		{data : 'id'},
+		{data : 'location'},
+		{data : 'lessee'},
+		{data : 'status'},		  
+
+
+
+		
+	],
+	dom : '<"html5buttons"B>lTfgtip',
+	buttons : [{
+		extend : 'csv',
+		title : 'STUDENT RECORDS',
+	}, {
+		extend :'excel',
+		title : 'STUDENT RECORDS',
+	} , {
+		extend : 'pdf',
+		title : 'STUDENT RECORDS',
+	} , {
+		extend : 'print',
+		title : 'STUDENT RECORDS',
+		customize : function(win) {
+			$(win.document.body).addClass('white-bg');
+			$(win.document.body).css('font-size', '8px').prepend('<label>Text</label>');
+			$(win.document.body).find('table').addClass('compact').css('font-size', 'inherit');
+		}
+	}]
+});
+
+
+
+$('.lockers-DT').on('click', 'tr', function(){
+		var tr_id = $(this).attr('id');
+		
+		//$('form#claim_item')[0].reset();
+				$.ajax({
+	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+	url: "/locker/details",
+	type: "GET",
+	data: {
+		id : tr_id
+	},
+}).done(function(data){
+
+	var msg = "";
+			if (data.success == false) {
+				$.each(data.errors, function(k, v) {
+					msg = msg + v + "\n";
+					swal("Oops...", msg, "warning");
+
+				});
+
+			} else {
+
+				if (data.response == null)
+				{
+					return false;
+				}
+				else{
+					if (data.response['status'] == "Occupied")
+					{
+						return false;
+					}
+				$('#lockers_modal').modal('show');
+				
+				var locker_no = data.response['id'];
+				var location = data.response['location'];
+
+
+				$('#m_locker_no').val(locker_no);
+				$('#m_location').val(location);
+				
+				var current_status = data.response['status'];
+
+				
+				if (current_status == 'Available'){
+					$('#m_status_available').prop('checked', true);
+				} else if (current_status == 'Damaged') {
+					$('#m_status_damaged').prop('checked', true);
+				} else if (current_status == 'Locked') {
+					$('#m_status_locked').prop('checked', true);
+				}
+
+				$('input[type=radio][name=m_update_status]').change(function(e){
+					e.preventDefault();
+					
+					if (this.value == 1)
+					{
+						$('#m_lessee').hide();
+						return false;
+					} else if (this.value == 2) {
+						$('#m_lessee').show();
+					}
+
+					else if (this.value > 2) {
+						$('#m_lessee').hide();
+					}
+					
+				});
+
+			}
+			}
+
+});
+	});
+
+
+
+$('#locker_update').click(function(e){
+	e.preventDefault();
+
+	$.ajax({
+		url : '/locker/update-status',
+		type: 'POST',
+		data: $('form#update_locker').serialize(),
+
+	}).done(function(data){
+		console.log(data);
+	});
+});
 
 
 
@@ -976,7 +1257,158 @@ $('#truncate_btn').click(function(e){
 				} */
 			});
 	
-})
+});
+
+
+
+
+
+
+
+//Sanction
+
+
+var sanctions_table = $('.sanctions-DT').DataTable({
+	"processing": true,
+    "serverSide": true,
+    "ajax": {
+    	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+    	url : "/sanctions/student-violation/records",
+		type: "POST",
+			},
+	"bSort" : true,
+	"bFilter" : true,
+	"order": [[ 0, "desc" ]],
+	"rowId" : 'id',	
+	"columns" : [
+		
+		{data : 'student_id'},
+		{data : 'first_name'},
+		{data : 'last_name'},
+		{data : 'name'},
+		{data : 'sanction'},
+			
+
+		
+	]
+});
+
+
+/*
+	$('#s_find_btn').click(function(e){
+		e.preventDefault();
+
+		var student_no = $('#student_no').val();
+
+		$.ajax({
+			url : '/sanctions/search/student',
+			type: 'GET',
+			data : {
+				term : student_no
+			}, 
+		}).done(function(data){
+			var student_id = data[0].value;
+			$('#student_id').val(student_id);
+		});
+		sanctions_table.ajax.reload();
+
+	});*/
+/*
+
+	$('#find_student').on('click', function(e){
+			e.preventDefault();
+			
+
+			var stud_no = $('#student_no').val();
+
+			//checks if textbox has input
+			if (stud_no.length <= 0){
+
+			$('#student_number').val("");
+			$('#last_name').val("").attr("readonly",false);
+			$('#first_name').val("").attr("readonly",false);
+			$('#year_level').val("").attr("readonly",false);
+			$('#report_btn').prop('disabled', true);
+			$('#violation_description').val("");
+			$('#violation_sanction').val("");
+			$('#violation_offense_level').val("");	
+
+			} else {		
+				$.ajax({
+					url : '/report-violation/search/student',
+					type : 'GET',
+					data : {
+						term : stud_no 
+					},
+				}).done(function(data) {
+
+					//checks if data reponse has value
+					if (data.length == 0)
+					{
+						x();
+						$('#violation_selection').val("");
+						$('#violation_description').val("");
+						$('#violation_sanction').val("");
+						$('#violation_offense_level').val("");	
+						$('#new').show();
+						$('#student_number_error').html("Student not found");
+						$('#offense_number').val("").attr("readonly",false);
+						$('#committed_offense_number').val("");
+						$('#offense_level').val("").attr("readonly",false);
+						$('#student_number').val("");
+						$('#violation_id').val("").attr("readonly",false);
+
+						$('#last_name').val("").attr("readonly",false);
+						$('#first_name').val("").attr("readonly",false);
+						$('#year_level').val("").attr("readonly",false);
+					}
+					else{
+					x();
+					$('#new').hide();
+					$('#student_number_error').html("");
+					var value = data[0].value;
+					var f_name = data[0].f_name;
+					var l_name = data[0].l_name;
+					var year_level = data[0].year_level;
+					var course = data[0].course;
+				$('#student_number').val(value);
+				$('#last_name').val(l_name).attr("readonly",true);
+				$('#first_name').val(f_name).attr("readonly",true);
+				//$('#course').val(ui.item.course);
+				$('#year_level').val(year_level + "/" + course).attr("readonly",true);
+				//countOffense();
+			}
+
+			});
+
+				$('#report_btn').prop('disabled', false);
+					}
+				
+});*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // DataTables
 //with Buttons
