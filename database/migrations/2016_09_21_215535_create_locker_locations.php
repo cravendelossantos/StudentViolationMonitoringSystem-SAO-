@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAcademicCalendarsTable extends Migration
+class CreateLockerLocations extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,14 @@ class CreateAcademicCalendarsTable extends Migration
      */
     public function up()
     {
-        Schema::create('academic_calendars', function (Blueprint $table) {
+        Schema::create('locker_locations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
-            $table->date('start');
-            $table->date('end');
+            $table->date('date_added');
+            $table->string('location');
             
-        });
+
+        });    
+
     }
 
     /**
@@ -28,6 +29,6 @@ class CreateAcademicCalendarsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('academic_calendars');
+        Schema::drop('locker_locations');
     }
 }

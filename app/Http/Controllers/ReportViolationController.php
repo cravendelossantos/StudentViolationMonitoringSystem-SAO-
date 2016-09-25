@@ -15,7 +15,7 @@ use App\ViolationReport;
 use Yajra\Datatables\Facades\Datatables;
 use Carbon\Carbon;
 use DateTime;
-
+use Response;
 
 class ReportViolationController extends Controller
 {
@@ -29,12 +29,20 @@ class ReportViolationController extends Controller
     	//$violation_reports = ViolationReport::all()
    /*     $violation_reports = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();*/
 		$courses = DB::table('courses')->get();
-		$violations = Violation::all();
+		
        
-        return view('report_violation', ['violations' => $violations])->with(['courses' => $courses]);
+        // return view('report_violation', ['violations' => $violations])->with(['courses' => $courses]);
+        return view('report_violation', ['courses' => $courses]);
+
         //course will be autofilled if we already have the student records.
     }
 	
+    public function getViolations(Request $request)
+    {
+        $violations = Violation::where('offense_level', $request['offense_level'])->get();
+        return response(array('violations' => $violations));
+    }   
+
     public function getViolationReportsTable()
     {
         return Datatables::eloquent(ViolationReport::query()->leftJoin('students', 'violation_reports.student_id', '=', 'students.student_no')
@@ -110,30 +118,54 @@ class ReportViolationController extends Controller
    {
     $student_number = $request['student_number'];
     $violation_id = $request['violation_id'];
-    $data = DB::table('violation_reports')->where('student_id', $student_number)->where('violation_id', $violation_id)->max('offense_no');
 
- 
-    if ($data == null)
+    //Same ID/ Violation
+    $same_violation = DB::table('violation_reports')->where('student_id', $student_number)->where('violation_id', $violation_id)->where('violation_id', $violation_id)->max('offense_no');
+
+
+
+    //Count diff violations with same offense level
+      ///GET the diff types
+     $different_violations = DB::table('violation_reports')
+                ->where('student_id', $student_number)
+                ->where('offense_level', $request['offense_level'])->count(DB::raw('DISTINCT violation_id'));
+
+     //Count only valid offenses
+
+    if ($same_violation == null)
     {
+       $offense_number = $same_violation +=1;
        $sanction = DB::table('violations')->select('first_offense_sanction as sanction')->where('id', $violation_id)->first(); 
     }
-     else if ($data == 1)
+     else if ($same_violation == 1)
     {
+      $offense_number = $same_violation +=1;
        $sanction = DB::table('violations')->select('second_offense_sanction as sanction')->where('id', $violation_id)->first(); 
     }
-    else if ($data == 2)
+    else if ($same_violation == 2)
     {
+       $offense_number = $same_violation +=1;
        $sanction = DB::table('violations')->select('third_offense_sanction as sanction')->where('id', $violation_id)->first(); 
     }
- /*   else if ($data == 3)
+ 
+    else if ($same_violation == 3)
     {
-       $sanction = DB::table('violations')->select('third_offense_sanction as sanction')->where('id', $violation_id)->first();
-    }*/
-    else if ($data == 3)
-    {
-        $sanction = array('sanction' => "Elevated to Serious Offense");
+         $offense_number = $same_violation +=1;// pang 4th na
+          $sanction = DB::table('violations')->select('third_offense_sanction as sanction')->where('id', $violation_id)->first(); 
     }
-    return response(array('response' => $data, 'sanction' => $sanction));
+  if ($different_violations == 1)
+    {
+        $different_violations = $different_violations;
+       // 2 + 1 = 3rd diff type
+    }
+ /*   else if ($same_violation == 4)
+    {
+             $sanction = DB::table('violations')->select('third_offense_sanction as sanction')->where('id', $violation_id)->first(); 
+    }*/
+
+
+     return response(array('offense_no' => $same_violation , 'sanction' => $sanction, 'diff_type_offense' => $different_violations));
+    
    }
 
     public function searchViolation(Request $request)
@@ -146,26 +178,32 @@ class ReportViolationController extends Controller
         return response()->json(['response' => $search_violation]);
 
     }
- 	
-	public function postReportViolation(Request $request)
-	{
-	   $messages = [
-            'student_number.required' => 'Please check the student information',
-            'violation.required' => 'Please check violation details',
+ 	public function getReportViolation(Request $request)
+    {
+        $tomorrow = Carbon::tomorrow()->format('y-m-d');
+       $messages = [
+            'student_number.required' => 'The student number and information is required.',
+            'violation.required' => 'Please check violation details.',
+            'date_committed.before' => 'Date must be not greater than today.',
         ];
 
-		$validator = Validator::make($request->all(),[
-        	'student_number' => 'required|alpha_dash|max:255',
+        $validator = Validator::make($request->all(),[
+            'student_number' => 'required|alpha_dash|max:255',
             'violation' => 'required|string|max:255',
-            'date_committed' => 'required|date',
+            'date_committed' => 'required|date|before:' .$tomorrow,
             'complainant' => 'required',
-	    ],$messages);
+        ],$messages);
      
         if ($validator->fails()) {
-            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
+            return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
           
         }
-		else {
+    }
+
+
+	public function postReportViolation(Request $request)
+	{
+       
 	       
             $data_committed = Carbon::parse($request['date_committed']);
 
@@ -175,14 +213,23 @@ class ReportViolationController extends Controller
             // $student_violation->violation_name = $request['violation'];
             $student_violation->complainant = $request['complainant'];
             $student_violation->sanction = $request['sanction'];
+            $student_violation->offense_level = $request['offense_level'];
             $student_violation->offense_no = $request['offense_number'];
             $student_violation->date_reported = $data_committed;
             $student_violation->save();
             
-            return response()->json(array(['success' => true, 'response' => $student_violation]));
+
+            return Response::json(['success' => true, 'response' => $student_violation], 200);
+            //return response()->json(array(['success' => true, 'response' => $student_violation]));
 		      
-		}
+
 	}
+
+    public function elevateToSerious(Request $request)
+    {
+        $violation = DB::table('violations')->where('name', 'LIKE', "%" .$request['name']. "%")->first();
+        return Response::json(['violation' => $violation]);
+    }
 
     public function showStatistics()
     {

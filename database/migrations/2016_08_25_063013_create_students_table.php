@@ -18,6 +18,7 @@ class CreateStudentsTable extends Migration
             $table->string('last_name');
             $table->string('course');
             $table->enum('year_level' , array('1st' , '2nd', '3rd', '4th' , '5th'));
+            $table->string('college');        
             $table->string('contact_no');
             $table->date('date_created');
         });

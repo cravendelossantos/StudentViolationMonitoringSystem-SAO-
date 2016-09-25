@@ -187,14 +187,14 @@
     </div>
 
 <!-- Mainly scripts -->
-<script src="js/plugins/fullcalendar/moment.min.js"></script>
+<script src="/js/plugins/fullcalendar/moment.min.js"></script>
 
 
 <!-- iCheck -->
-<script src="js/plugins/iCheck/icheck.min.js"></script>
+<script src="/js/plugins/iCheck/icheck.min.js"></script>
 
 <!-- Full Calendar -->
-<script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 
 <script>
 
@@ -232,13 +232,13 @@ $.ajax({
    success: function(response){
      json_events = response;
 
-     console.log (json_events);
+     
     
    }
 });
 
 
-        var calendar1 = $('#calendar').fullCalendar({
+        var a_calendar = $('#calendar').fullCalendar({
         
             header: {
                 left: 'prev,next today',
@@ -281,17 +281,21 @@ $.ajax({
       },
 
       eventMouseover: function( event, jsEvent, view ) { 
-        var start = (event.start.format("HH:mm"));
+        var start = (event.start.format('YYYY-MM-DD'));
+        
+
         var back=event.backgroundColor;
         if(event.end){
-            var end = event.end.format("HH:mm");
+            var end = event.end.format('YYYY-MM-DD');
+          
         }else{var end="No definition";
+        
         }
         if(event.allDay){
-            var allDay = "YES";
-        }else{var allDay="NO";
+            var allDay = "Yes";
+        }else{var allDay="No";
         }
-        var tooltip = '<div class="tooltip-demo" style="width:230px;height:170px;color:black;background-color:white;'+back+';position:absolute;z-index:10001;">'+'<center>'+ event.title +'</center>'+'Venue: '+event.venue+'<br>'+'Organizer: '+event.organization+'<br>'+'status: '+event.status+'<br>'+'Todo el dia: '+allDay+'<br>'+ 'Start: '+start+'<br>'+ 'End: '+ end  +'<br>'+'Remark Status: '+event.remark_status+'<br>'+'cvf_no: '+event.cvf_no+'<br>'+'</div>';
+        var tooltip = '<div class="tooltip-demo" style="width:230px;height:170px;color:black;background-color:white;'+back+';position:absolute;z-index:10001;">'+'<center>'+ event.event +'</center>'+'All day: '+ allDay+'<br>'+ 'from: '+ start +'<br>'+ 'to: '+ end  +'<br>'+'Remark Status:' +'</div>';
 
         $("body").append(tooltip);
         $(this).mouseover(function(e) {
@@ -389,7 +393,7 @@ $.ajax({
          type: "success",  
          showConfirmButton: false 
         });
-        calendar1.ajax.reload();
+        a_calendar.ajax.reload();
          $('#calendar').fullCalendar( 'refetchEvents' );
   
 
@@ -437,7 +441,7 @@ $.ajax({
          showConfirmButton: false 
         });
 
-        calendar1.ajax.reload();
+        a_calendar.ajax.reload();
         $('#calendar').fullCalendar( 'refetchEvents' );
   
 
