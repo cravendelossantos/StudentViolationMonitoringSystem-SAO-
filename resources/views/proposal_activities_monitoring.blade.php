@@ -278,7 +278,7 @@ var activities_table = $('.activities-DT').DataTable({
 			 	 showConfirmButton: false 
 			 	});
 				activities_table.ajax.reload();
-				activi
+			
 	
 
 			}

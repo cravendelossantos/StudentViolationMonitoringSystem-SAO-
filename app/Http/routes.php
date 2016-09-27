@@ -62,6 +62,11 @@ Route::post('/campus/update', 'CampusVenueReservationController@postCampusVenueR
 // organizations renewal
 Route::get('/organizationsRenewal', 'OrganizationsRenewalController@showOrganizationsRenewal');
 Route::get('/OrganizationsRenewalList', 'OrganizationsRenewalController@showOrganizationsRenewalList');
+Route::get('/OrganizationsRenewal/Search', 'OrganizationsRenewalController@searchRequirements');
+Route::post('/organizationsRenewal/requirements/all', 'OrganizationsRenewalController@getRequirementsTable');
+Route::post('/organizationsRenewal/requirements/specific', 'OrganizationsRenewalController@getRequirementsByName');
+Route::post('/organizationsRenewal/add', 'OrganizationsRenewalController@postRequirementsRenewalAdd');
+Route::post('/organizationsRenewal/update', 'OrganizationsRenewalController@postRequirementsRenewalUpdate');
 
 // monitoring of proposal activities
 Route::get('/activities', 'ProposalActivitiesMonitoringController@showProposalActivities');
