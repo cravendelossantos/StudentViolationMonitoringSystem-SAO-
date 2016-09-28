@@ -58,9 +58,7 @@
 							<button type="submit id="loginBtn" class="btn btn-lpu block full-width m-b">
 							Login
 							</button>
-							<div class="text-center">
-							<a href="/register"><small>Create an account</small></a>
-							</div>
+					
 							
 							</form>
 						

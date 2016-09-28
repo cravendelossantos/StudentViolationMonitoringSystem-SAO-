@@ -23,21 +23,23 @@ class SanctionController extends Controller
 
         $term = $request->term;
     
-        $data = Student::where('student_no', $term)->take(5)->get();
-        $result=array();
+        $result = ViolationReport::where('student_id', $term)->take(5)->get();
+        $data=array();
         
-        foreach ($data as $key => $value)
+        foreach ($result as $key => $value)
         {
-            $result[]=[ 'value' => $value->student_no, 
-                        'l_name' => $value->last_name, 
-                        'f_name' => $value->first_name,
-                        'course' => $value->course,
-                        'year_level' =>$value->year_level
+            $data[]=[ 'value' => $value->student_no, 
+                        'sanction' => $value->sanction, 
+                        'offense_level' => $value->offense_levels,
+                        'status' => $value->status,
+
                       ];
 
         }
+
+
        // return response()->json($data);
-        return response()->json($result);
+        return response()->json(['data' => $data]);
 
     }
 
