@@ -17,7 +17,7 @@ class ViolationRecordsController extends Controller
 {
 	public function importExport()
 	{
-		return view('violation_records');
+		return view('violation_list');
 	}
 	public function downloadExcel($type)
 	{
@@ -25,11 +25,11 @@ class ViolationRecordsController extends Controller
 		if (empty($data))
 		{
 			 $errors  = ['Data is empty'];
-           	return redirect('/violation-records')->with('errors', $errors); 
+           	return redirect('/violation-list')->with('errors', $errors); 
 		}
 		else
 {
-		return Excel::create('violation_records', function($excel) use ($data) {
+		return Excel::create('violation_list', function($excel) use ($data) {
 			$excel->sheet('mySheet', function($sheet) use ($data)
 	        {
 				$sheet->fromArray($data);
@@ -67,7 +67,7 @@ class ViolationRecordsController extends Controller
 					DB::table('violations')->insert($insert);
 					$messages = "File successfully imported!";
 			/*		dd('Import Successful!');	*/
-					return redirect('/violation-records')->with('success', $messages); 
+					return redirect('/violation-list')->with('success', $messages); 
 				}
 
 			}
@@ -80,7 +80,7 @@ class ViolationRecordsController extends Controller
                 //dd("Please Check your file");
 		 		//dd($e);
             $errors  = ['Please check the import file data','Import file data must match with violaton records table columns'];
-           	return redirect('/violation-records')->with('errors', $errors); 
+           	return redirect('/violation-list')->with('errors', $errors); 
            
                 }
 
@@ -88,14 +88,14 @@ class ViolationRecordsController extends Controller
           catch (PDOException $e) {
 
             $errors  = ['Please check the import file data','Import file data must match with violaton records table columns'];
-           	return redirect('/violation-records')->with('errors', $errors); 
+           	return redirect('/violation-list')->with('errors', $errors); 
             	//dd($e);
 
             }    
            }       
            else {
            	  $errors  = ['Please check your file','Only files with the following extensions are allowed: .csv .xls .xlsx'];
-           	return redirect('/violation-records')->with('errors', $errors); 
+           	return redirect('/violation-list')->with('errors', $errors); 
            
 
            } 

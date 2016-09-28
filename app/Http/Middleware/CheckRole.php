@@ -25,7 +25,7 @@ class CheckRole
 		if ($request->user()->hasAnyRole($roles) || !$roles){ 
 			 return $next($request);
 		}
-			return redirect('/error401/permission-denied');
+			 return response()->view('errors.401', [], 401);
        
     }
 }

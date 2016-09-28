@@ -17,7 +17,7 @@
 		<link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
 		<link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print'>
 
-
+		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" >
 
 
 		<!-- Toastr style -->
@@ -143,6 +143,8 @@
 		<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 		<script src="/js/plugins/chartJs/Chart.min.js"></script>
 
+
+
 		<div id="wrapper">
 
 			<nav class="navbar-default navbar-static-side " id="nav" role="navigation">
@@ -154,8 +156,15 @@
 							<div class="dropdown profile-element" dropdown="">
 								<img alt="image" class="img-circle"  height="50px" width="50px" src="/img/aboutlpu.jpg">
 
-								<a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span class="clear"> <span class="block m-t-xs"> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<strong class="font-bold"></strong> </span> <span class="text-muted text-xs block"><b class="caret"></b></span> </span> </a>
-								<ul class="dropdown-menu animated fadeInRight m-t-xs">
+								<a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">
+									{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} 
+								</strong> </span> <span class="text-muted text-xs block">
+									{{ Auth::user()->roles->first()->name }}
+
+
+
+								<!-- 	<b class="caret"></b> --></span> </span> </a>
+			<!-- 					<ul class="dropdown-menu animated fadeInRight m-t-xs">
 									<li>
 										<a ui-sref="profile">Profile</a>
 									</li>
@@ -169,7 +178,7 @@
 									<li>
 										<a href="/logout">Logout</a>
 									</li>
-								</ul>
+								</ul> -->
 							</div>
 							<div class="logo-element">
 								SAO
@@ -202,9 +211,14 @@
 							<a href="#"><i class="fa fa-desktop"></i> <span class="nav-label ng-binding" >Sanctions Monitoring</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li ui-sref-active="active" >
-									<a href="/sanctions"><i class=""></i> <span class="nav-label ng-binding">Community Service and Suspensions</span> </a>
+									<a href="/sanctions"><i class=""></i> <span class="nav-label ng-binding"> Sanctions</span> </a>
 								</li>
-
+								<li ui-sref-active="active" >
+									<a href="/community-service"><i class=""></i> <span class="nav-label ng-binding"> Community Service</span> </a>
+								</li>
+								<li ui-sref-active="active" >
+									<a href="/suspensions"><i class=""></i> <span class="nav-label ng-binding"> Suspensions</span> </a>
+								</li>
 							</ul>
 						</li>
 
@@ -286,9 +300,7 @@
 						</ul>
 					</li>
 
-					<li >
-							<a href="/academic-calendar"><i class="fa fa-calendar"></i> <span class="nav-label ng-binding">Academic Calendar</span> </a>
-						</li>
+
 
 						<!-- 	<li >
 								<a href="/text-messaging"><i class="fa fa-mobile"></i> <span class="nav-label ng-binding">Text Messaging</span> </a>
@@ -302,13 +314,46 @@
 
 							</li>
 							<li ui-sref-active="active" >
-								<a href="/violation-records"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Violation Records</span> </a>
+								<a href="/violation-list"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Violation Records</span> </a>
+							</li>
+
+							<li ui-sref-active="active" >
+								<a href="/activity-records"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Activities</span> </a>
 							</li>
 
 						</ul>
 					</li>
 
+							
+							
+							@if ( Auth::user()->roles->first()->name == 'Super User')
+							<li ui-sref-active="active" >
+								<a href="/user-management/super_user"><i class="fa fa-users"></i> <span class="nav-label ng-binding">User Management</span> </a>
+							</li>
+							@elseif ( Auth::user()->roles->first()->name == 'Admin')
+
 					<li>
+						<a href="#"><i class="fa fa-users"></i> <span class="nav-label ng-binding">User Management</span><span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level collapse">
+							<li ui-sref-active="active">
+								<a href="/user-management/admin"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Create a new account</span> </a>
+
+							</li>
+							<li ui-sref-active="active" >
+								<a href="/user-management/roles"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">User Roles</span> </a>
+							</li>
+
+						</ul>
+					</li>
+					@else
+
+
+
+							@endif
+
+
+							@if ( Auth::user()->roles->first()->name == 'Admin')
+						<li>
 						<a href="#"><i class="fa fa-cog"></i> <span class="nav-label ng-binding">Settings</span><span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level collapse">
 							<li ui-sref-active="active">
@@ -319,8 +364,14 @@
 								<a href="/courses"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Courses</span> </a>
 							</li>
 
+							<li ui-sref-active="active" >
+								<a href="/settings/dates/school-year"><i class="fa fa-calendar"></i> <span class="nav-label ng-binding">Date Settings</span> </a>
+							</li>
+
 						</ul>
 					</li>
+					
+						@endif
 
 
 
@@ -376,6 +427,9 @@
 		</div>
 		@yield('scripts')
 		<script src="/js/app.js"></script>
+
+				<!-- Register --> 
+		<script src="/js/register.js"></script>
 		@show
 
 	</body>

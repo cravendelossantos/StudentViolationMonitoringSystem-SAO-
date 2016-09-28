@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
-@section('title', 'SAO | Student Records')
+@section('title', 'SAO | Activity Records')
 
 @section('header-page')
 <div class="row">
 <div class="col-lg-12">
-	<h1>Import/Export Student Records</h1>
+	<h1>Import/Export Activity Records</h1>
 </div>
 </div>
 @endsection
@@ -46,7 +46,7 @@
 				<h3>Import File Form:</h3>
 
 
-				<form action="/violation-records/importExcel"  method="POST" id="violation_records" class="form-horizontal"  enctype="multipart/form-data">
+				<form action="/activity-records/importExcel"  method="POST" id="activity-records" class="form-horizontal"  enctype="multipart/form-data">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input type="file" name="import_file" id="import_file" />
 
@@ -65,11 +65,15 @@
 				<br/>
 
 		    	
-		    	<h3>Export File From Student Records Database:</h3>
+		    	<h3>Export File From Activities table Database:</h3>
 		    	<div> 		
 			   <!--  	<a href="{{ url('/violation-records/downloadExcel/xls') }}"><button class="btn btn-w-m btn-info">Download Excel xls</button></a>
 					<a href="{{ url('/violation-records/downloadExcel/xlsx') }}"><button class="btn btn-w-m btn-info">Download Excel xlsx</button></a> -->
-					<a href="{{ url('/violation-records/downloadExcel/csv') }}"><button class="btn btn-w-m btn-info">Download Excel File</button></a>
+					<a href="{{ url('/activity-records/downloadExcel/csv') }}"><button class="btn btn-w-m btn-info">Download Excel File</button></a>
+		    	</div>
+		    	<div>
+		    		
+		    		<a href="{{ url('/activities') }}">View Records</a>
 		    	</div>
   </div>
 
@@ -79,55 +83,6 @@
 		      	</div>
      	</div>
 
-<div class="row animated fadeInRight">
-<div class="col-md-12">
-
-		<div class="ibox float-e-margins">
-
-
-<div class="ibox-content">
-
-<a class="btn btn-danger btn-rounded" href="{{ url('/violation-records/truncate') }}" id="truncate_btn">Truncate table</a>	
-<h2>Students List</h2>
-
-
-    			<div class="table-responsive">
-
-
-
-					<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-
-
-
-						<table class="table table-striped table-bordered table-hover violation-records-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
-
-							<thead>
-				
-				<tr>
-									<th>Name</th>
-									<th>Description</th>
-									<th>Offense Level</th>
-									<th>First Offense</th>
-									<th>Second Offense</th>
-									<th>Third Offense</th>
-							
-
-					</tr>	
-							</thead>
-
-							
-
-						</table>
-
-					</div>
-				</div>
-
-</div>
-
-    </div>
-
-		  </div>
-		      	</div>
 
 @endsection
 

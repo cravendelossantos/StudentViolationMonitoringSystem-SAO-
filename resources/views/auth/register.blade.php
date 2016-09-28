@@ -134,4 +134,4 @@
 <!-- Sweet Alert -->
 <script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="/js/plugins/chartJs/Chart.min.js"></script>
-<script src="/js/register.js"></script>
+
