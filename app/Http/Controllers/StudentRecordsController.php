@@ -21,33 +21,32 @@ class StudentRecordsController extends Controller
 	public function downloadExcel($type)
 	{
 		$data = Student::get()->toArray();
+
+		if (empty($data))
+		{
+			 $errors  = ['Data is empty'];
+           	return redirect('/student-records')->with('errors', $errors); 
+		}
+		else
+		{
 		return Excel::create('student_records', function($excel) use ($data) {
 			$excel->sheet('mySheet', function($sheet) use ($data)
 	        {
 				$sheet->fromArray($data);
 	        });
 		})->download($type);
+		}
 	}
 	public function importExcel(Request $request)
 	{ 
 
-		 $messages = [
-		 	'import_file.required' => 'Please choose a file to proceed',
-            'import_file.mimes' => 'Invalid file format!',
-        ];
-
-        $validator = Validator::make($request->all(),[
-        	'import_file'   => 'required|mimes:csv,xls,xlsx',
-        ], $messages);
-
-
-        if ($validator->fails()) {
-            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
-          
-        }
-        else {
+		 $mimes = array('application/vnd.ms-excel', 
+					   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 
+					   'text/csv');
+		$import_file = $request->file('import_file');
+		if(in_array($_FILES['import_file']['type'],$mimes)){
+  
 		try {
-		
 
 
 		if($request->hasFile('import_file')){
@@ -77,18 +76,29 @@ class StudentRecordsController extends Controller
 		 } 
 
 
-		 catch (\Illuminate\Database\QueryException $e){
-                dd("Please Check your file");
-
-               return redirect()->back();
+		catch (\Illuminate\Database\QueryException $e){
+                //dd("Please Check your file");
+		 		//dd($e);
+            $errors  = ['Please check the import file data','Import file data must match with student records table columns'];
+           	return redirect('/student-records')->with('errors', $errors); 
+           
                 }
 
 
           catch (PDOException $e) {
-                return redirect()->back();
-                dd("Please Check your file");
+
+            $errors  = ['Please check the import file data','Import file data must match with student records table columns'];
+           	return redirect('/student-records')->with('errors', $errors); 
+            	//dd($e);
+
             }    
-            }        
+           }       
+           else {
+           	  $errors  = ['Please check your file','Only files with the following extensions are allowed: .csv .xls .xlsx'];
+           	return redirect('/student-records')->with('errors', $errors); 
+           
+
+           } 
 	}
 
 	public function getStudentRecordsTable()

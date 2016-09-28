@@ -13,23 +13,27 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-    	$role_admin = Role::where('name', 'Admin')->first();		
-	 	$admin = new User();
-		$admin->first_name = 'Craven';
-		$admin->last_name = 'Delos Santos';
-		$admin->email = 'delossantoscraven@gmail.com';
-    	$admin->password = bcrypt('craven');
-		$admin->save();
-		$admin->roles()->attach($role_admin);
+
+    	
+    	$role_super = Role::where('name', 'Super User')->first();		
+	 	$super = new User();
+		$super->first_name = 'Craven';
+		$super->last_name = 'Delos Santos';
+		$super->email = 'delossantoscraven@gmail.com';
+    	$super->password = bcrypt('craven');
+		$super->save();
+		$super->roles()->attach($role_super);
 		
-		$role_secretary = Role::where('name', 'Secretary')->first();		
-	 	$secretary = new User();
-		$secretary->first_name = 'Elmar';
-		$secretary->last_name = 'Anchuelo';
-		$secretary->email = 'ejanchuelo@gmail.com';
-    	$secretary->password = bcrypt('elmar');
-		$secretary->save();
-		$secretary->roles()->attach($role_secretary);
+
+
+		$role_super = Role::where('name', 'Super User')->first();		
+	 	$super = new User();
+		$super->first_name = 'Elmar';
+		$super->last_name = 'Anchuelo';
+		$super->email = 'ejanchuelo@gmail.com';
+    	$super->password = bcrypt('elmar');
+		$super->save();
+		$super->roles()->attach($role_super);
 		
 	}
 }

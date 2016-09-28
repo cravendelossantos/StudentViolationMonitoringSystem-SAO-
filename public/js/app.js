@@ -28,8 +28,75 @@ $('#violation_date_picker .input-group.date').datepicker({
                 todayHighlight: true
             });
 
+  $('#first_sem_range .input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true
+            });
 
+
+   $('#second_sem_range .input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true
+            });
 		
+
+		$('#sy_date_btn').click(function (e){
+			e.preventDefault();
+	$.ajax({
+		type : "GET",
+		url : "/settings/dates/school-year/set",
+		data : $('form#sy_form').serialize(),
+
+	}).fail(function(data){
+			 var errors = $.parseJSON(data.responseText);
+				var msg="";
+				
+				$.each(errors.errors, function(k, v) {
+					msg = msg + v + "\n";
+					swal("Oops...", msg, "warning");
+
+				});
+
+
+	}).done(function(data) {
+			
+				swal({   
+					title: "Are you sure?",   
+					text: "This will create a new administrator user",   
+					type: "warning",   
+					showCancelButton: true,  
+				    confirmButtonColor: "#DD6B55",   
+				    confirmButtonText: "Submit",   
+				    closeOnConfirm: false 
+				}, function(){  
+					$.ajax({
+						headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+			type : "POST",
+			url : "/settings/dates/school-year/set",
+			data : $('form#sy_form').serialize(),
+					}).done(function(data){
+							 swal({   
+			 			title: "Success!",  
+			 	 text: "Account successfully created!",   
+			 	 timer: 1000, 
+			 	 type: "success",  
+			 	 showConfirmButton: false 
+
+					
+	
+			 	});
+					$('form#sy_form').each(function() {
+					this.reset();
+				});	
+	});
+});
+});
+	});
+	
 
 
 //Report violation
@@ -60,7 +127,7 @@ var violation_reports_table = $('.violation-reports-DT').DataTable({
 	]
 });
 
-getViolation();
+//getViolation();
 offenseLevelChange();
 function getViolation()
 {
@@ -1265,6 +1332,8 @@ $('#truncate_btn').click(function(e){
 
 
 
+
+
 //Sanction
 
 
@@ -1288,33 +1357,73 @@ var sanctions_table = $('.sanctions-DT').DataTable({
 		{data : 'first_name'},
 		{data : 'last_name'},
 		{data : 'name'},
+		{data : 'offense_no'},
 		{data : 'sanction'},
+
 			
 
 		
 	]
 });
 
+	$('.sanctions-DT').on('click', 'tr', function(){
+		var tr_id = $(this).attr('id');
+						$('#sanction_modal').modal('show');
+		$('form#claim_item')[0].reset();
+				$.ajax({
+	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+	url: "",
+	type: "GET",
+	data: {
+		id : tr_id
+	},
+}).done(function(data){
 
+	var msg = "";
+			if (data.success == false) {
+				$.each(data.errors, function(k, v) {
+					msg = msg + v + "\n";
+					swal("Oops...", msg, "warning");
+
+				});
+
+			} else {
+
+				if (data.response == null)
+				{
+					return false;
+				}
+				else{
+					if (data.response['status'] == "Claimed" || data.response['status'] == "Donated")
+					{
+						return false;
+					}
+
+	
+			}
+			}
+
+});
+	});
 /*
-	$('#s_find_btn').click(function(e){
-		e.preventDefault();
-
-		var student_no = $('#student_no').val();
+	$('#sanctions_find_student').click(function(e){
 
 		$.ajax({
-			url : '/sanctions/search/student',
-			type: 'GET',
-			data : {
-				term : student_no
-			}, 
-		}).done(function(data){
-			var student_id = data[0].value;
-			$('#student_id').val(student_id);
-		});
-		sanctions_table.ajax.reload();
+			headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+			url: '/sanctions/search/student',
+			type: 'POST',
+			data: { term : $('#student_no').val()},
 
+		}).done(function (data){
+			 
+		});
 	});*/
+
+
 /*
 
 	$('#find_student').on('click', function(e){
@@ -1387,6 +1496,99 @@ var sanctions_table = $('.sanctions-DT').DataTable({
 					}
 				
 });*/
+
+
+
+//Time log
+
+$('.CS-DT').DataTable().destroy();
+
+function searchStudentCS(){
+$('.CS-DT').DataTable().destroy();
+var CS_table = $('.CS-DT').DataTable({
+	
+	"bFilter" : false,
+	"processing": true,
+    "serverSide": true,
+    "ajax": {
+    	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val(),
+			},
+    	url : "/community-service/search",
+		data: function(d){
+			d.student_id = $('input[name=cs_student_no]').val();
+		
+			},
+		},
+
+/*	"bSort" : true,
+	"bFilter" : true,*/
+/*	"order": [[ 0, "desc" ]],*/
+	// "rowId" : 'id',	
+	"columns" : [
+		
+		{data : 'student_id'},
+		{data : 'time_in' },
+		{data : 'time_out' },
+		{data : 'status' },
+		{data : 'required_hours' },
+	],
+});
+	CS_table.draw();
+
+
+
+}
+
+	$('#CS_find_student').click(function(e){
+		searchStudentCS();
+		
+		e.preventDefault();
+
+	});
+/*
+$('.clockpicker').clockpicker()
+	.find('input').change(function(){
+		console.log(this.value);
+	});*/
+
+
+
+$('.time_in').clockpicker({
+	
+	 twelvehour: true
+
+	});
+
+
+$('.time_out').clockpicker({
+
+	twelvehour: true
+});
+
+$('#new_log').on('click', function(e){
+	e.preventDefault();
+
+	$.ajax({
+		url : '/community-service/new_log',
+		type: 'GET',
+		data: $('#new_log_form').serialize(),
+
+	}).fail(function(data){
+				 var errors = $.parseJSON(data.responseText);
+				var msg="";
+				
+				$.each(errors.errors, function(k, v) {
+					msg = msg + v + "\n";
+					swal("Oops...", msg, "warning");
+
+				});
+
+	}).done(function(data){
+
+	});
+});
+
 
 
 

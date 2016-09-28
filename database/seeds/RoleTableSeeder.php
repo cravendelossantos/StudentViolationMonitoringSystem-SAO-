@@ -12,6 +12,12 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
+            
+        $role_super = new Role();
+        $role_super->name = 'Super User';
+        $role_super->description = 'Power User';
+        $role_super->save();
+
         $role_admin = new Role();
 		$role_admin->name = 'Admin';
 		$role_admin->description = 'Administrator';
@@ -21,5 +27,7 @@ class RoleTableSeeder extends Seeder
 		$role_secretary->name = 'Secretary';
 		$role_secretary->description = 'Office Secretary';
 		$role_secretary->save();
+
+
     }
 }

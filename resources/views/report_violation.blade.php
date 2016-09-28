@@ -286,7 +286,10 @@
 	</div>
 </div>
 
-<script type="text/javascript"></script>
+<script type="text/javascript">
+	getViolation();
+	
+</script>
 
 <style>
 	.sk-spinner-wave.sk-spinner {
