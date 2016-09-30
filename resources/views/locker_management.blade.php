@@ -4,7 +4,7 @@
 
 @section('header-page')
 <div class="row col-lg-12">
-	<h1>Welcome {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}!</h1>
+	<h1>Locker Assignment</h1>
 </div>
 
 @endsection
@@ -101,7 +101,7 @@
 		<div class="ibox float-e-margins">
 
 			<div class="ibox-title">
-				<h5>Report Lost Item</h5>
+				<h5>Add Lockers</h5>
 				<div class="ibox-tools">
 
 				</div>
@@ -115,7 +115,7 @@
 						<div class="col-md-6">
 							<div class="form-group ">
 								<label>No of lockers</label>
-								<input type="number" placeholder="Item Description" name="no_of_lockers" id="no_of_lockers" class="form-control" autofocus="" aria-required="true">
+								<input type="number" placeholder="No of Lockers" name="no_of_lockers" id="no_of_lockers" class="form-control" autofocus="" aria-required="true">
 							</div>
 						</div>
 
@@ -136,13 +136,18 @@
 								<select name="location" id="location" class="form-control">
 									@foreach ($locations as $location)
 									<option>{{ $location->location }}</option>
-
+									
+							
+								
 									@endforeach
-									<option value="new">New location</option>
+									
 								</select>	
-
+	</div>
+		
+							<div class="form-group ">
 							<input type="text" name="new_location" id="new_location" class="form-control">
-							</div>
+						</div>
+					
 
 
 
@@ -154,8 +159,9 @@
 							<div class="form-group ">
 								<label>Locker number</label>
 								<input type="number" placeholder="From" name="from" id="from" class="form-control" autofocus="" aria-required="true">
-								
-								<input type="number" placeholder="To" name="to" id="to" class="form-control" autofocus="" aria-required="true">
+								</div>
+								<div class="form-group ">
+								<input type="number" placeholder="To" name="to" id="to" class="form-control" autofocus="" aria-required="true" readonly="">
 							</div>
 						</div>
 							

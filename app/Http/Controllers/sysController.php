@@ -14,7 +14,7 @@ use DateTime;
 use App\Course;
 use Response;
 use App\Role;
-
+use Yajra\Datatables\Facades\Datatables;
 
 class sysController extends Controller {
 	
@@ -24,44 +24,133 @@ class sysController extends Controller {
     }
 
     public function showDateSettings()
-    {
-        return view('date_settings');
+    {   
+        $semesters = DB::table('school_years')->get();
+        return view('date_settings', ['semesters' => $semesters]);
     }
 
     public function getDateSettings(Request $request)
     {
         $validator= Validator::make($request->all(),[
-            'first_semester_start_date'  => 'required|date|unique:first_semester,start',  
-            'first_semester_end_date'  => 'required|date|unique:first_semester,end',     
-            'second_semester_start_date' => 'required|date|unique:second_semester,start', 
-            'second_semester_end_date'=> 'required|date|unique:second_semester,end',
-            'description' =>'required|unique:school_years,description', 
+            'first_semester_start_date'  => 'required|date',  
+            'first_semester_end_date'  => 'required|date',
+            'second_semester_start_date' => 'required|date',
+            'second_semester_end_date'=> 'required|date',
+            'summer_start_date' => 'required|date',
+            'summer_end_date' => 'required|date',
+            'school_year' =>'required|unique:school_years,term_name', 
+
 
         ]);
-    
+        
         if($validator->fails()){
         
                  return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
         }
+          
+
+
+
+        
     }
 
     public function postDateSettings(Request $request)
     {
-        $school_year = DB::table('school_years')->insert([
-            'description' => $request['description']
-            ]);
 
-        $first_sem = DB::table('first_semester')->insert([
-            'start' => $request['f_from'],
-            'end' => $request['f_to'],
-            ]);
 
-        $second_sem = DB::table('second_semester')->insert([
-            'start' => $request['s_from'],
-            'end' => $request['s_to'],
-            ]);
 
-        return Response::json(['success' => true, 'school_year' => $school_year , 'first_semester' => $first_sem , 'second_semester' => $second_sem], 200);
+
+     /*   $ranges = array($request['first_semester_start_date'],
+                       $request['first_semester_end_date'],
+                       $request['second_semester_start_date'],
+                       $request['second_semester_end_date'],
+                       
+                );
+
+    
+
+             $sems = (count($ranges)/2);
+
+
+             $ranges = implode(",", $ranges);
+             
+
+             DB::table('school_years')->insert([
+                'name' => $request['description'],
+                'no_of_terms' => $sems,    
+                'range' => $ranges,
+
+
+                ]);
+
+            for ($i=0; $i <= $sems; $i++)
+            {   
+            DB::table('semesters')->insert([
+                'range' => $ranges,
+                
+                ]); 
+            }*/
+
+$data = array(
+    array('school_year' => $request['school_year']  ,
+          'term_name' => 'First Semester',
+          'start'=> $request['first_semester_start_date'], 
+          'end'=> $request['first_semester_end_date']),
+    
+    array('school_year' => $request['school_year'],
+          'term_name' => 'Second Semester',
+          'start'=> $request['second_semester_start_date'],
+          'end'=> $request['second_semester_end_date']),
+
+    array('school_year' => $request['school_year'], 
+          'term_name' => 'Summer',
+          'start'=> $request['summer_start_date'], 
+          'end'=> $request['summer_end_date']),
+
+    array('school_year' => $request['school_year'], 
+          'term_name' => 'School Year',
+          'start'=> $request['first_semester_start_date'], 
+          'end'=> $request['summer_end_date']),
+
+
+    //...
+);
+
+
+        $sy = DB::table('school_years')->insert($data);
+/*
+        $a = DB::table('school_years')->insert([
+                'name' => $request['description'],
+                'no_of_terms' => 2,
+            ]);*/
+
+
+        
+         /*return Response::json(['success' => true, 'sems' => $sems , 'shool_year' => $request['description'], 'date_ranges' => $ranges, ], 200);*/
+         return Response::json(['success' => true, 'data' => $data], 200);
+  
+       
+    }
+
+    public function showSchoolYears()
+    {
+
+            $sy = DB::table('school_years')->where('term_name', 'School Year')->get();             
+/*
+             foreach ($sy as $key => $value) {
+                    $data[] = ['ranges' => [$value->range],
+                            'school_year' => $value->school_year,
+                            'semesters' => $value->semesters,
+
+                    ];
+
+                }  */
+
+
+             
+
+
+            return response()->json(['data' => $sy]);
     }
 
     //Super user admin account registration

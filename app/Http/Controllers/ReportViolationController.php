@@ -235,5 +235,10 @@ class ReportViolationController extends Controller
     {
         return view('violation_statistics');
     }
-	
+	 
+
+    public function showViolationsReports()
+    {
+      return view('violation_reports');
+    }
 }

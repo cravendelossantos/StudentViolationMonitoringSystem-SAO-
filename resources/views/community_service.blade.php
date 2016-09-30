@@ -1,10 +1,10 @@
-@extends('layouts.master')
 
-@section('title', 'SAO | Community Service')
+@section('title', 'SAO | Sanction Monitoring')
 
 @section('header-page')
 <div class="col-md-12">
-	<h1>Community Service</h1>
+<div class="row col-md-12">
+	<h1>Sanction Monitoring</h1>
 </div>
 
 @endsection
@@ -171,53 +171,132 @@
 <div class="row">
 
 	<div class="col-md-12 animated fadeInRight">
+		<div class="ibox float-e-margins">
 
-		<div class="ibox">
+	
+			<div class="ibox-content">
+		<div class="col-md-12 animated fadeInRight">
 			<div class="ibox float-e-margins">
 
-				<div class="ibox-title">
-					<h5>List of students having commmunity service</h5>
-					<div class="ibox-tools">
-						<a class="collapse-link"> <i class="fa fa-chevron-up"></i> </a>
-						<a class="close-link"> <i class="fa fa-times"></i> </a>
-					</div>
+				<form role="form" id="addItemForm" method="POST">
+					{!! csrf_field() !!}
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group ">
+								<label> Enter Student No.</label>
+								<input type="text" placeholder="Student No." name="studentNo" class="form-control" autofocus="" aria-required="true">
+		{!! csrf_field() !!}
+			<!-- 	<div class="ibox-content">
+
+					<form role="form">
+						
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group ">
+									<label> Enter Student No.</label>
+									<input type="text" placeholder="Student No." name="student_no" id="student_no" class="form-control" autofocus="" aria-required="true">
+								</div>
+							</div>
+						</div>
+
+			
+				
+				</form>
+			</div>
+					
+					</form>
 				</div>
 
-				<div class="ibox-content">
+			<div class="ibox-footer">
+				<button class="btn btn-w-m btn-primary" id="addItemBtn" type="button">
+					<strong>Find</strong>
+				</button>
+				<div class="ibox-footer">
+					<button class="btn btn-w-m btn-primary" id="s_find_btn" type="button">
+						<strong>Find</strong>
+					</button>
 
-					<div class="table-responsive">
+			</div>
+				</div> -->
 
-						<table class="table table-striped table-bordered table-hover dataTables-example" >
-							<thead>
-								<tr>
-									<th>Student No.</th>
-									<th>Name</th>
-									<th>Violation</th>
-									<th>Year / Course</th>
-									<th>Date</th>
-
-								</tr>
-							</thead>
-							<tbody  id="tbody">
-
-								<tr >
-									<td>2016-0000</td>
-									<td>Elmar "Jimboy" Anchuelo</td>
-									<td>Umihi sa Pond</td>
-									<td>4th Year / BSIT</td>
-									<td>7/7/2016</td>
-
-								</tr>
-
-							</tbody>
-
-						</table>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
-</div>
+		
+		
+
+
+<div class="ibox">
+				<div class="ibox float-e-margins">
+
+					<div class="ibox-title">
+						<h5>List</h5>
+						<div class="ibox-tools">
+							<a class="collapse-link"> <i class="fa fa-chevron-up"></i> </a>
+							<a class="close-link"> <i class="fa fa-times"></i> </a>
+						<!-- 	<a class="collapse-link"> <i class="fa fa-chevron-up"></i> </a>
+							<a class="close-link"> <i class="fa fa-times"></i> </a> -->
+						</div>
+					</div>
+
+					<div class="ibox-content">
+
+						<div class="table-responsive">
+
+							<table class="table table-striped table-bordered table-hover dataTables-example" >
+								<thead>
+									<tr>
+										<th>Violation ID No.</th>
+										<th>Violation Name</th>
+										<th>Offense Level</th>
+										<th>Description</th>
+										<th>Sanction</th>										
+										<th>Date</th>
+
+									</tr>
+								</thead>
+								<tbody  id="tbody">
+										<div class="table-responsive">
+					<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+
+									<tr >
+										<td>0001</td>
+										<td>Smoking</td>
+										<td>Major</td>
+										<td>Smoking inside/outside the campus </td>
+										<td>1 month suspended</td>
+										<td>7/7/2016</td>
+						<table class="table table-striped table-bordered table-hover sanctions-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+							<thead>
+									<th>Student No.</th>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Violation</th>
+									<th>Sanction</th>
+								
+
+									</tr>
+				
+							</thead>
+
+								</tbody>
+		
+
+							</table>
+						</table>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+
+
 
 @endsection
 
+
+
+<script>
+	
+
+</script>

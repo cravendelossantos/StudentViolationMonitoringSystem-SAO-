@@ -27,8 +27,11 @@
 
 			<div class="form-group" id="first_sem_range">
 
-				<input type="text" name="description">
-                                <label class="font-noraml">First Semester</label>
+
+
+                 <output>School Year (ex. 1617)</output>  
+				<input type="text" class="form-control" id="school_year" name="school_year">
+                                <output name="first_sem">First Semester</output>
                                 <div class="input-daterange input-group" id="datepicker">
                                 <span class="input-group-addon">From</span>
                                     <input type="text" class="input-sm form-control" name="first_semester_start_date" value="">
@@ -40,12 +43,23 @@
 
 
                             	<div class="form-group" id="second_sem_range">
-                                <label class="font-noraml">Second Semester</label>
+                                <output name="second_sem">Second Semester</output>
                                 <div class="input-daterange input-group" id="datepicker">
                                 <span class="input-group-addon">From</span>
                                     <input type="text" class="input-sm form-control" name="second_semester_start_date" value="">
                                     <span class="input-group-addon">to</span>
                                     <input type="text" class="input-sm form-control" name="second_semester_end_date" value="">
+                                </div>
+                            </div>
+
+
+                                <div class="form-group" id="summer_range">
+                                 <output name="summer">Summer</output>
+                                <div class="input-daterange input-group" id="datepicker">
+                                <span class="input-group-addon">From</span>
+                                    <input type="text" class="input-sm form-control" name="summer_start_date" value="">
+                                    <span class="input-group-addon">to</span>
+                                    <input type="text" class="input-sm form-control" name="summer_end_date" value="">
                                 </div>
                             </div>
 
@@ -55,6 +69,43 @@
                             </div>
                                 </div>
                             </div>
+
+
+
+
+
+
+<div class="ibox-content">
+                            <div class="table-responsive">
+
+
+
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+
+
+
+                        <table class="table table-striped table-bordered table-hover school-year-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+
+                            <thead>
+ 
+                <tr>
+                                    <th>School Year</th>
+                                    <th>Description</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+
+                    </tr>   
+                            </thead>
+
+                            
+
+                        </table>
+
+                    </div>
+                </div>
+</div>
+
+
 
 @endsection
 

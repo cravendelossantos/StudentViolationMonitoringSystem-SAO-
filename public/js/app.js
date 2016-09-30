@@ -41,7 +41,12 @@ $('#violation_date_picker .input-group.date').datepicker({
                 autoclose: true
             });
 		
-
+$('#summer_range .input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true
+            });
+		
 		$('#sy_date_btn').click(function (e){
 			e.preventDefault();
 	$.ajax({
@@ -64,7 +69,7 @@ $('#violation_date_picker .input-group.date').datepicker({
 			
 				swal({   
 					title: "Are you sure?",   
-					text: "This will create a new administrator user",   
+					text: "This will create a new school year (" + $('#school_year').val() + " )" ,   
 					type: "warning",   
 					showCancelButton: true,  
 				    confirmButtonColor: "#DD6B55",   
@@ -81,7 +86,7 @@ $('#violation_date_picker .input-group.date').datepicker({
 					}).done(function(data){
 							 swal({   
 			 			title: "Success!",  
-			 	 text: "Account successfully created!",   
+			 	 text: "School Year added",   
 			 	 timer: 1000, 
 			 	 type: "success",  
 			 	 showConfirmButton: false 
@@ -89,14 +94,40 @@ $('#violation_date_picker .input-group.date').datepicker({
 					
 	
 			 	});
-					$('form#sy_form').each(function() {
+		/*			$('form#sy_form').each(function() {
 					this.reset();
-				});	
+				});	*/
 	});
 });
 });
 	});
 	
+//School Year
+var school_year_table = $('.school-year-DT').DataTable({
+	"bPaginate" : false,
+	"bInfo" :false,
+	"bSort" : false,
+	"bFilter" : false,
+	"processing": true,
+    "serverSide": true,
+    "ajax": {
+    	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+    	url : "/settings/show/school-years",
+		type: "POST",
+			},
+	"rowId" : 'id',	
+	"columns" : [
+		{data : 'school_year'},
+		{data : 'term_name'},
+		{data : 'start'},
+		{data : 'end'},
+		
+	]
+});
+
+
 
 
 //Report violation
@@ -948,7 +979,7 @@ function lockerRange()
 
 }
 
-$('#new_location').hide();
+// $('#new_location').hide();
 $('#m_lessee').hide();
 
 
@@ -990,7 +1021,7 @@ $('#location').change(function (e){
 			error: function(data){
 
 			}
-		});
+			});
 	});
 
 
@@ -1338,18 +1369,23 @@ $('#truncate_btn').click(function(e){
 
 
 var sanctions_table = $('.sanctions-DT').DataTable({
-	"processing": true,
-    "serverSide": true,
-    "ajax": {
+/*	"processing": true,
+    "serverSide": true,*/
+	"bPaginate" : false,
+	"bInfo" :false,
+	"bSort" : false,
+	"bFilter" : false,
+	
+
+	
+  /*  "ajax": {
     	headers : {
 				'X-CSRF-Token' : $('input[name="_token"]').val()
 			},
     	url : "/sanctions/student-violation/records",
 		type: "POST",
 			},
-	"bSort" : true,
-	"bFilter" : true,
-	"order": [[ 0, "desc" ]],
+	
 	"rowId" : 'id',	
 	"columns" : [
 		
@@ -1363,7 +1399,7 @@ var sanctions_table = $('.sanctions-DT').DataTable({
 			
 
 		
-	]
+	]*/
 });
 
 	$('.sanctions-DT').on('click', 'tr', function(){
@@ -1500,6 +1536,14 @@ var sanctions_table = $('.sanctions-DT').DataTable({
 
 
 //Time log
+
+
+$('.suspensions-DT').DataTable({
+	"bPaginate" : false,
+	"bInfo" :false,
+	"bSort" : false,
+	"bFilter" : false,
+});	
 
 $('.CS-DT').DataTable().destroy();
 

@@ -201,14 +201,19 @@
 								</li>
 
 								<li ui-sref-active="active" >
-									<a href="/violationReports"><i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
+									<a href="/violation-reports"><i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
 								</li>
 
 							</ul>
 						</li>
 
-						<li>
-							<a href="#"><i class="fa fa-desktop"></i> <span class="nav-label ng-binding" >Sanctions Monitoring</span><span class="fa arrow"></span></a>
+
+
+							<li ui-sref-active="active" >
+							<a href="/sanctions"><i class="fa fa-desktop"></i> <span class="nav-label ng-binding" >Sanctions Monitoring</span></a>
+						</li>
+				<!-- 		<li>
+							
 							<ul class="nav nav-second-level collapse">
 								<li ui-sref-active="active" >
 									<a href="/sanctions"><i class=""></i> <span class="nav-label ng-binding"> Sanctions</span> </a>
@@ -220,14 +225,14 @@
 									<a href="/suspensions"><i class=""></i> <span class="nav-label ng-binding"> Suspensions</span> </a>
 								</li>
 							</ul>
-						</li>
+						</li> -->
 
 						<li>
 							<a href="#"><i class="fa fa-lock"></i> <span class="nav-label ng-binding">Locker Management</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 
 								<li ui-sref-active="active" >
-									<a href="/lockerAssignment"> <i class=""></i> <span class="nav-label ng-binding">Locker Assignment</span> </a>
+									<a href="/lockers"> <i class=""></i> <span class="nav-label ng-binding">Locker Assignment</span> </a>
 								</li>
 								<li ui-sref-active="active" >
 									<a href="/lockerReports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
@@ -352,7 +357,7 @@
 							@endif
 
 
-							@if ( Auth::user()->roles->first()->name == 'Admin')
+							@if ( Auth::user()->roles->first()->name == 'Super User')
 						<li>
 						<a href="#"><i class="fa fa-cog"></i> <span class="nav-label ng-binding">Settings</span><span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level collapse">
