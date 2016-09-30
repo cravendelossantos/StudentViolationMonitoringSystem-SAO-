@@ -115,6 +115,6 @@ class AuthController extends Controller
      */
     protected function create(Request $Request)
     {
-   
+        
     }
 }

@@ -1,23 +1,103 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/	
 
 
-Route::group(['middleware' => 'roles', 'roles' => ['Admin','Secretary']],function(){
+//Super user route group
+Route::group(['middleware' => 'roles', 'roles' => ['Super User']],function(){
 
-Route::post('/get-events' , 'CampusVenueReservationController@getEvents');
+
+//User management (Super User)
+//New admin account	
+Route::get('/user-management/super_user' , 'sysController@showRegisterSuperUser');
+Route::get('/user-management/super_user/validate' , 'sysController@getRegisterSuperUser');
+Route::post('/user-management/super_user' , 'sysController@postRegisterSuperUser');
+
+
+});
+
+
+//All users route group
+Route::group(['middleware' => 'roles', 'roles' => ['Super User','Admin','Secretary']],function(){
 
 Route::get('/index', 'HomeController@index');
 
+//Academic Calendar
+Route::get('/academic-calendar' , 'AcademicCalendarController@showCalendar');
+Route::post('/academic-calendar/events' , 'AcademicCalendarController@postEvents');
+
+Route::get('/settings/dates/school-year' , 'sysController@showDateSettings');
+Route::get('/settings/dates/school-year/set' , 'sysController@getDateSettings');
+Route::post('/settings/dates/school-year/set' , 'sysController@postDateSettings');
+Route::post('/settings/show/school-years/' , 'sysController@showSchoolYears');
+
+});
+
+//Admin route group
+Route::group(['middleware' => 'roles', 'roles' => ['Admin']],function(){
+
+//User management (Admin)
+//New account
+Route::get('/user-management/admin' , 'sysController@showRegisterAdmin');
+Route::get('/user-management/admin/validate' , 'sysController@getRegisterAdmin');
+Route::post('/user-management/admin' , 'sysController@postRegisterAdmin');
+
+//New account (attach roles)	
+Route::get('/user-management/roles' , 'sysController@showRoles');
+
+Route::post('/user-management/roles/assign' , 'sysController@postAdminAssignRoles');
+
+});
+
+
+
+//Admin and secretary route group
+
+Route::group(['middleware' => 'roles', 'roles' => ['Super User', 'Admin','Secretary']],function(){
+
+//Courses
+Route::get('/courses' , 'sysController@showCourses');
+Route::post('/add-course' , 'sysController@postCourse');
+
+
+// violations
+Route::get('/violation', [
+	'uses' => 'sysController@showViolation',
+	'middleware' => 'roles',
+]);
+
+
+
+//Import student records
+Route::get('/student-records', 'StudentRecordsController@importExport');
+Route::get('/student-records/downloadExcel/{type}', 'StudentRecordsController@downloadExcel');
+Route::post('/student-records/importExcel', 'StudentRecordsController@importExcel');
+Route::post('/student-records/list', 'StudentRecordsController@getStudentRecordsTable');
+
+
+//Import violation records
+Route::get('/violation-list', 'ViolationRecordsController@importExport');
+Route::get('/violation-list/downloadExcel/{type}', 'ViolationRecordsController@downloadExcel');
+Route::post('/violation-list/truncate' , 'ViolationRecordsController@truncateViolationRecords');
+Route::post('/violation-list/importExcel', 'ViolationRecordsController@importExcel');
+Route::post('/violation-list/all', 'ViolationRecordsController@getViolationRecordsTable');
+
+
+//Import Activity Records
+Route::get('/activity-records', 'ActivityRecordsController@importExport');
+Route::get('/activity-records/downloadExcel/{type}', 'ActivityRecordsController@downloadExcel');
+Route::post('/activity-records/importExcel', 'ActivityRecordsController@importExcel');
+Route::post('/activity-records/list', 'ActivityRecordsController@getStudentRecordsTable');
+
+
+
+});
+
+
+
+
+Route::group(['middleware' => 'roles', 'roles' => ['Super User','Admin','Secretary']],function(){
+
+Route::post('/get-events' , 'CampusVenueReservationController@getEvents');
 
 
 // Report violation
@@ -52,6 +132,12 @@ Route::post('/get-violation/list', 'ReportViolationController@getViolations');
 
 // Community Service
 //Route::get('/communityService', 'sysController@showCommunityService');
+Route::get('/community-service' , 'CommunityServiceController@showCommunityService');
+Route::get('/community-service/search' , 'CommunityServiceController@searchStudent');
+
+Route::get('/community-service/new_log' , 'CommunityServiceController@getStudentLog');
+Route::post('/community-service/new_log' , 'CommunityServiceController@postStudentLog');
+
 
 Route::get('/campus', 'CampusVenueReservationController@showCampusVenueReservation');
 Route::get('/reservationReports', 'CampusVenueReservationController@showCampusVenueReservationReports');
@@ -68,6 +154,9 @@ Route::post('/organizationsRenewal/requirements/specific', 'OrganizationsRenewal
 Route::post('/organizationsRenewal/add', 'OrganizationsRenewalController@postRequirementsRenewalAdd');
 Route::post('/organizationsRenewal/update', 'OrganizationsRenewalController@postRequirementsRenewalUpdate');
 
+
+
+
 // monitoring of proposal activities
 Route::get('/activities', 'ProposalActivitiesMonitoringController@showProposalActivities');
 Route::get('/addActivity', 'ProposalActivitiesMonitoringController@showAddActivity');
@@ -79,17 +168,12 @@ Route::post('/activities/list' , 'ProposalActivitiesMonitoringController@getActi
 Route::get('/activities/activity_details' , 'ProposalActivitiesMonitoringController@getActivityDetails');
 
 
-// violations
-Route::get('/violation', [
-	'uses' => 'sysController@showViolation',
-	'middleware' => 'roles',
-]);
 
 Route::post('/violation', 'sysController@postViolation');
 
 // Sanction Monitoring
 Route::get('/sanctions', 'sysController@showSanctions');
-Route::get('/sanctions/search/student' , 'SanctionController@searchStudent');
+Route::post('/sanctions/search/student' , 'SanctionController@searchStudent');
 Route::post('/sanctions/student-violation/records' ,  'SanctionController@showStudentViolations');
 
 // Lost and Found 
@@ -120,9 +204,9 @@ Route::get('/lost-and-found/item_details', 'LostAndFoundController@getItemDetail
 
 Route::post('/lostandfound/update', 'LostAndFoundController@postLostAndFoundUpdate');
 
-//Courses
-Route::get('/courses' , 'sysController@showCourses');
-Route::post('/add-course' , 'sysController@postCourse');
+
+//Violation Reports
+Route::get('/violation-reports' , 'ReportViolationController@showViolationReports');
 
 //Violation Statistics
 Route::get('/violation-statistics' , 'ReportViolationController@showStatistics');
@@ -153,10 +237,10 @@ Route::group(['middleware' => 'web'],function(){
 
 	Route::auth();
 	
-
-
-
 });
+
+
+
 Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@logout');
 Route::get('/login', 'Auth\AuthController@getLogin');
@@ -168,28 +252,3 @@ Route::post('/register', 'Auth\AuthController@postRegister');
 // Authentication routes...
 
 
-Route::get('/error401/permission-denied', function(){
-	return view('errors.401');
-});
-
-//Excel Import
-/*Route::get('importExport', 'ImportExcelController@importExport');
-Route::get('downloadExcel/{type}', 'ImportExcelController@downloadExcel');
-Route::post('importExcel', 'ImportExcelController@importExcel');*/
-
-Route::get('/student-records', 'StudentRecordsController@importExport');
-Route::get('/student-records/downloadExcel/{type}', 'StudentRecordsController@downloadExcel');
-Route::post('/student-records/importExcel', 'StudentRecordsController@importExcel');
-Route::post('/student-records/list', 'StudentRecordsController@getStudentRecordsTable');
-
-Route::get('/violation-records', 'ViolationRecordsController@importExport');
-Route::get('/violation-records/downloadExcel/{type}', 'ViolationRecordsController@downloadExcel');
-Route::post('/violation-records/truncate' , 'ViolationRecordsController@truncateViolationRecords');
-Route::post('/violation-records/importExcel', 'ViolationRecordsController@importExcel');
-Route::post('/violation-records/list', 'ViolationRecordsController@getViolationRecordsTable');
-
-
-
-//Academic Calendar
-Route::get('/academic-calendar' , 'AcademicCalendarController@showCalendar');
-Route::post('/academic-calendar/events' , 'AcademicCalendarController@postEvents');
