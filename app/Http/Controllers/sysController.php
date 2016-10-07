@@ -32,6 +32,7 @@ class sysController extends Controller {
     public function getDateSettings(Request $request)
     {
         $validator= Validator::make($request->all(),[
+            
             'first_semester_start_date'  => 'required|date',  
             'first_semester_end_date'  => 'required|date',
             'second_semester_start_date' => 'required|date',
@@ -90,31 +91,31 @@ class sysController extends Controller {
                 
                 ]); 
             }*/
-
 $data = array(
     array('school_year' => $request['school_year']  ,
           'term_name' => 'First Semester',
-          'start'=> $request['first_semester_start_date'], 
-          'end'=> $request['first_semester_end_date']),
+          'start'=> Carbon::parse($request['first_semester_start_date'])->format('Y-m-d'),
+          'end'=> Carbon::parse($request['first_semester_end_date'])->format('Y-m-d')),
     
     array('school_year' => $request['school_year'],
           'term_name' => 'Second Semester',
-          'start'=> $request['second_semester_start_date'],
-          'end'=> $request['second_semester_end_date']),
+          'start'=> Carbon::parse($request['second_semester_start_date'])->format('Y-m-d'),
+          'end'=> Carbon::parse($request['second_semester_end_date'])->format('Y-m-d')),
 
     array('school_year' => $request['school_year'], 
           'term_name' => 'Summer',
-          'start'=> $request['summer_start_date'], 
-          'end'=> $request['summer_end_date']),
+          'start'=> Carbon::parse($request['summer_start_date'])->format('Y-m-d'), 
+          'end'=> Carbon::parse($request['summer_end_date'])->format('Y-m-d')),
 
     array('school_year' => $request['school_year'], 
           'term_name' => 'School Year',
-          'start'=> $request['first_semester_start_date'], 
-          'end'=> $request['summer_end_date']),
-
-
+          'start'=> Carbon::parse($request['first_semester_start_date'])->format('Y-m-d'), 
+          'end'=> Carbon::parse($request['summer_end_date'])->format('Y-m-d')),
+            
+    
     //...
 );
+
 
 
         $sy = DB::table('school_years')->insert($data);

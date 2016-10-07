@@ -24,10 +24,50 @@ class ProposalActivitiesMonitoringController extends Controller
 
     public function showProposalActivities()
     {
-        //$Activities_table = DB::table('Activities')->orderBy('created_at','desc')->get();
+
+ $current_time = Carbon::now()->format('Y-m-d');
+
+
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+      $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+$organizations = DB::table('requirements')->where('school_year',$selected_year)->get();
+
        
-        return view('proposal_activities_monitoring');
+        return view('proposal_activities_monitoring',['organizations' => $organizations,'schoolyears' => $schoolyears,'schoolyear' => $schoolyear]);
+
+       
+
+       
+
     }
+
+
+       public function getActivitiesByYear(Request $request)
+    {
+
+    return Datatables::eloquent(Activity::query()->where('school_year',$request['school_year']))->make(true);
+       
+    } 
+     public function getActivitiesByYearAndOrg(Request $request)
+    {
+
+    return Datatables::eloquent(Activity::query()->where('school_year',$request['school_year'])->where('organization',$request['organization']))->make(true);
+       
+    }  
+
+
+       public function getOrganizationByYear(Request $request)
+    {
+
+      $organizations = DB::table('requirements')->where('school_year',$request['school_year'])->get();
+       return response()->json(array('response' => $organizations));
+       
+    }    
 
     public function getActivitiesTable()
     {
@@ -36,7 +76,21 @@ class ProposalActivitiesMonitoringController extends Controller
     }    
      public function showAddActivity()
     { 
-      return view('proposal_activities_monitoring_add');
+
+      $current_time = Carbon::now()->format('Y-m-d');
+
+
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+      
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+       $organizations = DB::table('requirements')->where('school_year',$selected_year)->get();
+  
+
+
+      return view('proposal_activities_monitoring_add',['organizations' => $organizations],['schoolyears' => $schoolyear]);
     }
 
        public function getActivityDetails(Request $request)
@@ -47,14 +101,21 @@ class ProposalActivitiesMonitoringController extends Controller
 
         public function postProposalActivitiesAdd(Request $request)
     {
-            
+
+        $tomorrow = Carbon::tomorrow()->format('y-m-d');
+
+              $messages = [
+
+            'date_committed.before' => 'Date must be not less than today.',
+        ];
             
             $validator = Validator::make($request->all(),[
             'organizationName' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'date' => 'required|string'
+            'date' => 'required|date|after:' .$tomorrow,
+        
            
-        ]);
+        ],$messages);
 
         if ($validator->fails()) {
             return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
@@ -65,6 +126,7 @@ class ProposalActivitiesMonitoringController extends Controller
 
           $activity = new Activity();
           $activity->organization =  $request['organizationName'];
+          $activity->school_year =  $request['school_year'];
           $activity->activity = $request['title'];
           $activity->date = $request['date'];
           $activity->status = '0';
@@ -102,9 +164,24 @@ class ProposalActivitiesMonitoringController extends Controller
  
          public function showProposalActivitiesReports()
     {
+ $current_time = Carbon::now()->format('Y-m-d');
+
+
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+      $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+$organizations = DB::table('requirements')->where('school_year',$selected_year)->get();
 
        
-        return view('proposal_activities_monitoring_reports');
+        return view('proposal_activities_monitoring_reports',['organizations' => $organizations,'schoolyears' => $schoolyears,'schoolyear' => $schoolyear]);
+
+       
+       
+        // return view('proposal_activities_monitoring_reports');
     }
 
 

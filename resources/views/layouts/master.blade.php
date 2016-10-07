@@ -294,12 +294,19 @@
 					<li>
 						<a href="#"><i class="fa fa-file"></i> <span class="nav-label ng-binding">Organizations Renewal Management</span><span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level collapse">
+
+
+							<li ui-sref-active="active">
+								<a href="/OrganizationsRenewalAdd"><i class=""></i> <span class="nav-label ng-binding">Add Organization</span> </a>
+
+							</li>
+
 							<li ui-sref-active="active">
 								<a href="/OrganizationsRenewalList"><i class=""></i> <span class="nav-label ng-binding">List of Organizations</span> </a>
 
 							</li>
 							<li ui-sref-active="active" >
-								<a href="/organizationsRenewal"> <i class=""></i> <span class="nav-label ng-binding">Checklist of Requirements</span> </a>
+								<a href="/organizationsRenewal"> <i class=""></i> <span class="nav-label ng-binding"> Update Checklist Requirements</span> </a>
 							</li>
 
 						</ul>

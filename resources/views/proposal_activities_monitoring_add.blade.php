@@ -27,19 +27,72 @@
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 					<div class="row">
-						<div class="col-md-6">
+<!-- 						<div class="col-md-6">
 							<div class="form-group ">
 								<label>Organization</label>
 								<input type="text" placeholder="Name of Organization" name="organizationName" class="form-control" autofocus="" aria-required="true">
 							</div>
+						</div> -->
+
+						<div class="col-md-4">
+							<div class="form-group">
+
+								<label>Select Organization</label>
+								<select name="organizationName" id="organizationName" class="form-control">
+								<option autofocus="" disabled selected >Select Organization</option>
+									@foreach ($organizations as $organization)
+									<option>{{$organization->organization }}</option>
+									
+							
+								
+									@endforeach
+									
+								</select>	
+
+
+
+
+
+							</div>
 						</div>
 
-						<div class="col-md-6">
+
+
+
+
+						<div class="col-md-4">
 							<div class="form-group">
 								<label>Title</label>
 								<input type="text" placeholder="Title of Activity" name="title" class="form-control">
 							</div>
 						</div>
+
+											<div class="col-md-3">
+						<div class="form-group">
+
+								<label>School Year</label>
+<!-- 								<select name="school_year" id="school_year" class="form-control" >
+\
+									@foreach ($schoolyears as $schoolyear)
+									<option>{{$schoolyear->school_year }}</option>
+									
+							
+								
+									@endforeach
+									
+								</select>	 -->
+
+									<output id="school_year1" name="school_year1" class="form-control" autofocus="" aria-required="true"  >{{$schoolyear->school_year }}</output>
+									<input type="hidden" id="school_year" name="school_year" class="form-control" autofocus="" aria-required="true" value="{{$schoolyear->school_year }}">
+
+
+
+
+
+					</div>
+					</div>
+
+
 
 
 						<div class="col-md-6">

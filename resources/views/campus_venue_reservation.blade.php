@@ -93,14 +93,16 @@
 </div> -->
 
  <div class="container">
-
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1>Calendar</h1>
                 <div id="calendar" class="col-centered">
                 </div>
             </div>
-            
+            </div>
+            </div>
         </div>
         <!-- row -->
         
@@ -127,14 +129,41 @@
                   <div class="form-group">
                     <label for="title" class="col-sm-2 control-label">Venue</label>
                     <div class="col-sm-10">
-                      <input type="text" name="venue" class="form-control" id="venue" placeholder="Venue">
+                      <!-- <input type="text" name="venue" class="form-control" id="venue" placeholder="Venue"> -->
+                       <select name="venue" class="form-control" id="venue">
+                          <option value="">Choose</option>
+                     
+                          <option value="Academic Resource Center">Academic Resource Center</option>
+                          <option value="Lpu Auditirium">Lpu Auditirium</option>
+                          <option value="AVT">AVT</option>
+                          <option value="Multi-purpose Hall<">Multi-purpose Hall</option>
+                          <option value="Phase II lobby">Phase II lobby</option>
+                          <option value="Roofdeck">Roofdeck</option>
+                          <option value="CPAD Lobby">CPAD Lobby</option>
+
+                          
+                        </select>
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label for="title" class="col-sm-2 control-label">Organizer</label>
                     <div class="col-sm-10">
-                      <input type="text" name="organization" class="form-control" id="organization" placeholder="Organizer">
+                      <!-- <input type="text" name="organization" class="form-control" id="organization" placeholder="Organizer"> -->
+                <select name="organization" id="organization" class="form-control">
+                <option autofocus="" disabled selected >Select Organization</option>
+                  @foreach ($organizations as $organization)
+                  <option>{{$organization->organization }}</option>
+                  
+              
+                
+                  @endforeach
+                  
+                </select>
+
+
+
+                      
                     </div>
                   </div>
 
@@ -163,7 +192,7 @@
                     </div>
                   </div>
 
-                    <div class="form-group">
+<!--                     <div class="form-group">
                     <label for="color" class="col-sm-2 control-label">Remark Status</label>
                     <div class="col-sm-10">
                       <select name="remark_status" class="form-control" id="remark_status">
@@ -174,7 +203,7 @@
                           
                         </select>
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="form-group">
                     <label for="title" class="col-sm-2 control-label">CVF No.</label>
@@ -253,11 +282,11 @@
     </div>
 
 <!-- Mainly scripts -->
-<script src="js/plugins/fullcalendar/moment.min.js"></script>
-
+<!-- <script src="js/plugins/fullcalendar/moment.min.js"></script>
+ -->
 
 <!-- iCheck -->
-<script src="js/plugins/iCheck/icheck.min.js"></script>
+<!-- <script src="js/plugins/iCheck/icheck.min.js"></script> -->
 
 <!-- Full Calendar -->
 <script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>
@@ -455,8 +484,10 @@ $.ajax({
          type: "success",  
          showConfirmButton: false 
         });
-      /*$('#calendar').fullCalendar().ajax.reload();*/
-         $('#calendar').fullCalendar( 'refetchEvents', events);
+
+        window.location.reload();
+      // $('#calendar').fullCalendar().ajax.reload();
+         // $('#calendar').fullCalendar( 'refetchEvents', events);
   
 
       }
@@ -504,7 +535,7 @@ $.ajax({
         });
 
         calendar1.ajax.reload();
-        $('#calendar').fullCalendar( 'refetchEvents' );
+
   
 
       }

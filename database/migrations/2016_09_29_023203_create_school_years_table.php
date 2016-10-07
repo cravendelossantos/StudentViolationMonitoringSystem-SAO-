@@ -14,10 +14,12 @@ class CreateSchoolYearsTable extends Migration
     {
         Schema::create('school_years', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('school_year')->unique();
+            $table->string('school_year');
             $table->string('term_name');
             $table->string('start');
             $table->string('end');
+
+
 
             
         
