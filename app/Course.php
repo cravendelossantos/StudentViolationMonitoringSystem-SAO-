@@ -11,4 +11,9 @@ class Course extends Model
     {
     	return $this->hasOne('App\Student');
     }
+
+    public function college()
+    {
+    	return $this->hasOne('App\College' , 'id' , 'college_id');
+    }
 }

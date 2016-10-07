@@ -12,6 +12,7 @@ use DateTime;
 use Validator;
 use Auth;
 use Yajra\Datatables\Facades\Datatables;
+use Response;	
 
 class LostAndFoundController extends Controller
 {
@@ -61,10 +62,11 @@ class LostAndFoundController extends Controller
 		return response()->json(array('response' => $item));
 	}
 	
-	public function postLostAndFoundAdd(Request $request)
+
+	public function getLostAndFoundAdd(Request $request)
 	{
-			$now = Carbon::now();
-			
+
+
 			$validator = Validator::make($request->all(),[
         	'itemName' => 'required|string|max:255',
             'endorserName' => 'required|string|max:255',
@@ -73,10 +75,17 @@ class LostAndFoundController extends Controller
 	    ]);
 
         if ($validator->fails()) {
-            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
+            return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
           
         }
-		else {
+	}
+
+
+	public function postLostAndFoundAdd(Request $request)
+	{
+			$now = Carbon::now();
+		
+
 	
 
 		  $report = new LostAndFound();
@@ -95,32 +104,40 @@ class LostAndFoundController extends Controller
 			'response' => $report
 		));
 	
-		}
+		
 
 	}
 	
-	public function postLostAndFoundUpdate(Request $request)
+	public function getLostAndFoundUpdate(Request $request)
 	{
 		$validator = Validator::make($request->all(),[
-        	'claimer_name' => 'required|alpha|max:255',                   
+        	'claimer_name' => 'required|string|max:255',                   
 	    ]);
 
         if ($validator->fails()) {
-            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
+            return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
           
         }
-		else {
-	
-			$lost_and_found = DB::table('lost_and_founds')->where('id', $request['claim_id'])->update([			
-            'claimer_name' => $request['claimer_name'],
-            'status' => 2,
- 	        'date_claimed' => Carbon::now(),
-        ]);
-			
-			}
-			//modal claimer name enter. page reloads
+
 
 		}
+
+
+		public function postLostAndFoundUpdate(Request $request)
+		{
+			$lost_and_found = DB::table('lost_and_founds')->where('id', $request['claim_id'])->update([			
+            'claimer_name' => $request['claimer_name'],
+            'status' => 'Claimed',
+ 	        'date_claimed' => Carbon::now(),
+
+
+        ]);
+
+			return Response::json(['success' => true, 'response' => $lost_and_found], 200);
+	
+		}
+
+
 		public function showLostAndFoundStatistics()
 		{
 			return view('lost_and_found_statistics');

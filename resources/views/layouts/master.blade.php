@@ -243,10 +243,10 @@
 							<li>
 							<a href="#"><i class="fa fa-book"></i> <span class="nav-label ng-binding">Lost and Found</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
-								<li ui-sref-active="active">
+						<!-- 		<li ui-sref-active="active">
 									<a href="/lost-and-found/statistics"> <i class=""></i> <span class="nav-label ng-binding">Statistics</span> </a>
 								</li>
-
+ -->
 								<li ui-sref-active="active">
 									<a href="/lost-and-found"><i class=""></i> <span class="nav-label ng-binding">Add / Claim Items</span> </a>
 								</li>
@@ -368,12 +368,16 @@
 						<li>
 						<a href="#"><i class="fa fa-cog"></i> <span class="nav-label ng-binding">Settings</span><span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level collapse">
-							<li ui-sref-active="active">
+						<!-- 	<li ui-sref-active="active">
 								<a href="/violation"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Violations</span> </a>
 
-							</li>
-							<li ui-sref-active="active" >
+							</li> -->
+					<!-- 		<li ui-sref-active="active" >
 								<a href="/courses"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Courses</span> </a>
+							</li> -->
+
+									<li ui-sref-active="active" >
+								<a href="/settings/locker-locations"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Add Locker Locations</span> </a>
 							</li>
 
 							<li ui-sref-active="active" >
