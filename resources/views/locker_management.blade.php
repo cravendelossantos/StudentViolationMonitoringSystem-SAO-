@@ -74,6 +74,18 @@
 
 					</div>
 
+									<div class="col-md-6">
+					<label>Select Contract</label>
+								<select name="location" id="location" class="form-control">
+									@foreach ($contract_dates as $contract_date)
+									<option>{{ $contract_date->term_name }}</option>
+							
+									@endforeach
+									
+								</select>	
+	</div>
+
+
 	
 							
 			</div>
@@ -134,27 +146,18 @@
 
 								<label>Location</label>
 								<select name="location" id="location" class="form-control">
-									@foreach ($locations as $location)
-									<option>{{ $location->location }}</option>
-									
-							
-								
-									@endforeach
-									
-								</select>	
+								<option selected="" disabled="">Select Location</option>
+								@foreach($locations as $location)
+
+								<option value="{{ $location->id }}">{{ $location->building }} Building {{ $location->floor }} Floor </option>
+								@endforeach
+								</select>
+
+
+				</div>
 	</div>
 		
-							<div class="form-group ">
-							<input type="text" name="new_location" id="new_location" class="form-control">
-						</div>
 					
-
-
-
-						</div>
-
-						
-						<div class="col-md-6">
 								<div class="col-md-6">
 							<div class="form-group ">
 								<label>Locker number</label>
@@ -166,7 +169,9 @@
 						</div>
 							
 
-						</div>
+
+
+
 
 						
 

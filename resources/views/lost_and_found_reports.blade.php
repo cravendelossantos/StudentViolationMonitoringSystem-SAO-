@@ -5,7 +5,7 @@
 @section('header-page')
 <div class="row">
 <div class="col-md-12">
-	<h1>Welcome {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}!</h1>
+	<h1>Lost and Found Reports and Statistics</h1>
 </div>
 </div>
 
