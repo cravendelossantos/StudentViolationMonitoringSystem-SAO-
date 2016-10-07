@@ -19,24 +19,66 @@ use Response;
 
 class OrganizationsRenewalController extends Controller
 {
-    public function __construct()
+       public function __construct()
     {
     	$this->middleware('roles');
     }
     
- 	public function showOrganizationsRenewal()
+ 	    public function showOrganizationsRenewal()
     {
-
        
-        return view('organizations_renewal');
+      $current_time = Carbon::now()->format('Y-m-d');
+
+
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+      
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+       $organizations = DB::table('requirements')->where('school_year',$selected_year)->get();
+      return view('organizations_renewal',['organizations' => $organizations],['schoolyear' => $schoolyear]);
     }
 
-  public function showOrganizationsRenewalList()
+      public function showOrganizationsRenewalList()
     {
+       $current_time = Carbon::now()->format('Y-m-d');
+
+
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+      $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+
 
        
-        return view('organizations_renewal_list');
+        return view('organizations_renewal_list',['schoolyears' => $schoolyears],['schoolyear' => $schoolyear]);
     }
+
+
+      public function showOrganizationsRenewalAdd()
+    {
+
+
+     $current_time = Carbon::now()->format('Y-m-d');
+
+
+
+$schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+       
+        return view('organizations_renewal_add',['schoolyears' => $schoolyear]);
+    }
+
+
+    //     public function getOrganizationList()
+    // {
+      
+    //     $organizations = DB::table('requirements')->get();
+    //   return view('organizations_renewal',['organization' => $organizations]);
+    // }
 
 
         public function getRequirementsTable()
@@ -74,10 +116,18 @@ class OrganizationsRenewalController extends Controller
 
    $term = $request->organization;
           
-    $data = Requirements::where('organization', $request['organization'])->first();
+    $data = Requirements::where('organization', $request['organization'])->where('school_year',$request['year'])->first();
 
      return response()->json($data);
 
+    }
+
+        public function searchRequirementsByYear(Request $request)
+    {
+      
+    
+
+    return Datatables::eloquent(Requirements::query()->where('school_year',$request['school_year']))->make(true);
     }
 
 
@@ -95,9 +145,21 @@ class OrganizationsRenewalController extends Controller
           
         }
         else {
-    
 
+
+     $current_time = Carbon::now()->format('Y-m-d');
+
+
+
+$sy = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->first();
+
+
+ $asdad = json_encode($sy);
+
+
+     
           $requirement = new Requirements();
+          $requirement->school_year =  $request['school_year'];
           $requirement->organization =  $request['organizationName'];
           $requirement->requirement1 = $request['requirement1'];
           $requirement->requirement2 = $request['requirement2'];
@@ -113,7 +175,12 @@ class OrganizationsRenewalController extends Controller
           $requirement->save();
         return response()->json(array(
             'success' => true,
-            'response' => $requirement
+            'response' => $requirement,
+            'response1' =>$current_time,
+            'response4' =>$sy,
+
+
+
         ));
         }
     }

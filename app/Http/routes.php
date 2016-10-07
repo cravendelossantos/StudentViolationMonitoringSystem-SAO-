@@ -148,9 +148,11 @@ Route::post('/campus/update', 'CampusVenueReservationController@postCampusVenueR
 // organizations renewal
 Route::get('/organizationsRenewal', 'OrganizationsRenewalController@showOrganizationsRenewal');
 Route::get('/OrganizationsRenewalList', 'OrganizationsRenewalController@showOrganizationsRenewalList');
+Route::get('/OrganizationsRenewalAdd', 'OrganizationsRenewalController@showOrganizationsRenewalAdd');
 Route::get('/OrganizationsRenewal/Search', 'OrganizationsRenewalController@searchRequirements');
 Route::post('/organizationsRenewal/requirements/all', 'OrganizationsRenewalController@getRequirementsTable');
 Route::post('/organizationsRenewal/requirements/specific', 'OrganizationsRenewalController@getRequirementsByName');
+Route::post('/organizationsRenewal/requirements/ByYear', 'OrganizationsRenewalController@searchRequirementsByYear');
 Route::post('/organizationsRenewal/add', 'OrganizationsRenewalController@postRequirementsRenewalAdd');
 Route::post('/organizationsRenewal/update', 'OrganizationsRenewalController@postRequirementsRenewalUpdate');
 
@@ -161,11 +163,17 @@ Route::post('/organizationsRenewal/update', 'OrganizationsRenewalController@post
 Route::get('/activities', 'ProposalActivitiesMonitoringController@showProposalActivities');
 Route::get('/addActivity', 'ProposalActivitiesMonitoringController@showAddActivity');
 // Route::get('/getActivityDetails', 'ProposalActivitiesMonitoringController@getActivityDetails');
+Route::get('/activitiesReports', 'ProposalActivitiesMonitoringController@showProposalActivitiesReports');
 Route::post('/postAddActivity', 'ProposalActivitiesMonitoringController@postProposalActivitiesAdd');
 Route::post('/postUpdateActivity', 'ProposalActivitiesMonitoringController@postProposalActivitiesUpdate');
-Route::get('/activitiesReports', 'ProposalActivitiesMonitoringController@showProposalActivitiesReports');
+Route::post('/activities/ActivitiesByYear', 'ProposalActivitiesMonitoringController@getActivitiesByYear');
+Route::post('/activities/ActivitiesByYearAndOrg', 'ProposalActivitiesMonitoringController@getActivitiesByYearAndOrg');
+Route::post('/activities/OrganizationByYear', 'ProposalActivitiesMonitoringController@getOrganizationByYear');
+
 Route::post('/activities/list' , 'ProposalActivitiesMonitoringController@getActivitiesTable');
 Route::get('/activities/activity_details' , 'ProposalActivitiesMonitoringController@getActivityDetails');
+
+
 
 
 

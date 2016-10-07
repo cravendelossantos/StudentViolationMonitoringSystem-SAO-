@@ -15,6 +15,7 @@ class CreateActivitiesTable extends Migration
         Schema::create('activities', function (Blueprint $table) {
         $table->increments('id');
         $table->string('organization');
+        $table->string('school_year');
         $table->string('activity');
         $table->date('date');
         $table->boolean('status');

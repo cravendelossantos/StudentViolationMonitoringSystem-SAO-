@@ -15,6 +15,7 @@ class CreateRequirementsTable extends Migration
         Schema::create('requirements', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
+            $table->string('school_year');
             $table->string('organization');
             $table->boolean('requirement1');
             $table->boolean('requirement2');

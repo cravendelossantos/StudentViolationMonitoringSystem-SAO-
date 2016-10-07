@@ -22,10 +22,23 @@ class CampusVenueReservationController extends Controller
     
  	public function showCampusVenueReservation()
     {
+
+ $current_time = Carbon::now()->format('Y-m-d');
+
+
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+      
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+       $organizations = DB::table('requirements')->where('school_year',$selected_year)->get();
+
+
     	// $campus_venue_reservation = DB::table('campus_venue_reservation')->get();
         $events = DB::table('events')->get();
        
-        return view('campus_venue_reservation', ['CampusVenueReservationTable' => $events ]);
+        return view('campus_venue_reservation', ['CampusVenueReservationTable' => $events,'organizations' => $organizations, 'schoolyears' => $schoolyear]);
     }
 
           public function showCampusVenueReservationReports()
@@ -87,7 +100,7 @@ class CampusVenueReservationController extends Controller
             'status' => $request['status'],
             'start' => $request['start'],
             'end'   => $request['end'],
-            'remark_status' => $request['remark_status'],
+            // 'remark_status' => $request['remark_status'],
             'cvf_no' => $request['cvf_no']
 
             ]);
@@ -112,8 +125,7 @@ class CampusVenueReservationController extends Controller
         $validator = Validator::make($request->all(),[
             // 'title' => 'required',
           'id' => 'required',
-            'start' =>  'required',
-            'end' => 'required',
+
         ]);
      
         if ($validator->fails()) {
