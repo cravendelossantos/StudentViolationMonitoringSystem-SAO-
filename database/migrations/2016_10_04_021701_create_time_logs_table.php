@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLockerLocations extends Migration
+class CreateTimeLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,13 @@ class CreateLockerLocations extends Migration
      */
     public function up()
     {
-        Schema::create('locker_locations', function (Blueprint $table) {
+        Schema::create('time_logs', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date_added');
-            $table->string('location');
-            
-
-        });    
-
+            $table->time('time_in');
+            $table->time('time_out');
+            $table->string('student_id');
+            $table->integer('cs_id');
+        });
     }
 
     /**
@@ -29,6 +28,6 @@ class CreateLockerLocations extends Migration
      */
     public function down()
     {
-        Schema::drop('locker_locations');
+        Schema::drop('time_logs');
     }
 }
