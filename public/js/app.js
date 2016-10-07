@@ -74,7 +74,7 @@ $('#summer_range .input-daterange').datepicker({
 					showCancelButton: true,  
 				    confirmButtonColor: "#DD6B55",   
 				    confirmButtonText: "Submit",   
-				    closeOnConfirm: true
+				    closeOnConfirm: false 
 				}, function(){  
 					$.ajax({
 						headers : {
@@ -154,7 +154,6 @@ var violation_reports_table = $('.violation-reports-DT').DataTable({
 		{data : 'offense_no'},
 		{data : 'course'},
 
-
 		
 	]
 });
@@ -173,10 +172,7 @@ function getViolation()
 
 	}).done(function(data){
 	
-		if (data.violations.length == 0)
-		{
-			$('#violations_import').show();
-		}
+	
 		$.each(data.violations, function(key, value){
 				// $('#violation_selection').val(data.violations[key].name);
 			   $('#violation_selection').append($("<option></option>").attr("value",value.name).text(value.name));
@@ -190,8 +186,6 @@ function getViolation()
 
 function offenseLevelChange()
 {
-
-
 
 $('#offense_level').on('change', function(e){
 	$('#violation_selection').find('option').remove();
@@ -227,7 +221,7 @@ setTimeout(function(){
     },3000);
 }
 
-$('#offense_level').prop('disabled',true);
+
 
 $('button#report_btn').click(function(e){
 	e.preventDefault();
@@ -266,8 +260,8 @@ $('button#report_btn').click(function(e){
 					showCancelButton: true,  
 				    confirmButtonColor: "#DD6B55",   
 				    confirmButtonText: "Save",   
-				    closeOnConfirm: true
-					}, function(){  
+				    closeOnConfirm: false 
+				}, function(){  
 					$.ajax({
 						headers : {
 				'X-CSRF-Token' : $('input[name="_token"]').val()
@@ -304,19 +298,11 @@ $('button#report_btn').click(function(e){
 				$('#first_name').val("").attr("readonly",false);
 				
 				$('#year_level').val("").attr("readonly",false);
-$('#violation_selection').find('option').remove();
-		 $('#violation_selection')
-         .append($("<option selected='' disabled=''></option>")
-                    .attr("value", '0')
-                    .text('Select violation'));
-
-         $('#violation_date_picker .input-group.date').datepicker('setDate', null);
-$('#report_btn').prop('disabled', true);
-$('#offense_level').prop('disabled', true);
 					});
    		});
 	});
 });
+
 
 
 
@@ -366,15 +352,6 @@ $('#offense_level').prop('disabled', true);
 						$('#last_name').val("").attr("readonly",false);
 						$('#first_name').val("").attr("readonly",false);
 						$('#year_level').val("").attr("readonly",false);
-						$('#offense_level').prop('disabled',true);
-					}
-					else if(data[0].current_status == 'Excluded'){
-						$('#report_btn').prop('disabled', true);
-$('#offense_level').prop('disabled', true);
-									$('form#reportViolationForm').each(function() {
-					this.reset();
-				});	
-						swal("Oops...", "This student is Excluded", "error");
 					}
 					else{
 					x();
@@ -391,12 +368,9 @@ $('#offense_level').prop('disabled', true);
 				//$('#course').val(ui.item.course);
 				$('#year_level').val(year_level + "/" + course).attr("readonly",true);
 				//countOffense();
-				$('#offense_level').prop('disabled',false);
 			}
 
 			});
-				
-	
 
 				$('#report_btn').prop('disabled', false);
 					}
@@ -464,12 +438,9 @@ $('#new_student_btn').click(function(e){
 	$('#student_no').val(student_no);
 	$('#first_name').val(first_name);
 	$('#last_name').val(last_name);
-	$('#year_level').val(year_level + " / " + course);
+	$('#year_level').val(year_level + "/" + course);
 	$('#contact').val(contact);
-		
-	$('#find_student').trigger('click',function(e){
-		e.preventDefault();
-	});	
+	
 
 
 	//ajax
@@ -486,7 +457,7 @@ $('#new_student_btn').click(function(e){
 		e.preventDefault();
 
 
-
+		
 		$.ajax({
 			headers : {
 				'X-CSRF-Token' : $('input[name="_token"]').val()
@@ -538,7 +509,7 @@ function countOffense()
 					data : $('form#reportViolationForm').serialize(),
 				}).done(function(data){
 
-				var sanction = data.sanction['sanction'];	
+					var sanction = data.sanction['sanction'];	
 				var offense_no = data.offense_no;
 				var diff_offense_no = data.diff_type_offense;
 				
@@ -546,101 +517,38 @@ function countOffense()
 				// 	offense_no += 1;
 
 				var current_offense_no = parseInt(offense_no);
-				var current_diff_offense_no = parseInt(diff_offense_no);
-				var total_serious_offense_no = data.total_serious_offense_no;
-					
 
-					if (offense_no == 3 && diff_offense_no == 2 && $('#offense_level').val() == 'Less Serious')
+				//check if 4th same type
+					if (offense_no > 3 /*&& offense_no <=6 && $('#violation_offense_level').val('Less Serious')*/)
 					{
+						$('#same_type').val(offense_no);
+						$('#diff_type').val(diff_offense_no);
 						
-						//Warning if same and diff type will elevate
-						swal("Warning!", 'This will be the third commission of student with student number ' + $('#student_number').val() + ' of ' + (current_offense_no) +' same type of ' +  $('#offense_level').val()  + 
-							'\n\n .This student also committed ' + (current_diff_offense_no) +' different types of ' +  $('#offense_level').val() ,  "warning");
+						//swal("Warning!", 'The student with student number ' + $('#student_number').val() + ' committed ' + (current_offense_no-1) +' same type of ' +  $('#offense_level').val() + ' offense. \n The violation will elevate to Serious offense.' ,  "warning");
+						$('#offense_level').prop('selectedIndex', 2);
+							$('#violation_selection').find('option').remove();	
+							  $('#violation_selection')
+        					 .append($("<option selected='' disabled=''></option>")
+                    .attr("value", '0')
+                    .text('Select violation'));
+
+         				
+						//getViolation();
+						offenseLevelChange();
+						//same type
+						elevateToSeriousSame();
+
+					}
+				if (diff_offense_no == 2 )
+					{		
 					
-					}
-					else if (offense_no == 3 && $('#offense_level').val() == 'Less Serious')
-					{
-						swal("Warning!", 'This will be the third commission of student with student number ' + $('#student_number').val() + ' of ' + (current_offense_no) +' same type of ' +  $('#offense_level').val() + ' offense level' ,  "warning");
-					}
-	
-
-					//checks if diff types = 2 and if the selected violation is same type
-					else if (diff_offense_no == 2 && offense_no <= 1 && $('#offense_level').val() == 'Less Serious')
-					{
-						swal("Warning!", 'The student with student number ' + $('#student_number').val() + ' committed ' + (diff_offense_no) + ' different type of ' +  $('#offense_level').val() + '. This will be the third commision of different types of Less Serious offense and will elevate to Serious offense level. Please also check if the violation is already elevated and select the corresponding violation for elevation. '  ,  "warning");
-
-							$('#offense_level').prop('selectedIndex', 2);
-							$('#violation_selection').find('option').remove();	
-							  $('#violation_selection')
-        					 .append($("<option selected='' disabled=''></option>")
-                    .attr("value", '0')
-                    .text('Select violation'));
-
-        				getViolation();
-						//offenseLevelChange();
-						// elevateToSeriousDiff();
-					}
-
-					else if (offense_no > 3 && diff_offense_no == 2 && $('#offense_level').val() == 'Less Serious')
-					{
-						swal("Warning!", 'This will be the fourth commission of student with student number ' + $('#student_number').val() + ' of ' + (current_offense_no) +' same type of ' +  $('#offense_level').val()  + 
-							'. The offense level will elevate to Serious offense level. Please also check if the violation is already elevated and select the corresponding violation for elevation.' + 
-							'\n\n This student also committed 2 different types of same Offense Level' ,  "warning");
+						var current_diff_offense_no = parseInt(diff_offense_no);
+						swal("Warning!", 'The student with student number ' + $('#student_number').val() + ' committed ' + (current_diff_offense_no) +' different types of ' +  $('#offense_level').val() + ' offense. \n The violation will elevate to  Serious offense if you submmitted this report.' ,  "warning");
+						//$('#offense_warning').html("Commission of" +  a + $('#offense_level').val() + " offenses");
 					
-						//'elevate same type and warning for diff type'
-		
-     
-
-							$('#offense_level').prop('selectedIndex', 2);
-							$('#violation_selection').find('option').remove();	
-							  $('#violation_selection')
-        					 .append($("<option selected='' disabled=''></option>")
-                    .attr("value", '0')
-                    .text('Select violation'));
-
-        				getViolation();
-						// offenseLevelChange();
-						// elevateToSeriousSame();
-						
+				
 					}
-
-					else if (offense_no > 3 && $('#offense_level').val() == 'Less Serious')
-					{
-						swal("Warning!", 'This will be the fourth commission of student with student number ' + $('#student_number').val() + ' of ' + (current_offense_no) +' same type of ' +  $('#offense_level').val()  + 
-							'. The offense level will elevate to Serious offense level. Please also check if the violation is already elevated and select the corresponding violation for elevation.' ,  "warning");
-					
-
-							$('#offense_level').prop('selectedIndex', 2);
-							$('#violation_selection').find('option').remove();	
-							  $('#violation_selection')
-        					 .append($("<option selected='' disabled=''></option>")
-                    .attr("value", '0')
-                    .text('Select violation'));
-
-        				getViolation();
-					}
-
-					//must get all the serious (3) within a sem
-			/*		if ((total_serious_offense_no) == 2 && $('#offense_level').val() == 'Serious')
-					{
-						swal("Warning!", 'The student with student number ' + $('#student_number').val() + ' committed ' + (total_serious_offense_no) + ' different type of ' +  $('#offense_level').val() + '. This will be the third commision of different types of Serious offense and will elevate to Very-Serious offense level. Please also check if the violation is already elevated and select the corresponding violation for elevation. '  ,  "warning");
-
-							$('#offense_level').prop('selectedIndex', 3);
-							$('#violation_selection').find('option').remove();	
-							  $('#violation_selection')
-        					 .append($("<option selected='' disabled=''></option>")
-                    .attr("value", '0')
-                    .text('Select violation'));
-
-        				getViolation();
-						//offenseLevelChange();
-						// elevateToSeriousDiff();
-					}*/
-
-
-
-	
-	/*				 if (diff_offense_no == 3)
+					 if (diff_offense_no == 3)
 
 					{	
 				
@@ -654,15 +562,7 @@ function countOffense()
          				
 						//getViolation();
 						offenseLevelChange();
-						elevateToSeriousDiff();
-
-
-					}
-
-
-
-*/
-
+						elevateToSeriousDiff();}
 				// 	else if (offense_no >6 && $('#violation_offense_level').val('Serious'))
 				// 	{
 				// 		$('#violation_offense_level').attr("style", "color:red").val('Very Serious');
@@ -795,66 +695,39 @@ $('button#lost_and_found_reportBtn').click(function(e) {
 			headers : {
 				'X-CSRF-Token' : $('input[name="_token"]').val()
 			},
-			type : "GET",
+			type : "POST",
 			url : "/lost-and-found/report-item",
 			data : $('form#reportLostItem').serialize(),
 
-		}).fail(function(data){
+		}).done(function(data) {
 
-			 var errors = $.parseJSON(data.responseText);
-				var msg="";
-				
-				$.each(errors.errors, function(k, v) {
+			var msg = "";
+			if (data.success == false) {
+				$.each(data.errors, function(k, v) {
 					msg = msg + v + "\n";
 					swal("Oops...", msg, "warning");
 
 				});
 
+			} else if (data.success == true) {
 
-		}).done(function(data) {
-
-						swal({   
-					title: "Are you sure?",   
-					text: "This action cannot be undone",   
-					type: "warning",   
-					showCancelButton: true,  
-				    confirmButtonColor: "#DD6B55",   
-				    confirmButtonText: "Submit",   
-				    closeOnConfirm: true 
-				}, function(isConfirm){  
-
-				if (isConfirm){
-									$.ajax({
-			headers : {
-				'X-CSRF-Token' : $('input[name="_token"]').val()
-			},
-			type : "POST",
-			url : "/lost-and-found/report-item",
-			data : $('form#reportLostItem').serialize(),
-					}).done(function(data){
-							 swal({   
-			 			title: "Success!",  
-			 	 text: "Item Reported!",   
-			 	 timer: 1000, 
+				$('form#reportLostItem').each(function() {
+					this.reset();
+				});
+				
+				swal({   
+			 	title: "Success!",  
+			 	 text: "Item Reported",   
+			 	 timer: 2000, 
 			 	 type: "success",  
 			 	 showConfirmButton: false 
-
-					
-	
 			 	});
-							 	$('form#reportLostItem').each(function() {
-					this.reset();
-				});	
-	});
+				lost_and_found_table.ajax.reload();
 
 
-					lost_and_found_table.ajax.reload();
-				}		
-				else {
-					return false;
-				}
-	
-});
+		
+
+			}
 		});
 
 	});
@@ -898,8 +771,6 @@ $('button#lost_and_found_reportBtn').click(function(e) {
 				{
 					return false;
 				}
-
-			
 				else{
 					if (data.response['status'] == "Claimed" || data.response['status'] == "Donated")
 					{
@@ -935,29 +806,18 @@ $.ajax({
 				'X-CSRF-Token' : $('input[name="_token"]').val()
 			},
 	url:'/lostandfound/update',
-	type: 'GET',
+	type: 'POST',
 	data: $('form#claim_item').serialize(),
-}).fail(function(data){
-
-		 var errors = $.parseJSON(data.responseText);
-				var msg="";
-				
-				$.each(errors.errors, function(k, v) {
+}).done(function(data){
+	var msg = "";
+			if (data.success == false) {
+				$.each(data.errors, function(k, v) {
 					msg = msg + v + "\n";
 					swal("Oops...", msg, "warning");
 
 				});
-}).done(function(data){
 
-
-	$.ajax({
-	headers : {
-				'X-CSRF-Token' : $('input[name="_token"]').val()
-			},
-	url:'/lostandfound/update',
-	type: 'POST',
-	data: $('form#claim_item').serialize(),
-});
+			}  else {
 				$('#LAF_Modal').modal('hide');
 				swal({   
 			 	title: "Success!",  
@@ -967,7 +827,7 @@ $.ajax({
 			 	 showConfirmButton: false 
 			 	});
 				lost_and_found_table.ajax.reload();
-			
+			}
 });
 });
 
@@ -981,7 +841,7 @@ $('select#sort_by').change(function(e){
 	
 
 	if (selected == 0) {
-		lost_and_found_table.ajax.url('/lost-and-founds/items/all').load();		
+		lost_and_found_table.ajax.reload();		
 	} else if (selected == 1)	{
 		lost_and_found_table.ajax.url('/lost-and-founds/items/sort_by=unclaimed').load();
 	} else if (selected == 2) {
@@ -1119,9 +979,7 @@ function lockerRange()
 
 }
 
-
-
-
+// $('#new_location').hide();
 $('#m_lessee').hide();
 
 
@@ -1159,8 +1017,6 @@ $('#location').change(function (e){
 			data: $('#add_locker_form').serialize(),
 			success: function(data){
 				console.log(data);
-				window.location.reload();
-				lockers_table.ajax.reload();
 			},
 			error: function(data){
 
@@ -1179,14 +1035,14 @@ var lockers_table = $('.lockers-DT').DataTable({
     	url : "/lockers/all",
 		type: "POST",
 			},
-	// "bSort" : true,
-	/*"bFilter" : true,*/
-	// "order": [[ 0, "desc" ]],
+	"bSort" : true,
+	"bFilter" : true,
+	"order": [[ 0, "desc" ]],
 	"rowId" : 'id',	
 	"columns" : [
 
 		{data : 'id'},
-		{data : 'location_id'},
+		{data : 'location'},
 		{data : 'lessee'},
 		{data : 'status'},		  
 
@@ -1197,16 +1053,16 @@ var lockers_table = $('.lockers-DT').DataTable({
 	dom : '<"html5buttons"B>lTfgtip',
 	buttons : [{
 		extend : 'csv',
-		title : 'Lockers',
+		title : 'STUDENT RECORDS',
 	}, {
 		extend :'excel',
-		title : 'Lockers',
+		title : 'STUDENT RECORDS',
 	} , {
 		extend : 'pdf',
-		title : 'Lockers',
+		title : 'STUDENT RECORDS',
 	} , {
 		extend : 'print',
-		title : 'Lockers',
+		title : 'STUDENT RECORDS',
 		customize : function(win) {
 			$(win.document.body).addClass('white-bg');
 			$(win.document.body).css('font-size', '8px').prepend('<label>Text</label>');
@@ -1374,7 +1230,7 @@ $('#locker_update').click(function(e){
     	headers : {
 				'X-CSRF-Token' : $('input[name="_token"]').val()
 			},
-    	url : "/violation-list/all",
+    	url : "/violation-records/list",
 		type: "POST",
 			},
 	"bSort" : true,
@@ -1449,7 +1305,7 @@ $('#truncate_btn').click(function(e){
 			confirmButtonColor: "#DD6B55",   
 			confirmButtonText: "Proceed",   
 			cancelButtonText: "Cancel",   
-			closeOnConfirm: true,   
+			closeOnConfirm: false,   
 			closeOnCancel:true  }, 
 			function(isConfirm){   
 				if (isConfirm) {  
@@ -1509,7 +1365,84 @@ $('#truncate_btn').click(function(e){
 
 
 
+//Sanction
 
+
+var sanctions_table = $('.sanctions-DT').DataTable({
+/*	"processing": true,
+    "serverSide": true,*/
+	"bPaginate" : false,
+	"bInfo" :false,
+	"bSort" : false,
+	"bFilter" : false,
+	
+
+	
+  /*  "ajax": {
+    	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+    	url : "/sanctions/student-violation/records",
+		type: "POST",
+			},
+	
+	"rowId" : 'id',	
+	"columns" : [
+		
+		{data : 'student_id'},
+		{data : 'first_name'},
+		{data : 'last_name'},
+		{data : 'name'},
+		{data : 'offense_no'},
+		{data : 'sanction'},
+
+			
+
+		
+	]*/
+});
+
+	$('.sanctions-DT').on('click', 'tr', function(){
+		var tr_id = $(this).attr('id');
+						$('#sanction_modal').modal('show');
+		$('form#claim_item')[0].reset();
+				$.ajax({
+	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+	url: "",
+	type: "GET",
+	data: {
+		id : tr_id
+	},
+}).done(function(data){
+
+	var msg = "";
+			if (data.success == false) {
+				$.each(data.errors, function(k, v) {
+					msg = msg + v + "\n";
+					swal("Oops...", msg, "warning");
+
+				});
+
+			} else {
+
+				if (data.response == null)
+				{
+					return false;
+				}
+				else{
+					if (data.response['status'] == "Claimed" || data.response['status'] == "Donated")
+					{
+						return false;
+					}
+
+	
+			}
+			}
+
+});
+	});
 /*
 	$('#sanctions_find_student').click(function(e){
 
@@ -1605,8 +1538,58 @@ $('#truncate_btn').click(function(e){
 //Time log
 
 
+$('.suspensions-DT').DataTable({
+	"bPaginate" : false,
+	"bInfo" :false,
+	"bSort" : false,
+	"bFilter" : false,
+});	
+
+$('.CS-DT').DataTable().destroy();
+
+function searchStudentCS(){
+$('.CS-DT').DataTable().destroy();
+var CS_table = $('.CS-DT').DataTable({
+	
+	"bFilter" : false,
+	"processing": true,
+    "serverSide": true,
+    "ajax": {
+    	headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val(),
+			},
+    	url : "/community-service/search",
+		data: function(d){
+			d.student_id = $('input[name=cs_student_no]').val();
+		
+			},
+		},
+
+/*	"bSort" : true,
+	"bFilter" : true,*/
+/*	"order": [[ 0, "desc" ]],*/
+	// "rowId" : 'id',	
+	"columns" : [
+		
+		{data : 'student_id'},
+		{data : 'time_in' },
+		{data : 'time_out' },
+		{data : 'status' },
+		{data : 'required_hours' },
+	],
+});
+	CS_table.draw();
 
 
+
+}
+
+	$('#CS_find_student').click(function(e){
+		searchStudentCS();
+		
+		e.preventDefault();
+
+	});
 /*
 $('.clockpicker').clockpicker()
 	.find('input').change(function(){
@@ -1615,7 +1598,17 @@ $('.clockpicker').clockpicker()
 
 
 
+$('.time_in').clockpicker({
+	
+	 twelvehour: true
 
+	});
+
+
+$('.time_out').clockpicker({
+
+	twelvehour: true
+});
 
 $('#new_log').on('click', function(e){
 	e.preventDefault();
@@ -1643,59 +1636,7 @@ $('#new_log').on('click', function(e){
 
 
 
-	//$('.sanctions-DT').DataTable().destroy();
 
-
-	
-
-
-/*var CS_table = $('.CS-DT').DataTable({
-	
-	"bFilter" : true,
-	"processing": true,
-    "serverSide": true,
-    "ajax": {
-    	headers : {
-				'X-CSRF-Token' : $('input[name="_token"]').val(),
-			},
-    	url : "/community-service/search",
-	
-		},
-
-	"bSort" : true,
-	"bFilter" : true,
-	"order": [[ 0, "desc" ]],
-	"rowId" : 'id',	
-	"columns" : [
-		
-		{data : 'student_id'},
-	
-	],
-});
-
-
-
-
-
-*/
-
-
-
-
-
-
-
-
-/*
-
-	$('#CS_find_student').click(function(e){
-		searchStudentCS();
-		searchStudentSanctions();
-		
-		e.preventDefault();
-
-	});
-*/
 
 
 

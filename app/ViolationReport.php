@@ -12,9 +12,4 @@ class ViolationReport extends Model
     {
     	return $this->belongsToMany('App\Student');
     }
-
-    public function violations()
-    {
-    	return $this->hasMany('App\Violation');
-    }
 }

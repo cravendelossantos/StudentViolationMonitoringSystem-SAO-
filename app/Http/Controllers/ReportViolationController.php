@@ -16,9 +16,6 @@ use Yajra\Datatables\Facades\Datatables;
 use Carbon\Carbon;
 use DateTime;
 use Response;
-use App\SchoolYear;
-use App\College;
-use App\Course;
 
 class ReportViolationController extends Controller
 {
@@ -31,7 +28,7 @@ class ReportViolationController extends Controller
     {
     	//$violation_reports = ViolationReport::all()
    /*     $violation_reports = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();*/
-		$courses = Course::with('college')->get();
+		$courses = DB::table('courses')->get();
 		
        
         // return view('report_violation', ['violations' => $violations])->with(['courses' => $courses]);
@@ -84,7 +81,7 @@ class ReportViolationController extends Controller
           $new_student_record->last_name = ucwords($request['lastName']);
           $new_student_record->year_level = $request['yearLevel'];
           $new_student_record->course = $request['course'];
-          $new_student_record->contact_no = "+63".$request['contactNo'];
+          $new_student_record->contact_no = $request['contactNo'];
           $new_student_record->date_created = Carbon::now();
           $new_student_record-> save();
             
@@ -109,8 +106,7 @@ class ReportViolationController extends Controller
                         'l_name' => $value->last_name, 
                         'f_name' => $value->first_name,
                         'course' => $value->course,
-                        'year_level' =>$value->year_level,
-                        'current_status' => $value->current_status,
+                        'year_level' =>$value->year_level
                       ];
 
         }
@@ -136,11 +132,6 @@ class ReportViolationController extends Controller
 
      //Count only valid offenses
 
-      $total_serious_offense_no = DB::table('violation_reports')
-                ->where('student_id', $student_number)
-                ->where('offense_level', 'Serious')->count();//consider the whole sem
-
-
     if ($same_violation == null)
     {
        $offense_number = $same_violation +=1;
@@ -162,22 +153,18 @@ class ReportViolationController extends Controller
          $offense_number = $same_violation +=1;// pang 4th na
           $sanction = DB::table('violations')->select('third_offense_sanction as sanction')->where('id', $violation_id)->first(); 
     }
-    else{
-      $sanction = array('sanction' => 'Please check the sanction(s) of the selected student in Sanctions Monitoring Menu');
-    }
   if ($different_violations == 1)
     {
         $different_violations = $different_violations;
        // 2 + 1 = 3rd diff type
     }
-
  /*   else if ($same_violation == 4)
     {
              $sanction = DB::table('violations')->select('third_offense_sanction as sanction')->where('id', $violation_id)->first(); 
     }*/
 
 
-     return response(array('offense_no' => $same_violation , 'sanction' => $sanction, 'diff_type_offense' => $different_violations, 'total_serious_offense_no' => $total_serious_offense_no));
+     return response(array('offense_no' => $same_violation , 'sanction' => $sanction, 'diff_type_offense' => $different_violations));
     
    }
 
@@ -216,43 +203,24 @@ class ReportViolationController extends Controller
 
 	public function postReportViolation(Request $request)
 	{
-            
-            if ($request['offense_level'] == 'Less Serious')
-            {
-              $from = SchoolYear::select('end')
-                                    ->where('term_name' , 'School Year')
-                                    ->first();
-              $to = SchoolYear::select('start')
-                                    ->where('term_name' , 'School Year')
-                                    ->first();
-
-      /*        $from = Carbon::parse($from['end']);
-              $to = Carbon::parse($to['start']);*/
-
-              $validity = $from . " " . $to;
-
-            }
-            elseif ($request['offense_level'] == 'Serious' || $request['offense_level'] == 'Very Serious') {
-              $validity = '';
-            }
+       
 	       
-            $date_committed = Carbon::parse($request['date_committed']);
+            $data_committed = Carbon::parse($request['date_committed']);
 
             $student_violation = new ViolationReport();
             $student_violation->student_id = $request['student_number'];
             $student_violation->violation_id = $request['violation_id'];
-            $student_violation->status = 1;
-            $student_violation->complainant = ucwords($request['complainant']);
+            // $student_violation->violation_name = $request['violation'];
+            $student_violation->complainant = $request['complainant'];
             $student_violation->sanction = $request['sanction'];
             $student_violation->offense_level = $request['offense_level'];
             $student_violation->offense_no = $request['offense_number'];
-            $student_violation->date_reported = $date_committed;
-            $student_violation->validity = $validity;
+            $student_violation->date_reported = $data_committed;
             $student_violation->save();
             
 
             return Response::json(['success' => true, 'response' => $student_violation], 200);
-            
+            //return response()->json(array(['success' => true, 'response' => $student_violation]));
 		      
 
 	}
@@ -269,92 +237,8 @@ class ReportViolationController extends Controller
     }
 	 
 
-    public function showViolationReports()
+    public function showViolationsReports()
     {
       return view('violation_reports');
     }
-
-    public function postViolationStatistics(Request $request)
-    {
-
-      //get violations with depts
-      $cams = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
-                                ->join('courses' , 'students.course', '=' , 'courses.description')
-                                ->join('colleges', 'courses.college_id', '=', 'colleges.id')
-                                ->where('college_id', 1)
-                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
-                                ->count();  
-
-    $cas = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
-                                ->join('courses' , 'students.course', '=' , 'courses.description')
-                                ->join('colleges', 'courses.college_id', '=', 'colleges.id')
-                                ->where('college_id', 2)
-                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
-                                ->count(); 
-
-    $cba = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
-                                ->join('courses' , 'students.course', '=' , 'courses.description')
-                                ->join('colleges', 'courses.college_id', '=', 'colleges.id')
-                                ->where('college_id', 3)
-                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
-                                ->count();                                 
-
-    $coecsa = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
-                                ->join('courses' , 'students.course', '=' , 'courses.description')
-                                ->join('colleges', 'courses.college_id', '=', 'colleges.id')
-                                ->where('college_id', 4)
-                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
-                                ->count();  
-
-    $cithm = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
-                                ->join('courses' , 'students.course', '=' , 'courses.description')
-                                ->join('colleges', 'courses.college_id', '=', 'colleges.id')
-                                ->where('college_id', 5)
-                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
-                                ->count();   
-
-            $data = [
-            [ 'cams' => $cams, 
-              'cas' => $cas,
-              'cba' => $cba,
-              'coecsa' => $coecsa,
-              'cithm' => $cithm,
-
-            ]
-          ];
-        
-              $stats = [
-              ['1' ,$cams], 
-              ['2', $cas],
-              ['3' , $cba],
-              ['4' , $coecsa],
-              ['5' , $cithm],
-
-            
-          ];
-
-
-
-      return response()->json(['data' => $data, 'stats' => $stats]);    
-  }
-
-  public function postViolationReports(Request $request)
-  {
-
-    if ($request['v_reports_offense_level'] == "")
-    {
-          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->get();  
-    }
-    else
-    {
-
-
-    $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->get();
-    }    
-     return response()->json(['data' => $data]);
-/*
-    return Datatables::eloquent(ViolationReport::query()->join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id'))->make(true);*/
-  
-  }
-
 }

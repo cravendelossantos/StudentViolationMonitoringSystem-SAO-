@@ -14,12 +14,12 @@ class CreateCommunityServicesTable extends Migration
     {
         Schema::create('community_services', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('violation_id');
             $table->date('date');
             $table->integer('no_of_days');
-            $table->integer('required_hours');
+            $table->time('required_hours');
+            $table->time('time_in');
+            $table->time('time_out');
             $table->enum('status', array('On going', 'Completed'));
-            $table->string('student_id');
         });
     }
 

@@ -9,9 +9,6 @@ use Validator;
 use DB;
 use Carbon\Carbon;
 use Yajra\Datatables\Facades\Datatables;
-use App\SchoolYear;
-use Response;
-use App\LockerLocation;
 
 
 class LockerManagementController extends Controller
@@ -23,20 +20,14 @@ class LockerManagementController extends Controller
 
     public function showLockers()
     {
-    	$contract_dates = SchoolYear::all();
-         $locations = LockerLocation::all();
-
-
+    	
         $locations = DB::table('locker_locations')->get();
-
-
-    	return view('locker_management',[ 'contract_dates' => $contract_dates, 'locations' => $locations]);
+    	return view('locker_management',['locations' => $locations]);
     }
 
     public function showLockersTable()
     {
-        $lockers = DB::table('lockers')->join('locker_locations' , 'lockers.location_id', '=', 'locker_locations.id');
-       return Datatables::of($lockers)->make(true);
+        return Datatables::eloquent(Locker::query())->make(true);
 
     }
 
@@ -66,7 +57,7 @@ class LockerManagementController extends Controller
 
 
             if ($location == 'new') {
-            DB::table('locker_locations')->insert(['location_id' => $new_location, 'date_added' => Carbon::now()]);
+            DB::table('locker_locations')->insert(['location' => $new_location, 'date_added' => Carbon::now()]);
                 $loc =  $new_location;
 			} else {
                 $loc =  $location;
@@ -85,7 +76,7 @@ class LockerManagementController extends Controller
 			{
 			$new_locker = new Locker();
             $new_locker->id = $start_no;
-			$new_locker->location_id = $loc;
+			$new_locker->location = $loc;
 			$new_locker->status = 1;
 			$new_locker->save();
 
@@ -107,36 +98,5 @@ class LockerManagementController extends Controller
     }
 
  
-    public function showLockerLocations()
-    {   
-        $locations = LockerLocation::all();
-        return view('locker_locations',['locations' => $locations]);
-    }
 
-    public function getLockerLocations(Request $request)
-    {
-
-           $validator = Validator::make($request->all(),[
-          'new_building' => 'required|string',
-          'floor_selection' => 'required',
-
-        ]);
-     
-        if ($validator->fails()) {
-            return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
-          
-        }
-    }
-
-    public function postLockerLocations(Request $request)
-    {
-
-        $new_locker_location = new LockerLocation();
-        $new_locker_location->building = $request['new_building'];
-        $new_locker_location->floor = $request['floor_selection'];
-        $new_locker_location->date_added = Carbon::now();
-        $new_locker_location->save();
-
-         return Response::json(['success'=> true, 'new_locker_location' => $new_locker_location],200); 
-    }
 }

@@ -67,9 +67,7 @@ class StudentRecordsController extends Controller
 				}
 				if(!empty($insert)){
 					DB::table('students')->insert($insert);
-							$messages = "File successfully imported!";
-			/*		dd('Import Successful!');	*/
-					return redirect('/activity-records')->with('success', $messages); 
+					dd('Import Successful!');
 				}
 
 			}

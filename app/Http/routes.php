@@ -82,7 +82,6 @@ Route::post('/violation-list/importExcel', 'ViolationRecordsController@importExc
 Route::post('/violation-list/all', 'ViolationRecordsController@getViolationRecordsTable');
 
 
-
 //Import Activity Records
 Route::get('/activity-records', 'ActivityRecordsController@importExport');
 Route::get('/activity-records/downloadExcel/{type}', 'ActivityRecordsController@downloadExcel');
@@ -134,24 +133,11 @@ Route::post('/get-violation/list', 'ReportViolationController@getViolations');
 // Community Service
 //Route::get('/communityService', 'sysController@showCommunityService');
 Route::get('/community-service' , 'CommunityServiceController@showCommunityService');
-Route::post('/community-service/search/student' , 'CommunityServiceController@searchStudent');
+Route::get('/community-service/search' , 'CommunityServiceController@searchStudent');
 
 Route::get('/community-service/new_log' , 'CommunityServiceController@getStudentLog');
 Route::post('/community-service/new_log' , 'CommunityServiceController@postStudentLog');
-Route::get('/community-service/cs-details' , 'CommunityServiceController@getCommunityServiceDetails');
 
-
-//Suspension
-
-Route::get('/sanctions/suspend' , 'SanctionController@getSuspension');
-Route::post('/sanctions/suspend' , 'SanctionController@postSuspension');
-
-Route::post('/sanctions/suspended_students', 'SanctionController@suspensionTable');
-Route::post('/sanctions/excluded_students', 'SanctionController@exclusionTable');
-
-Route::get('/suspension-exclusions/details' , 'SanctionController@getSuspensionDetails');
-Route::get('/sanctions/suspended_students/update' , 'SanctionController@getSuspensionUpdate');
-Route::get('/sanctions/suspended_students/update' , 'SanctionController@postSuspensionUpdate');
 
 Route::get('/campus', 'CampusVenueReservationController@showCampusVenueReservation');
 Route::get('/reservationReports', 'CampusVenueReservationController@showCampusVenueReservationReports');
@@ -194,17 +180,9 @@ Route::get('/activities/activity_details' , 'ProposalActivitiesMonitoringControl
 Route::post('/violation', 'sysController@postViolation');
 
 // Sanction Monitoring
-
-Route::get('/sanctions', 'SanctionController@showSanctions');
+Route::get('/sanctions', 'sysController@showSanctions');
 Route::post('/sanctions/search/student' , 'SanctionController@searchStudent');
 Route::post('/sanctions/student-violation/records' ,  'SanctionController@showStudentViolations');
-Route::get('/sanctions/violation-details' , 'SanctionController@getViolationDetails');
-Route::get('/sanctions/update-status' , 'SanctionController@getUpdateStatus');
-Route::post('/sanctions/update-status' , 'SanctionController@postUpdateStatus');
-
-
-Route::get('/sanctions/add-to-cs' , 'SanctionController@getAddToCS');
-Route::post('/sanctions/add-to-cs' , 'SanctionController@postAddToCS');
 
 // Lost and Found 
 Route::get('/lost-and-found', [
@@ -225,8 +203,6 @@ Route::post('/lost-and-found/reports/list', 'LostAndFoundController@postLostAndF
 Route::post('/lost-and-found/reports/stats', 'LostAndFoundController@postLostAndFoundStatistics');
 
 Route::get('/lost-and-found/search','LostAndFoundController@searchLostAndFound');
-
-Route::get('/lost-and-found/report-item' , 'LostAndFoundController@getLostAndFoundAdd');
 Route::post('/lost-and-found/report-item',[
 	'uses' => 'LostAndFoundController@postLostAndFoundAdd',
 	'as' => 'report.item'
@@ -234,20 +210,18 @@ Route::post('/lost-and-found/report-item',[
 
 Route::get('/lost-and-found/item_details', 'LostAndFoundController@getItemDetails');
 
-
-Route::get('/lostandfound/update', 'LostAndFoundController@getLostAndFoundUpdate');
 Route::post('/lostandfound/update', 'LostAndFoundController@postLostAndFoundUpdate');
 
 
 //Violation Reports
 Route::get('/violation-reports' , 'ReportViolationController@showViolationReports');
-Route::post('/violation-reports/reports' , 'ReportViolationController@postViolationReports');
 
 //Violation Statistics
 Route::get('/violation-statistics' , 'ReportViolationController@showStatistics');
-Route::post('/violation-statistics/stats' , 'ReportViolationController@postViolationStatistics');
 
 
+//Sanctions Monitoring
+Route::get('/sanctions', 'SanctionController@showSanctions');
 
 
 //Locker Management
@@ -257,10 +231,6 @@ Route::post('/lockers/all' , 'LockerManagementController@showLockersTable');
 Route::get('/locker/details' , 'LockerManagementController@getLockerDetails');
 Route::post('/locker/update-status' , 'LockerManagementController@updateLocker');
 
-
-Route::get('/settings/locker-locations' , 'LockerManagementController@showLockerLocations');
-Route::get('/settings/locker-locations/add' , 'LockerManagementController@getLockerLocations');
-Route::post('/settings/locker-locations/add' , 'LockerManagementController@postLockerLocations');
 
 //SMS
 Route::get('/text-messaging', 'sysController@showSMS');

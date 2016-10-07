@@ -15,15 +15,15 @@ class CreateViolationReportsTable extends Migration
          Schema::create('violation_reports', function (Blueprint $table) {
             $table->increments('id');
             $table->string('student_id');
-            $table->integer('violation_id');
+            $table->integer('violation_id')->unsigned();
+            $table->foreign('violation_id')->references('id')->on('violations');
             $table->integer('offense_no');
             $table->string('sanction');
             $table->string('offense_level');
+            //$table->boolean('community_service');   
+            $table->enum('status', array ('Pending', 'Completed'));
             $table->string('complainant');
-            $table->enum('status' , array('Pending','Completed'));
             $table->date('date_reported');
-            $table->string('validity');
-            $table->string('updated_by');
         });
     }
 
