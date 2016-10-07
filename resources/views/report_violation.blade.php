@@ -44,9 +44,9 @@
 								<div class="form-group" >
 
 									<label>Student No.</label>
-									<a class="btn btn-white btn-xs" id="new" style="display:none" data-toggle="modal" data-target="#myModal"><i class="fa fa-male"></i> New Record</a>
+									<a class="btn btn-white btn-xs" id="new" style="display:none" data-toggle="modal" data-target="#myModal" ><i class="fa fa-male"></i> New Record</a>
 									<div class="input-group">
-										<input type="text" class="form-control" placeholder="Student No." name="student_no" id="student_no" class="form-control" >
+										<input type="text" class="form-control" placeholder="Student No." name="student_no" id="student_no" class="form-control" maxlength="10">
 										<span class="input-group-btn">
 											<button class="btn btn-default" id="find_student" type="button">
 												Find
@@ -116,6 +116,7 @@
 							</div>
 
 							<div class="col-md-6">
+							<br>
 								<div class="form-group">
 									<label>Violation</label>
 									<input type="hidden" name="violation_id" id="violation_id">
@@ -123,10 +124,13 @@
 										<option autofocus="" disabled selected >Violation</option>
 
 									</select>
+
+
+							<a href="/violation-list" id="violations_import" style="display:none">Import Violations</a>
 								</div>
 								<div class="form-group" style="margin-top:20px;">
 									<label>Complainant</label>
-									<input type="text" class="form-control" name="complainant" id="complainant" placeholder="Complainant">
+									<input type="text" class="form-control" name="complainant" id="complainant" placeholder="Complainant"  style="text-transform: capitalize">
 
 								</div>
 
@@ -266,11 +270,12 @@
 
 						</select>
 					</div>
-
-					<div class="form-group">
-						<label>Contact No.</label>
-						<input type="text" placeholder="Contact No.	" class="form-control" id="contactNo" name="contactNo">
-					</div>
+					<label>Contact No.</label>
+<div class="input-group m-b"><span class="input-group-addon">+63</span> <input type="text" placeholder="Contact No.	" class="form-control" id="contactNo" name="contactNo" maxlength="10"></div>
+				<!-- 	<div class="form-group">
+						
+						
+					</div> -->
 
 					<div class="modal-footer">
 						<button class="btn btn-w-m btn-primary" type="button" id="new_student_btn">
@@ -286,10 +291,6 @@
 	</div>
 </div>
 
-<script type="text/javascript">
-	getViolation();
-	
-</script>
 
 <style>
 	.sk-spinner-wave.sk-spinner {

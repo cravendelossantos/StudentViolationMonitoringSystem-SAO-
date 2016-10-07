@@ -15,10 +15,10 @@ class CreateLockersTable extends Migration
         Schema::create('lockers', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->string('location');
+            $table->integer('location_id');
             $table->string('lessee')->nullable();
             $table->enum('status', array('Available', 'Occupied', 'Damaged', 'Locked'));
-           //  $table->string('contract'); DATE range??
+            $table->string('contract');
         });
     }
 

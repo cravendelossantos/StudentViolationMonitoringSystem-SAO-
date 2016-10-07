@@ -32,7 +32,7 @@ $('#register_super_btn').click(function(e) {
 					showCancelButton: true,  
 				    confirmButtonColor: "#DD6B55",   
 				    confirmButtonText: "Submit",   
-				    closeOnConfirm: false 
+				    closeOnConfirm: true 
 				}, function(){  
 					$.ajax({
 						headers : {
@@ -90,7 +90,7 @@ $('#register_admin_btn').click(function(e) {
 					showCancelButton: true,  
 				    confirmButtonColor: "#DD6B55",   
 				    confirmButtonText: "Submit",   
-				    closeOnConfirm: false 
+				    closeOnConfirm: true 
 				}, function(){  
 					$.ajax({
 						headers : {

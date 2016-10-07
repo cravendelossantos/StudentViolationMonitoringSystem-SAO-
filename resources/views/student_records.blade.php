@@ -85,12 +85,12 @@
 							<thead>
 				
 				<tr>
-									<th>Violation</th>
-									<th>Description</th>
-									<th>Offense Level</th>
-									<th>First Offense Sanction</th>
-									<th>Second Offense Sanction</th>
-									<th>Third Offense Sanction</th>
+									<th>Student No</th>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Course</th>
+									<th>Year</th>
+									<th>Contact no</th>
 							
 
 					</tr>	
