@@ -29,8 +29,12 @@
 
 
 
-                 <output>School Year (ex. 1617)</output>  
+                 <output>School Year (ex. 2016-2017)</output>  
 				<input type="text" class="form-control" id="school_year" name="school_year">
+                <output>Starting Year (ex. 2016)</output>  
+                
+                <input type="text" class="form-control " id="year" name="year">
+
                                 <output name="first_sem">First Semester</output>
                                 <div class="input-daterange input-group" id="datepicker">
                                 <span class="input-group-addon">From</span>

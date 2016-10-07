@@ -34,7 +34,7 @@
 						<div class="col-md-6">
 							<div class="form-group ">
 								<label>Organization</label>
-								<input " placeholder="Name of Organization" name="organizationName" id="organizationName" class="form-control" autofocus="" aria-required="true"></output>
+								<input " placeholder="Name of Organization" name="organization" id="organization" class="form-control" autofocus="" aria-required="true"></output>
 							</div>
 						</div>
 
@@ -103,6 +103,64 @@
 				</div>
 
 			</div>
+
+			<div class="ibox-content">
+
+
+
+						<div class="col-md-4">
+							<div class="form-group">
+
+								<label>Select Organization</label>
+								<select name="organizationName" id="organizationName" class="form-control">
+								<option autofocus="" disabled selected >Select Organization</option>
+									@foreach ($organizations as $organization)
+									<option>{{$organization->organization }}</option>
+									
+							
+								
+									@endforeach
+									
+								</select>	
+
+
+
+
+
+							</div>
+						</div>
+
+
+		
+
+
+
+
+					<div class="col-md-4">
+						<div class="form-group">
+
+								<label>School Year</label>
+								<select name="school_year" id="school_year" class="form-control">
+									@foreach ($schoolyear as $schoolyear)
+									<option>{{$schoolyear->school_year }}</option>
+									@endforeach
+
+									@foreach ($schoolyears as $schoolyear)
+									<option>{{$schoolyear->school_year }}</option>
+									@endforeach
+									
+								</select>	
+					</div>
+					</div>
+
+
+
+
+
+
+
+
+
 
 			<div class="ibox-content" id="table-content">
 				<div class="table-responsive">
@@ -194,9 +252,10 @@
  // });
 
 
+$(document).ready(function(){
 
-
-
+// var sy_id = $('#school_year').val();
+// var org_id = $('#organizationName').val();
 
 //
 var activities_table = $('.activities-DT').DataTable({
@@ -206,8 +265,13 @@ var activities_table = $('.activities-DT').DataTable({
     	headers : {
 				'X-CSRF-Token' : $('input[name="_token"]').val()
 			},
-    	url : "/activities/list",
+    	url : "/activities/ActivitiesByYear",
 		type: "POST",
+		"data": function ( d ) {
+        d.school_year = $('select#school_year').val();
+
+        d.organization = $('select#organizationName').val();
+    },
 			},
 	"bSort" : true,
 	"bFilter" : true,
@@ -233,6 +297,85 @@ var activities_table = $('.activities-DT').DataTable({
 		}
 }]
 });
+});
+$('select#school_year').change(function(e){
+	// $('.activities-DT').DataTable().draw();
+	$('.activities-DT').DataTable().ajax.url('/activities/ActivitiesByYear').load();
+});
+
+// $('select#organizationName').change(function(e){
+// 	$('.activities-DT').DataTable().draw();
+// });
+
+
+$('select#organizationName').change(function(e){
+	e.preventDefault();
+	var sy_id = $('#school_year').val();
+	var org_id = $('#organizationName').val();
+
+	 
+
+
+
+
+	
+
+	$('.activities-DT').DataTable().ajax.url('/activities/ActivitiesByYearAndOrg').load();
+// $('.activities-DT').DataTable().draw();
+
+// /* $('.requirements-DT').DataTable().destroy();
+
+
+
+	
+	
+
+		
+
+
+});
+
+$('select#school_year').change(function(e){
+	e.preventDefault();
+	var sy_id = $('#school_year').val();
+
+	
+$.ajax({
+			headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
+			type : "POST",
+			url : "/activities/OrganizationByYear",
+			data : 
+			{
+				school_year : sy_id,
+			},
+
+	
+}).done(function(data) {
+
+	$('#organizationName').find('option').remove();
+$('#organizationName')
+         .append($("<option selected='' disabled=''></option>")
+                    .attr("value", '0')
+                    .text('Select Organization'));
+         $.each(data.response, function(key, value){
+				// $('#violation_selection').val(data.violations[key].name);
+			   $('#organizationName').append($("<option></option>").attr("value",value.organization).text(value.organization));
+		});
+
+
+
+	
+	
+
+			});
+
+
+});
+
+
+
 
 
    $('#table-content tbody').on('click','button', function(e)
@@ -347,7 +490,7 @@ var activities_table = $('.activities-DT').DataTable({
 				}
 
 
-				$('#organizationName').val(organization);
+				$('#organization').val(organization);
 				$('#title').val(title);
 				$('#date').val(date);
 				

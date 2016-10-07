@@ -1,10 +1,10 @@
 @extends('layouts.master')
 
-@section('title', 'SAO | Update Checklist of Requirements')
+@section('title', 'SAO | Create New Organization')
 
 @section('header-page')
 <div class="col-lg-10">
-	<h1>Update Checklist of Requirements</h1>
+	<h1>Create New Organization</h1>
 </div>
 
 @endsection
@@ -17,11 +17,11 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Update Checklist of Requirements</h5>
+				<h5>Create New Organization</h5>
 			</div>
 
 			<div class="ibox-content">
-				<form role="form" id="UpdateRequirement" method="POST" action="/organizationsRenewal/update">
+				<form role="form" id="AddRequirement" method="POST" action="/organizationsRenewal/add">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="update_id" id="update_id">
 
@@ -39,49 +39,23 @@
 					
 
 				<div class="row">
-<!-- 					<div class="col-md-4">
-						<label>Select Organization</label>
-						<div class="input-group ">
+					<div class="col-md-4">
+						<label>Enter name of Organization</label>
+						
 							<input type="text" placeholder="Name of Organization" id="organizationName" name="organizationName" class="form-control" autofocus="" aria-required="true">
-						<div class="input-group-btn">
-                            <button type="button" class="btn btn btn-primary" name="search_organizationBtn" id="search_organizationBtn">
-                                Search
-                            </button>
-                        </div>
-						</div>
-					</div> -->
 
-						<div class="col-md-6">
-							<div class="form-group">
-
-								<label>Select Organization</label>
-								<select name="organizationName" id="organizationName" class="form-control">
-								<option autofocus="" disabled selected >Select Organization</option>
-									@foreach ($organizations as $organization)
-									<option>{{$organization->organization }}</option>
-									
-							
-								
-									@endforeach
-									
-								</select>	
-
-
-
-
-
-							</div>
+					
 					</div>
 
 
 
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<div class="form-group">
 
 								<label>School Year</label>
-<!-- 								<select name="year" id="year" class="form-control">
-
-									@foreach ($schoolyear as $schoolyear)
+<!-- 								<select name="school_year" id="school_year" class="form-control" >
+\
+									@foreach ($schoolyears as $schoolyear)
 									<option>{{$schoolyear->school_year }}</option>
 									
 							
@@ -90,9 +64,13 @@
 									
 								</select>	 -->
 
-
 									<output id="school_year1" name="school_year1" class="form-control" autofocus="" aria-required="true"  >{{$schoolyear->school_year }}</output>
 									<input type="hidden" id="school_year" name="school_year" class="form-control" autofocus="" aria-required="true" value="{{$schoolyear->school_year }}">
+
+
+
+
+
 					</div>
 					</div>
 				
@@ -309,9 +287,10 @@
 
 					<div class="ibox-footer">
 
-						<button class="btn btn-w-m btn-primary" id="update_requirementBtn" type="button">
-							<strong>Update</strong>
+						<button class="btn btn-w-m btn-primary" id="add_requirementBtn" type="button">
+							<strong>Add</strong>
 						</button>
+
 
 						<button class="btn btn-w-m btn-danger" id="cancel_requirementBtn" type="button">
 							<strong>Cancel</strong>
@@ -347,7 +326,7 @@
 			},
 			type : "POST",
 			url : "/organizationsRenewal/add",
-			data : $('form#UpdateRequirement').serialize(),
+			data : $('form#AddRequirement').serialize(),
 
 		}).done(function(data) {
 
@@ -361,7 +340,7 @@
 
 			} else if (data.success == true) {
 
-				$('form#AddActvity').each(function() {
+				$('form#AddRequirement').each(function() {
 					this.reset();
 				});
 
@@ -374,6 +353,27 @@
 		});
 
 	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -424,15 +424,13 @@
 
 
 
-	// $('button#search_organizationBtn').click(function(e) {
+
 	
 
-	$('#organizationName').on('change', function(e){
+	$('button#search_organizationBtn').click(function(e) {
+
 
 		var req_id = $('#organizationName').val();
-
-		var year_id = $('#year').val();
-	
 
 		if (req_id.length <= 0){
 
@@ -449,7 +447,7 @@
 			url : "/OrganizationsRenewal/Search",
 			data : 
 			{
-				organization : req_id, year : year_id
+				organization : req_id
 			},
 
 
@@ -568,16 +566,15 @@ function x(){
 	$('#try').show();
 setTimeout(function(){
 
-        $('#try').fadeOut('fast');
-    },200);
+        $('#try').fadeOut('slow');
+    },700);
 }
 
 	$('button#cancel_requirementBtn').click(function() {
-		$('form#UpdateRequirement').each(function() {
+		$('form#AddRequirement').each(function() {
 			this.reset();
 		});
 	}); 
-
 
 
 
@@ -632,3 +629,4 @@ setTimeout(function(){
 
 
 @endsection
+
