@@ -42,7 +42,7 @@ class LockerManagementController extends Controller
 
     public function getLockerDetails(Request $request)
     {
-        $locker = Locker::where('id', $request['id'])->first();
+        $locker = Locker::where('locker_id', $request['id'])->first();
         return response()->json(array('response' => $locker));
     }
 
@@ -100,11 +100,25 @@ class LockerManagementController extends Controller
 
     public function updateLocker(Request $request)
     {
-     
-        $update = Locker::where('id' , $request['m_locker_no'])->update(['status' => $request['m_update_status']]);
 
-        return $request['m_update_status'];
+             $validator = Validator::make($request->all(),[
+          'm_update_status' => 'required',
+
+
+        ]);
+     
+        if ($validator->fails()) {
+            return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
+          
+        }
+
+        else{
+     
+        $update = DB::table('lockers')->where('locker_id' , $request['_m_locker_no'])->update(['status' => $request['m_update_status']]);
+
+        return Response::json(['success'=> true, 'response' => $update],200); 
     }
+}
 
  
     public function showLockerLocations()
@@ -138,5 +152,10 @@ class LockerManagementController extends Controller
         $new_locker_location->save();
 
          return Response::json(['success'=> true, 'new_locker_location' => $new_locker_location],200); 
+    }
+
+    public function showLockerReports()
+    {
+        return view('locker_reports');
     }
 }
