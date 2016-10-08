@@ -22,11 +22,11 @@
 				<button type="button" class="close" data-dismiss="modal">
 					&times;
 				</button>
-				<h4 class="modal-title">Claim Item</h4>
+				<h4 class="modal-title">Update Locker</h4>
 			</div>
 
 			<div class="ibox-content">
-				<form class="form-horizontal" id="update_locker">
+				<form class="form-horizontal" id="locker_status_update" > 
 					{!! csrf_field() !!}
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
@@ -34,39 +34,48 @@
 						
 						<div class="col-md-10 col-md-offset-1">
 						<label class="control-label">Locker no</label>
-							<input class="form-control" name="m_locker_no" id="m_locker_no">
+							<input type="hidden" name="_m_locker_no" id="_m_locker_no">
+							<input type="text" class="form-control" name="m_locker_no" id="m_locker_no">
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
 
 					</div>
 
 
-					<div class="form-group">
+				<!-- 	<div class="form-group">
 						
 						<div class="col-md-10 col-md-offset-1">
-						<label class="control-label">Item</label>
+						<label class="control-label">Location</label>
 							<input class="form-control" name="m_location" id="m_location">
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
 
-					</div>
+					</div> -->
 
 					<div class="form-group">
 
 						<div class="col-md-10 col-md-offset-1">
 
 						<label class="control-label">Update status</label><br>
-									<div class="radio"><label> <input type="radio" value="1" id="m_status_available" name="m_update_status"> Available </label></div>
+						<select class="form-control" name="m_update_status" id="m_update_status">
+
+						<option value="Available">Available</option>
+						<option value="Occupied">Occupied</option>
+						<option value="Damaged">Damaged</option>
+						<option value="Locked">Locked</option>
+
+						 </select>
+									<!-- <div class="radio"><label> <input type="radio" value="Available" id="m_status_available" name="m_update_status"> Available </label></div>
 
 						
-									<div class="radio"><label> <input type="radio" value="2" id="m_status_occupied" name="m_update_status"> Occupied </label></div>
+									<div class="radio"><label> <input type="radio" value="Occupied" id="m_status_occupied" name="m_update_status"> Occupied </label></div>
 									<input type="text" name="m_lessee" id="m_lessee" class="form-control"> 
 
-									<div class="radio"><label> <input type="radio"  value="3" id="m_status_damaged" name="m_update_status"> Damaged </label></div>
+									<div class="radio"><label> <input type="radio"  value="Damaged" id="m_status_damaged" name="m_update_status"> Damaged </label></div>
 
 
-									<div class="radio"><label> <input type="radio"  value="4" id="m_status_locked" name="m_update_status"> Locked </label></div>	
-
+									<div class="radio"><label> <input type="radio"  value="Locked" id="m_status_locked" name="m_update_status"> Locked </label></div>	
+ -->
 									
 
 							<span class="help-block m-b-none text-danger"></span>
@@ -74,7 +83,7 @@
 
 					</div>
 
-									<div class="col-md-6">
+	<!-- 								<div class="col-md-6">
 					<label>Select Contract</label>
 								<select name="location" id="location" class="form-control">
 									@foreach ($contract_dates as $contract_date)
@@ -83,7 +92,7 @@
 									@endforeach
 									
 								</select>	
-	</div>
+	</div> -->
 
 
 	
@@ -216,10 +225,10 @@
 							<thead>
 						
 									<th>Locker no</th>
-									<th>Location</th>
+									<th>Floor</th>
+									<th>Building</th>
 									<th>Lessee</th>
 									<th>Status</th>
-									
 								
 								
 

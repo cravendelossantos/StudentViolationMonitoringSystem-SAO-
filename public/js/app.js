@@ -1182,11 +1182,12 @@ var lockers_table = $('.lockers-DT').DataTable({
 	// "bSort" : true,
 	/*"bFilter" : true,*/
 	// "order": [[ 0, "desc" ]],
-	"rowId" : 'id',	
+	"rowId" : 'locker_id',	
 	"columns" : [
 
-		{data : 'id'},
-		{data : 'location_id'},
+		{data : 'locker_id'},
+		{data : 'floor'},
+		{data : 'building'},
 		{data : 'lessee'},
 		{data : 'status'},		  
 
@@ -1253,11 +1254,12 @@ $('.lockers-DT').on('click', 'tr', function(){
 					}
 				$('#lockers_modal').modal('show');
 				
-				var locker_no = data.response['id'];
+				var locker_no = data.response['locker_id'];
 				var location = data.response['location'];
 
 
 				$('#m_locker_no').val(locker_no);
+				$('#_m_locker_no').val(locker_no)
 				$('#m_location').val(location);
 				
 				var current_status = data.response['status'];
@@ -1271,22 +1273,22 @@ $('.lockers-DT').on('click', 'tr', function(){
 					$('#m_status_locked').prop('checked', true);
 				}
 
-				$('input[type=radio][name=m_update_status]').change(function(e){
-					e.preventDefault();
-					
-					if (this.value == 1)
-					{
-						$('#m_lessee').hide();
-						return false;
-					} else if (this.value == 2) {
-						$('#m_lessee').show();
-					}
+					$('input[type=radio][name=m_update_status]').change(function(e){
+						e.preventDefault();
+						
+						if (this.value == 1)
+						{
+							$('#m_lessee').hide();
+							return false;
+						} else if (this.value == 2) {
+							$('#m_lessee').show();
+						}
 
-					else if (this.value > 2) {
-						$('#m_lessee').hide();
-					}
-					
-				});
+						else if (this.value > 2) {
+							$('#m_lessee').hide();
+						}
+						
+					});
 
 			}
 			}
@@ -1300,16 +1302,27 @@ $('#locker_update').click(function(e){
 	e.preventDefault();
 
 	$.ajax({
+		headers : {
+				'X-CSRF-Token' : $('input[name="_token"]').val()
+			},
 		url : '/locker/update-status',
 		type: 'POST',
-		data: $('form#update_locker').serialize(),
+		data: $('form#locker_status_update').serialize(),
+
+	}).fail(function(data){
+			 var errors = $.parseJSON(data.responseText);
+				var msg="";
+				
+				$.each(errors.errors, function(k, v) {
+					msg = msg + v + "\n";
+					swal("Oops...", msg, "warning");
 
 	}).done(function(data){
-		console.log(data);
+		swal("Success", "Locker updated!", "success");
 	});
 });
 
-
+});
 
 
 

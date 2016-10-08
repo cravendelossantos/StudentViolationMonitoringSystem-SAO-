@@ -256,6 +256,8 @@ Route::post('lockers/add' , 'LockerManagementController@addLockers');
 Route::post('/lockers/all' , 'LockerManagementController@showLockersTable');
 Route::get('/locker/details' , 'LockerManagementController@getLockerDetails');
 Route::post('/locker/update-status' , 'LockerManagementController@updateLocker');
+Route::get('/locker-reports' , 'LockerManagementController@showLockerReports');
+
 
 
 Route::get('/settings/locker-locations' , 'LockerManagementController@showLockerLocations');

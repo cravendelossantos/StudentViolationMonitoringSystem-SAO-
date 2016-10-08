@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 <!DOCTYPE html>
-@section('title', 'SAO | Home')
+@section('title', 'SAO | Campus Venue Reservation')
 
 @section('header-page')
 <div class="row">
@@ -91,11 +91,11 @@
 
 
 </div> -->
-
+        <div class="row">
  <div class="container">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <div class="row">
+
             <div class="col-lg-12 text-center">
                 <h1>Calendar</h1>
                 <div id="calendar" class="col-centered">
@@ -221,7 +221,9 @@
             </div>
           </div>
         </div>
-        
+   
+    </div>
+     
         
         
         <!-- Modal -->
@@ -278,8 +280,6 @@
             </div>
           </div>
         </div>
-
-    </div>
 
 <!-- Mainly scripts -->
 <!-- <script src="js/plugins/fullcalendar/moment.min.js"></script>
