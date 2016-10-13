@@ -1,13 +1,17 @@
-@extends('layouts.app')
+@extends('layouts.passwords')
 
-<!-- Main Content -->
 @section('content')
-<div class="container">
+
+
+   <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-                <div class="panel-body">
+        <div class="col-md-offset-3 col-md-6">
+            <div class="ibox-content">
+               <h2 class="font-bold">Forgot password</h2>
+                    
+                    <p>
+                        Enter your email address and your password will be reset and emailed to you.
+                    </p>
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
@@ -20,8 +24,8 @@
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">E-Mail Address</label>
 
-                            <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}">
+                            <div class="col-md-8">
+                                <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="E-mail Address">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -42,6 +46,7 @@
                 </div>
             </div>
         </div>
+     
     </div>
-</div>
+    </div>
 @endsection

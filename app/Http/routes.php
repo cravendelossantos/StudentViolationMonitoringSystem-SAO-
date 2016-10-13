@@ -275,12 +275,8 @@ Route::post('/text-messaging/send', 'sysController@sendSMS');
 
 Route::group(['middleware' => 'web'],function(){
 
-	Route::auth();
-	
-});
 
-
-
+	// Authentication routes...
 Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@logout');
 Route::get('/login', 'Auth\AuthController@getLogin');
@@ -289,6 +285,19 @@ Route::get('/login', 'Auth\AuthController@getLogin');
 Route::get('/register', 'Auth\AuthController@getRegister');
 Route::post('/register', 'Auth\AuthController@postRegister');	
 
-// Authentication routes...
 
+
+
+
+});
+Route::auth();
+
+Route::get('/password_reset/success', function(){
+	return view('password_reset_success');
+});
+
+
+
+/*Route::get('/forgot_password' , 'Auth\AuthController@showForgotPassword');
+Route::get('/forgot_password/sendmail', 'MailController@forgotPasswordMail');*/
 
