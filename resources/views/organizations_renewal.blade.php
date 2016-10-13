@@ -56,7 +56,7 @@
 
 								<label>Select Organization</label>
 								<select name="organizationName" id="organizationName" class="form-control">
-								<option autofocus="" disabled selected >Select Organization</option>
+								<option autofocus="" disabled selected value=>Select Organization</option>
 									@foreach ($organizations as $organization)
 									<option>{{$organization->organization }}</option>
 									
@@ -431,7 +431,7 @@
 
 		var req_id = $('#organizationName').val();
 
-		var year_id = $('#year').val();
+		var year_id = $('#school_year').val();
 	
 
 		if (req_id.length <= 0){
