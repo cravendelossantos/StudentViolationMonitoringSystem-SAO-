@@ -104,17 +104,7 @@
         <h2><strong>Educational Philosophy</strong></h2>
 <p><em>Lyceum of the Philippines University - Cavite</em>, an institution of higher learning, inspired by the ideals of Philippine President Jose P. Laurel, is committed to the advancement of his philosophy and values:</p>
 <blockquote><em>"Veritas et Fortitudo" (truth and fortitude) "Pro Deo et Patria" (for God and Country).</em></blockquote>
-<h2><strong>Vision</strong></h2>
-<p>An internationally accredited university dedicated to innovation and excellence in the service of God and country.</p>
-<h2><strong>Mission</strong></h2>
-<p>The Lyceum of the Philippines University - Cavite, espousing the ideals of Jose P. Laurel, is committed to the following mission:</p>
-<ol>
-<li>Advance and preserve knowledge by undertaking research and disseminating and utilizing the results. - <strong>RESEARCH</strong></li>
-<li>Provide equitable access to learning through relevant, innovative, industry-based and environment-conscious programs and services in the context of nationalism and internationalism. - <strong>INSTRUCTION</strong> and <strong>QUALITY SERVICES</strong></li>
-<li>Provide necessary knowledge and skills to meet entrepreneurial development and the managerial requirements of the industry. - <strong>INSTRUCTION</strong></li>
-<li>Establish local and international linkages that will be the source of learning and growth of the members of academic community. - <strong>INSTRUCTION</strong> and <strong>INSTITUTIONAL</strong><strong>DEVELOPMENT</strong></li>
-<li>Support a sustainable community extension program and be a catalyst for social transformation and custodian of Filipino culture and heritage. - <strong>COMMUNITY EXTENSION</strong></li>
-<li>Build a community of God-centered, nationalistic, environment conscious, and globally competitive professionals with wholesome values and attitudes. - <strong>PROFESSIONALISM</strong> and <strong>VALUES</strong></li>
+
 </ol>
 <h2><strong>Core Values</strong></h2>
 <table style="width: 790px; height: 146px;" border="0" align="center">
@@ -235,78 +225,6 @@
 
 
 
-
-<script src="/js/demo/app-flot.js"></script>
-		<script src="/js/demo/flot-demo2.js"></script>
-
-
-
-
-
-
-<script>
-	
-	//Flot Pie Chart
-$(document).ready(function() {
-$.ajax({
-  headers : {
-        'X-CSRF-Token' : $('input[name="_token"]').val()
-      },
-       	url : "/lost-and-found/reports/stats",
-   type: 'POST',
-   data: 'type=fetch',
-   async: false,
-   success: function(response){
-     items = response;
-
-     console.log (json_events);
-    
-   }
-});
-
-    var data = [{
-        label: "UNCLAIMED",
-        data: items['unclaimed'],
-        color: "#d3d3d3",
-    }, {
-        label: "CLAIMED",
-        data: items['claimed'],
-        color: "#54cdb4",
-    }, {
-        label: "DONATED",
-        data: items['donated'],
-        color: "#1ab394",
-    }, /*{
-        label: "TOTAL",
-        data: 52,
-        color: "#1ab394",
-    }*/];
-
-    var plotObj = $.plot($("#flot-pie-chart"), data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        grid: {
-            hoverable: true
-        },
-        tooltip: true,
-        tooltipOpts: {
-        	 //percentage content: "%y.0, %s", // show value to 0 decimals
-            content: function(label,x,y){
-    return y+" Items "+ "(" + label + ")";
-},
-            shifts: {
-                x: 20,
-                y: 0
-            },
-            defaultTheme: false
-        }
-    });
-
-});
-</script>
 
 
 @endsection

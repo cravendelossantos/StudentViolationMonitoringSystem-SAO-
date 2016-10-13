@@ -119,6 +119,8 @@ $schoolyear = DB::table('school_years')->select('school_year')->where('term_name
     $data = Requirements::where('organization', $request['organization'])->where('school_year',$request['year'])->first();
 
      return response()->json($data);
+// return response()->json(array('response' => $data));
+
 
     }
 
@@ -189,6 +191,8 @@ $sy = DB::table('school_years')->select('school_year')->where('term_name' , 'Sch
         public function postRequirementsRenewalUpdate(Request $request)
   {
     $validator = Validator::make($request->all(),[
+
+      'organizationName' => 'required|string|max:255',
                          
       ]);
 

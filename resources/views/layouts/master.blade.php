@@ -14,8 +14,8 @@
 		<link href="/css/animate.css" rel="stylesheet">
 		<link href="/css/style.css" rel="stylesheet">
 		<link href="/css/mystyle.css" rel="stylesheet">
-		<link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
-		<link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print'>
+		<link href="/css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+		<link href="/css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print'>
 
 		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" >
 
