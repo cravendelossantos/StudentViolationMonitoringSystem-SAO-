@@ -15,13 +15,105 @@ use App\Course;
 use Response;
 use App\Role;
 use Yajra\Datatables\Facades\Datatables;
-
+use Image;
+use Hash;
 class sysController extends Controller {
 	
 	public function __construct()
     {
         $this->middleware('roles');
     }
+
+    public function changePassword(Request $request)
+    {
+
+        $validator= Validator::make($request->all(),[
+            'old_password' => 'required',
+            'password'=>'required|alpha_num|min:6|confirmed',
+            'password_confirmation' =>'required',
+
+        ]);
+    
+        if($validator->fails()){
+        
+                 return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
+        }
+        else {
+            $old_pass = Auth::user()->password;
+
+            if ( Hash::check($request['old_password'], $old_pass)){
+                $user = Auth::user();
+                $user->password = Hash::make($request['password']); 
+                $user->save();
+
+                return Response::json(['success' => true, 'response' => 'Password Successfully Changed!'], 200);
+            }   
+            else{
+                $messages = ['message' => 'Old password is wrong!'];
+                return Response::json(['success' => false, 'errors' => $messages], 400);
+            }
+        }
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        if ($request->hasFile('avatar')){
+            $avatar = $request->file('avatar');
+            $filename = time() . '.' .$avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(300,300)->save(public_path('/img/avatars/' .$filename));
+
+            $user = Auth::user();
+            $user->avatar = $filename;
+            $user->save();
+        }
+        return back()->with('success' , 'Profile image successfully changed!');
+    }
+
+    public function showEditAccount()
+    {
+        return view('edit_account');
+    }
+
+    public function getEditAccount(Request $request)
+    {   
+
+
+        $messages = [
+            'contact_number.regex' => 'Contact number must start with (+63)',
+            'contact_number.digits' => 'Contact number must be 13 digits',
+        ];
+         $validator= Validator::make($request->all(),[
+            'first_name'  => 'required|min:2|string',  
+            'last_name'  => 'required|min:2|string',
+            'birthdate' => 'required|date',
+            'contact_number' => array ('required', 'numeric', 'regex:/^(\+639)\d{9}$/', 'digits:13'),
+            'address' => 'required|string', 
+            'email' => 'email|required|unique:users,email,'.Auth::user()->id, 
+            
+
+        ],$messages);
+    
+        if($validator->fails()){
+        
+                 return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
+        }
+    }
+
+    public function postEditAccount(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $user->first_name = ucwords($request['first_name']);
+        $user->last_name = ucwords($request['last_name']);
+        $user->birthdate = $request['birthdate'];
+        $user->contact_no = $request['contact_number'];
+        $user->address = ucwords($request['address']);
+        $user->email = $request['email'];
+        $user->save();
+
+       return Response::json(['success' => true, 'data' => $user], 200);
+
+    }   
 
     public function showDateSettings()
     {   
@@ -201,14 +293,18 @@ $data = array(
 
       public function showRegisterAdmin()
     {
-        return view('user_management_admin');
+        $roles = Role::all();
+        return view('user_management_admin',['roles' => $roles]);
     }
 
     public function getRegisterAdmin(Request $request)
     {
         $validator= Validator::make($request->all(),[
-            'first_name'  => 'required|min:2|string|alpha',  
-            'last_name'  => 'required|min:2|string|alpha',     
+            'first_name'  => 'required|min:2|string',  
+            'last_name'  => 'required|min:2|string',
+            'birthdate' => 'required|date',
+            'contact_number' => 'required|numeric|digits:10',
+            'address' => 'required|string', 
             'email' => 'email|required|unique:users,email', 
             'password'=>'required|alpha_num|min:6|confirmed',
             'password_confirmation' =>'',
@@ -240,6 +336,9 @@ $data = array(
         $user = new User();
         $user->first_name = ucwords($request['first_name']);
         $user->last_name = ucwords($request['last_name']);
+        $user->birthdate = $request['birthdate'];
+        $user->contact_no = "+63".$request['contact_number'];
+        $user->address = ucwords($request['address']);
         $user->email = $request['email'];
         $user->password = bcrypt($request['password']);
         $user->save();
@@ -271,6 +370,16 @@ $data = array(
         }
 
         return back()->with('success' , 'Role(s) successfully assigned.');
+    }
+
+    public function postAdminRevoke(Request $request)
+    {
+        $user = User::where('email', $request['email'])->first();
+        $user->roles()->detach();
+       /* $user->delete();*/
+
+         return back()->with('success' , 'User access successfully revoked.');
+       
     }
 
 

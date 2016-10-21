@@ -43,12 +43,13 @@
         <th>Admin</th>
         <th>Secretary</th>
         <th>Action</th>
+
         </thead>
 
         <tbody>
         @foreach($users as $user)
 
-        @if ($user->hasRole('Super User'))
+        @if ($user->hasRole('Admin'))
 
         @else
             <tr>
@@ -68,7 +69,8 @@
                     
                     {{ csrf_field() }}
 
-                    <td><button class="btn btn-sm btn-primary" type="submit">Assign Roles</button></td>
+                    <td><button class="btn btn-sm btn-primary" type="submit">Assign Roles</button>
+                    <button type="submit" formaction="/user-management/roles/revoke" class="btn btn-sm btn-primary" type="submit">Revoke</button></td>
                 </form>
             </tr>
 

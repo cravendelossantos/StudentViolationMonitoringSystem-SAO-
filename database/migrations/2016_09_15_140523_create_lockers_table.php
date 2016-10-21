@@ -13,12 +13,15 @@ class CreateLockersTable extends Migration
     public function up()
     {
         Schema::create('lockers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-            $table->integer('location_id');
-            $table->string('lessee')->nullable();
+            $table->increments('locker_no');
+            $table->string('lessee_name')->nullable();
+            $table->string('lessee_id')->nullable();
             $table->enum('status', array('Available', 'Occupied', 'Damaged', 'Locked'));
-            $table->string('contract');
+            $table->date('start_of_contract');
+            $table->date('end_of_contract');
+            $table->integer('location_id');
+            $table->integer('added_by');
+            $table->integer('updated_by');
         });
     }
 

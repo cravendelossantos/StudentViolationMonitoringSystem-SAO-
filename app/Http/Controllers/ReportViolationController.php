@@ -19,6 +19,8 @@ use Response;
 use App\SchoolYear;
 use App\College;
 use App\Course;
+use App\Complainant;
+use Auth;
 
 class ReportViolationController extends Controller
 {
@@ -31,11 +33,19 @@ class ReportViolationController extends Controller
     {
     	//$violation_reports = ViolationReport::all()
    /*     $violation_reports = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();*/
+    $violations = Violation::all()->sortBy('name');
 		$courses = Course::with('college')->get();
-		
-       
+		$id = ViolationReport::select(DB::raw('max(cast((substring(id, 5)) as UNSIGNED)) as max_id'))->first();
+
+            if ($id == null){
+              $id = 'SAO-1';
+            }
+            else{
+                $id = $id->max_id;
+                $id = 'SAO-'.++$id;
+            } 
         // return view('report_violation', ['violations' => $violations])->with(['courses' => $courses]);
-        return view('report_violation', ['courses' => $courses]);
+        return view('report_violation', ['violations' => $violations , 'courses' => $courses, 'violation_id' => $id]);
 
         //course will be autofilled if we already have the student records.
     }
@@ -57,10 +67,7 @@ class ReportViolationController extends Controller
 
     public function newStudentRecord(Request $request)
     {
-         $messages = [
-            'new_student_no.required.taken' => 'Please check the student information',
-            'violation.required' => 'Please check violation details',
-        ];
+       
 
         $validator = Validator::make($request->all(),[
 
@@ -69,7 +76,10 @@ class ReportViolationController extends Controller
             'lastName' => 'required|string|max:255',
             'yearLevel' => 'required',
             'course' => 'required',
-            'contactNo' => 'required|numeric',
+            'studentContactNo' => 'required|numeric',
+            'guardianName' => 'required|string|min:2',
+            'guardianContactNo' => 'required|numeric',
+            
         ]);
      
         if ($validator->fails()) {
@@ -84,12 +94,47 @@ class ReportViolationController extends Controller
           $new_student_record->last_name = ucwords($request['lastName']);
           $new_student_record->year_level = $request['yearLevel'];
           $new_student_record->course = $request['course'];
-          $new_student_record->contact_no = "+63".$request['contactNo'];
+          $new_student_record->student_contact_no = "+63".$request['studentContactNo'];
+          $new_student_record->guardian_name = ucwords($request['guardianName']);
+          $new_student_record->guardian_contact_no = "+63".$request['guardianContactNo'];
           $new_student_record->date_created = Carbon::now();
           $new_student_record-> save();
             
             return response()->json(array(['success' => true, 'response' => $new_student_record]));
                 //napasok kahit random na student number
+        }
+    }
+
+
+    public function newComplainantRecord(Request $request)
+    {
+         $messages = [
+            'complainantNo.required.taken' => 'The Complainant ID is already taken',
+
+        ];
+
+        $validator = Validator::make($request->all(),[
+
+            'complainantId' => array('required', 'regex:/^[0-9A-Za\s-]+$/', 'unique:complainants,id_no'),
+            'complainantName' => 'required|string',
+            'complainantPosition' => 'required',
+        ]);
+     
+        if ($validator->fails()) {
+            return response()->json(array('success'=> false, 'errors' =>$validator->getMessageBag()->toArray())); 
+          
+        }
+        else {
+           
+          $new_complainant_record = new Complainant();
+          $new_complainant_record->id_no = $request['complainantId'];
+          $new_complainant_record->name = ucwords($request['complainantName']);
+          $new_complainant_record->position = $request['complainantPosition'];
+        
+          $new_complainant_record-> save();
+            
+            return response()->json(array(['success' => true, 'response' => $new_complainant_record]));
+          
         }
     }
 
@@ -100,7 +145,7 @@ class ReportViolationController extends Controller
 
         $term = $request->term;
     
-        $data = Student::where('student_no', $term)->take(5)->get();
+        $data = Student::where('student_no', $term)->get();
         $result=array();
         
         foreach ($data as $key => $value)
@@ -111,6 +156,32 @@ class ReportViolationController extends Controller
                         'course' => $value->course,
                         'year_level' =>$value->year_level,
                         'current_status' => $value->current_status,
+                        'guardian_name' =>$value->guardian_name,
+                        'guardian_contact_no' => $value->guardian_contact_no,
+                      ];
+
+        }
+       // return response()->json($data);
+        return response()->json($result);
+
+    }
+
+     public function searchComplainant(Request $request)
+    {
+
+          
+
+        $term = $request->term;
+    
+        $data = Complainant::where('id_no', $term)->take(5)->get();
+        $result=array();
+        
+        foreach ($data as $key => $value)
+        {
+            $result[]=[ 'value' => $value->id_no, 
+                        'name' => $value->name, 
+                        'position' => $value->position,
+                     
                       ];
 
         }
@@ -133,6 +204,8 @@ class ReportViolationController extends Controller
      $different_violations = DB::table('violation_reports')
                 ->where('student_id', $student_number)
                 ->where('offense_level', $request['offense_level'])->count(DB::raw('DISTINCT violation_id'));
+
+      
 
      //Count only valid offenses
 
@@ -193,18 +266,25 @@ class ReportViolationController extends Controller
     }
  	public function getReportViolation(Request $request)
     {
-        $tomorrow = Carbon::tomorrow()->format('y-m-d');
+
+  
+
+       $tomorrow = Carbon::tomorrow()->format('y-m-d');
        $messages = [
             'student_number.required' => 'The student number and information is required.',
             'violation.required' => 'Please check violation details.',
             'date_committed.before' => 'Date must be not greater than today.',
+            'complainant_id.required' => 'The complainant details is required.',
+            'time_reported.date_format' => 'Invalid time format',
         ];
 
         $validator = Validator::make($request->all(),[
             'student_number' => 'required|alpha_dash|max:255',
             'violation' => 'required|string|max:255',
             'date_committed' => 'required|date|before:' .$tomorrow,
-            'complainant' => 'required',
+            'complainant_id' => 'required',
+            'time_reported' => 'required|date_format:h:ia'
+
         ],$messages);
      
         if ($validator->fails()) {
@@ -237,21 +317,44 @@ class ReportViolationController extends Controller
             }
 	       
             $date_committed = Carbon::parse($request['date_committed']);
+            $time_reported = Carbon::parse($request['time_reported']);
+
+            # code...
+   
+            $id = ViolationReport::select(DB::raw('max(cast((substring(id, 5)) as UNSIGNED)) as max_id'))->first();
+
+ 
+            $id = $id->max_id;
+            $n=1;
+
+            if ($id == null){
+              
+              $id = 'SAO-'.$n;
+            }
+            else{
+              
+              
+              $id = 'SAO-'.++$id;
+            }
+
+            $complainant = Complainant::select('id_no')->where('id_no', $request['complainant_id'])->first();
 
             $student_violation = new ViolationReport();
+            $student_violation->id = $id;
             $student_violation->student_id = $request['student_number'];
             $student_violation->violation_id = $request['violation_id'];
             $student_violation->status = 1;
-            $student_violation->complainant = ucwords($request['complainant']);
+            $student_violation->complainant_id = $complainant->id_no;
             $student_violation->sanction = $request['sanction'];
             $student_violation->offense_level = $request['offense_level'];
             $student_violation->offense_no = $request['offense_number'];
             $student_violation->date_reported = $date_committed;
-            $student_violation->validity = $validity;
+            $student_violation->time_reported = $time_reported;
+            $student_violation->reporter_id = Auth::user()->id;
+   /*         $student_violation->validity = $validity;*/
             $student_violation->save();
-            
 
-            return Response::json(['success' => true, 'response' => $student_violation], 200);
+            return Response::json(['success' => true, 'response' => ++$id], 200);
             
 		      
 
@@ -344,17 +447,45 @@ class ReportViolationController extends Controller
     if ($request['v_reports_offense_level'] == "")
     {
           $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
     }
     else
     {
 
 
     $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->get();
-    }    
-     return response()->json(['data' => $data]);
+
+    foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+
+   
+    }
+      return response()->json(['data' => $report]);
 /*
     return Datatables::eloquent(ViolationReport::query()->join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id'))->make(true);*/
   
+  }
+
+  public function getCourseYears(Request $request)
+  {
+    $years = Course::select('no_of_years')->where('description' , $request['course'])->first();
+    return response($years);
   }
 
 }

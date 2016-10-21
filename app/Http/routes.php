@@ -2,7 +2,7 @@
 
 
 
-//Super user route group
+/*//Super user route group
 Route::group(['middleware' => 'roles', 'roles' => ['Super User']],function(){
 
 
@@ -14,10 +14,10 @@ Route::post('/user-management/super_user' , 'sysController@postRegisterSuperUser
 
 
 });
-
+*/
 
 //All users route group
-Route::group(['middleware' => 'roles', 'roles' => ['Super User','Admin','Secretary']],function(){
+Route::group(['middleware' => 'roles', 'roles' => ['Admin','Secretary']],function(){
 
 Route::get('/index', 'HomeController@index');
 
@@ -29,6 +29,11 @@ Route::get('/settings/dates/school-year' , 'sysController@showDateSettings');
 Route::get('/settings/dates/school-year/set' , 'sysController@getDateSettings');
 Route::post('/settings/dates/school-year/set' , 'sysController@postDateSettings');
 Route::post('/settings/show/school-years/' , 'sysController@showSchoolYears');
+
+Route::get('/try', function(){
+	$pdf = PDF::loadView('loginv2');
+	return $pdf->download('invoice.pdf');
+});
 
 });
 
@@ -45,6 +50,20 @@ Route::post('/user-management/admin' , 'sysController@postRegisterAdmin');
 Route::get('/user-management/roles' , 'sysController@showRoles');
 
 Route::post('/user-management/roles/assign' , 'sysController@postAdminAssignRoles');
+//Revoke user
+Route::post('/user-management/roles/revoke' , 'sysController@postAdminRevoke');
+
+
+//Edit account
+Route::get('/profile/my_profile' , 'sysController@showEditAccount');
+Route::get('/profile/edit/check' , 'sysController@getEditAccount');
+Route::post('/profile/edit/' , 'sysController@postEditAccount');
+
+Route::post('/upload/avatar' , 'sysController@updateAvatar');
+
+//Change password
+Route::post('/change_password', 'sysController@changePassword');
+
 
 });
 
@@ -52,7 +71,7 @@ Route::post('/user-management/roles/assign' , 'sysController@postAdminAssignRole
 
 //Admin and secretary route group
 
-Route::group(['middleware' => 'roles', 'roles' => ['Super User', 'Admin','Secretary']],function(){
+Route::group(['middleware' => 'roles', 'roles' => ['Admin','Secretary']],function(){
 
 //Courses
 Route::get('/courses' , 'sysController@showCourses');
@@ -96,7 +115,7 @@ Route::post('/activity-records/list', 'ActivityRecordsController@getStudentRecor
 
 
 
-Route::group(['middleware' => 'roles', 'roles' => ['Super User','Admin','Secretary']],function(){
+Route::group(['middleware' => 'roles', 'roles' => ['Admin','Secretary']],function(){
 
 Route::post('/get-events' , 'CampusVenueReservationController@getEvents');
 
@@ -106,15 +125,22 @@ Route::get('/report-violation', 'ReportViolationController@showReportViolation')
 
 
 //New student
-
+Route::get('/report-violation/search/course/years', 'ReportViolationController@getCourseYears');
 Route::post('/report-violation/add-student', 'ReportViolationController@newStudentRecord');
+//New complainant
+
+Route::post('/report-violation/add-complainant', 'ReportViolationController@newComplainantRecord');
+
 
 //Search
 Route::get('/report-violation/search/student', [
 	'as'=> 'autocompleteStudentNo',
 	'uses' => 'ReportViolationController@searchStudent',
 	]);
-
+Route::get('/report-violation/search/complainant', [
+	'as'=> 'autocompleteComplainantID',
+	'uses' => 'ReportViolationController@searchComplainant',
+	]);
 
 Route::post('/report-violation/reports','ReportViolationController@getViolationReportsTable');
 Route::get('/report-violation/search/violation', 'ReportViolationController@searchViolation');
@@ -295,9 +321,4 @@ Route::auth();
 Route::get('/password_reset/success', function(){
 	return view('password_reset_success');
 });
-
-
-
-/*Route::get('/forgot_password' , 'Auth\AuthController@showForgotPassword');
-Route::get('/forgot_password/sendmail', 'MailController@forgotPasswordMail');*/
 

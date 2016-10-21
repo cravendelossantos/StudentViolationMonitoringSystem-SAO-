@@ -13,7 +13,8 @@
 @endsection
 
 @section('content')
-
+<link href="/css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+<script src="/js/plugins/clockpicker/clockpicker.js"></script>
 <div id="LAF_Modal" class="modal fade" role="dialog">
 	<div class="modal-dialog modal-md">
 
@@ -36,8 +37,8 @@
 					<div class="form-group claimItem">
 						
 						<div class="col-md-10 col-md-offset-1">
-						<label class="control-label">Date Endorsed</label>
-							<output class="form-control" name="date_endorsed" id="date_endorsed"></output>
+						<label class="control-label">Date Reported</label>
+							<output class="form-control" name="_date-reported" id="_date-reported"></output>
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
 
@@ -69,7 +70,7 @@
 						
 						<div class="col-md-10 col-md-offset-1">
 						<label class="control-label">Endorsed by</label>
-							<output class="form-control" name="endorser_name" id="endorser_name"></output>
+							<input type="text" class="form-control" name="endorser_name" id="endorser_name">
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
 
@@ -80,8 +81,8 @@
 						
 						<div class="col-md-10 col-md-offset-1">
 						<label class="control-label">Claimer Name</label>
-								<input type="text" placeholder="Claimer Name" name="claimer_name" id="claimer_name" class="form-control">
-
+								<input type="text" placeholder="Claimer Name" name="claimer_name" id="claimer_name" class="form-control" autocomplete="off" style="text-transform: capitalize;">
+							<label id="claimer_name_error" class="error"></label>
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
 
@@ -125,27 +126,49 @@
 						<div class="col-md-6">
 							<div class="form-group ">
 								<label>Item Description</label>
-								<input type="text" placeholder="Item Description" name="itemName" class="form-control" autofocus="" aria-required="true">
+								<input type="text" placeholder="Item Description" name="itemName" class="form-control" autofocus="" aria-required="true" style="text-transform: capitalize;">
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Owner's Name,if any</label>
-								<input type="text" placeholder="Owner's Name" name="ownerName" class="form-control">
+								<input type="text" placeholder="Owner's Name" name="ownerName" class="form-control" style="text-transform: capitalize;">
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Endorsed by</label>
-								<input type="text" placeholder="Endorser's name" name="endorserName" class="form-control">
+								<input type="text" autocomplete="off"  placeholder="Endorser's name" name="endorserName" class="form-control" style="text-transform: capitalize;">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Found at</label>
-								<input type="text" placeholder="Found at" name="foundedAt" class="form-control">
+								<input type="text" placeholder="Found at" name="foundAt" class="form-control" style="text-transform: capitalize;">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+						<div class="form-group" id="LAF_date_picker">
+								<label>Date Reported</label>
+								<div class="input-group date" id="data_1">
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									<input type="text" id="date_reported" name="date_reported" class="form-control">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Time Reported</label>
+								<div class="input-group clockpicker time_reported" data-autoclose="true">
+									<input type="text" class="form-control" value="" name="time_reported" id="time_reported">
+									<span class="input-group-addon">
+										<span class="fa fa-clock-o"></span>
+									</span>
+								</div>
 							</div>
 						</div>
 
@@ -217,7 +240,7 @@
 				<tr>
 									<th>Date Endorsed</th>
 									<th>Item Description</th>
-									<th>Endorsed by</th>
+									<th>Found by</th>
 									<th>Founded at</th>
 									<th>Owner's Name</th>
 									<th>Status</th>
@@ -239,5 +262,14 @@
 	</div>
 </div>
 
+
+<script type="text/javascript">
+	
+	$('.time_reported').clockpicker({
+	
+	 twelvehour: true
+
+	});
+</script>
 @endsection
 

@@ -14,10 +14,11 @@ class CreateLockerLocationsTable extends Migration
     {
        Schema::create('locker_locations', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date_added');
             $table->string('building');
             $table->string('floor');
-            
+            $table->unique(['building', 'floor']);
+            $table->date('date_added');
+            $table->integer('added_by');
 
         }); 
     }

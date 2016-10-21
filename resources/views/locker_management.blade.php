@@ -23,19 +23,23 @@
 					&times;
 				</button>
 				<h4 class="modal-title">Update Locker</h4>
+				
 			</div>
 
 			<div class="ibox-content">
 				<form class="form-horizontal" id="locker_status_update" > 
 					{!! csrf_field() !!}
-			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<div class="text-center">	<p>Current Status:
+								<strong><output name="m_current_status" id="m_current_status">
+								</output></strong></p></div>
 
 					<div class="form-group">
 						
 						<div class="col-md-10 col-md-offset-1">
-						<label class="control-label">Locker no</label>
+							<label class="control-label">Locker no</label>
 							<input type="hidden" name="_m_locker_no" id="_m_locker_no">
-							<input type="text" class="form-control" name="m_locker_no" id="m_locker_no">
+							<output class="form-control" name="m_locker_no" id="m_locker_no"></output>
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
 
@@ -56,94 +60,90 @@
 
 						<div class="col-md-10 col-md-offset-1">
 
-						<label class="control-label">Update status</label><br>
-						<select class="form-control" name="m_update_status" id="m_update_status">
+							<label class="control-label">Update status</label><br>
+							<select class="form-control" name="m_update_status" id="m_update_status">
+							<option disabled="" selected="">Update Status</option>
+								<option value="Available">Available</option>
+								<option value="Occupied">Occupied</option>
+								<option value="Damaged">Damaged</option>
+								<option value="Locked">Locked</option>
 
-						<option value="Available">Available</option>
-						<option value="Occupied">Occupied</option>
-						<option value="Damaged">Damaged</option>
-						<option value="Locked">Locked</option>
+							</select>
+							
+							<br>
+					<div id="occupancy_div">		
+							<div>
+								<input type="text" class="form-control" placeholder="Name of Lessee" name="m_lessee_name" id="m_lessee_name" style="text-transform: capitalize;">
+							</div>
+							<br>
+							<div>
+								<input type="text" class="form-control" placeholder="Lessee ID No." name="m_lessee_id" id="m_lessee_id">
+							</div>
+							<br>
+							<select class="form-control" name="contract" id="contract">
 
-						 </select>
-									<!-- <div class="radio"><label> <input type="radio" value="Available" id="m_status_available" name="m_update_status"> Available </label></div>
-
-						
-									<div class="radio"><label> <input type="radio" value="Occupied" id="m_status_occupied" name="m_update_status"> Occupied </label></div>
-									<input type="text" name="m_lessee" id="m_lessee" class="form-control"> 
-
-									<div class="radio"><label> <input type="radio"  value="Damaged" id="m_status_damaged" name="m_update_status"> Damaged </label></div>
-
-
-									<div class="radio"><label> <input type="radio"  value="Locked" id="m_status_locked" name="m_update_status"> Locked </label></div>	
- -->
-									
-
+								<option disabled="" selected="">Select Contract</option>
+								@foreach ( $dates as $date )
+								<option value="{{ $date->id }}">{{ $date->term_name }} ( S.Y - {{ $date->school_year }})</option>
+								@endforeach
+							</select>
+							
 							<span class="help-block m-b-none text-danger"></span>
 						</div>
-
+							</div>
 					</div>
 
-	<!-- 								<div class="col-md-6">
-					<label>Select Contract</label>
-								<select name="location" id="location" class="form-control">
-									@foreach ($contract_dates as $contract_date)
-									<option>{{ $contract_date->term_name }}</option>
+
+
+
 							
-									@endforeach
-									
-								</select>	
-	</div> -->
-
-
-	
-							
-			</div>
-
-			<div class="modal-footer">
-				<button class="ladda-button btn btn-w-m btn-primary claimItem" id="locker_update" type="button">
-					<strong>Save</strong>
-				</button>
-				<button type="button" class="btn btn-w-m btn-danger"
-				data-dismiss="modal">
-					<strong>Cancel</strong>
-				</button>
-				</form>
-			</div>
-		</div>
-
-	</div>
-</div>
-
-
-
-<div class="row">
-
-	<div class="col-lg-12">
-		<div class="ibox float-e-margins">
-
-			<div class="ibox-title">
-				<h5>Add Lockers</h5>
-				<div class="ibox-tools">
-
-				</div>
-			</div>
-			<div class="ibox-content">
-
-				<form role="form" id="add_locker_form" method="POST" action="/lockers/add">
-				<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group ">
-								<label>No of lockers</label>
-								<input type="number" placeholder="No of Lockers" name="no_of_lockers" id="no_of_lockers" class="form-control" autofocus="" aria-required="true">
-							</div>
 						</div>
 
-						<div class="col-md-6">
+						<div class="modal-footer">
+							<button class="ladda-button btn btn-w-m btn-primary claimItem" id="locker_update" type="button">
+								<strong>Save</strong>
+							</button>
+							<button type="button" class="btn btn-w-m btn-danger"
+							data-dismiss="modal">
+							<strong>Cancel</strong>
+						</button>
+					</form>
+				</div>
+			</div>
 
-						
-							<div class="form-group">
+		</div>
+	</div>
+
+
+
+	<div class="row">
+
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+
+				<div class="ibox-title">
+					<h5>Add Lockers</h5>
+					<div class="ibox-tools">
+
+					</div>
+				</div>
+				<div class="ibox-content">
+
+					<form role="form" id="add_locker_form" method="POST" action="/lockers/add">
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group ">
+									<label>No of lockers</label>
+									<input type="number" placeholder="No of Lockers" name="no_of_lockers" id="no_of_lockers" class="form-control" autofocus="" aria-required="true">
+								</div>
+							</div>
+
+							<div class="col-md-6">
+
+
+								<div class="form-group">
 									<!-- <label>Building</label>
 
 									<select name="location" id="location" class="form-control">
@@ -155,28 +155,28 @@
 
 								<label>Location</label>
 								<select name="location" id="location" class="form-control">
-								<option selected="" disabled="">Select Location</option>
-								@foreach($locations as $location)
+									<option selected="" disabled="">Select Location</option>
+									@foreach($locations as $location)
 
-								<option value="{{ $location->id }}">{{ $location->building }} Building {{ $location->floor }} Floor </option>
-								@endforeach
+									<option value="{{ $location->id }}">{{ $location->building }} Building {{ $location->floor }} Floor </option>
+									@endforeach
 								</select>
 
 
-				</div>
-	</div>
-		
-					
-								<div class="col-md-6">
+							</div>
+						</div>
+
+
+						<div class="col-md-6">
 							<div class="form-group ">
 								<label>Locker number</label>
 								<input type="number" placeholder="From" name="from" id="from" class="form-control" autofocus="" aria-required="true">
-								</div>
-								<div class="form-group ">
+							</div>
+							<div class="form-group ">
 								<input type="number" placeholder="To" name="to" id="to" class="form-control" autofocus="" aria-required="true" readonly="">
 							</div>
 						</div>
-							
+
 
 
 
@@ -187,16 +187,16 @@
 
 					</div>
 
-			</div>
+				</div>
 
-			<div class="ibox-footer">
-				<button class="btn btn-w-m btn-primary" id="add_locker_btn" type="button">
-					<strong>Save</strong>
-				</button>
-				<button class="btn btn-w-m btn-danger" id="add_locker_cancelBtn" type="button">
-					<strong>Cancel</strong>
-				</button>
-				<input type="hidden" value="{{Session::token()}}" name="_token">
+				<div class="ibox-footer">
+					<button class="btn btn-w-m btn-primary" id="add_locker_btn" type="button">
+						<strong>Save</strong>
+					</button>
+					<button class="btn btn-w-m btn-danger" id="add_locker_cancelBtn" type="button">
+						<strong>Cancel</strong>
+					</button>
+					<input type="hidden" value="{{Session::token()}}" name="_token">
 				</form>
 			</div>
 
@@ -207,43 +207,63 @@
 
 
 <div class="row ">
-<div class="col-lg-12">
+	<div class="col-lg-12">
 
 		<div class="ibox">
 			<div class="ibox float-e-margins">
 
 				<div class="ibox-title">
-				
+
+								<div class="form-group">
+				Filter
+				<select id="status_sort" name="status_sort"  class="form-control">
+								<option value="">All</option>
+								<option value="Available">Available</option>
+								<option value="Occupied">Occupied</option>
+								<option value="Damaged">Damaged</option>
+								<option value="Locked">Locked</option>
+				</select>
+
+				<select name="location_sort" id="location_sort" class="form-control">
+									<option value="">All</option>
+									@foreach($locations as $location)
+
+									<option value="{{ $location->id }}">{{ $location->building }} Building {{ $location->floor }} Floor </option>
+									@endforeach
+								</select>
+
+
+</div>
 
 				</div>
 
 				<div class="ibox-content" id="table-content">
-				<div class="table-responsive">
-					<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+					<div class="table-responsive">
+						<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
 
-						<table class="table table-striped table-bordered table-hover lockers-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
-							<thead>
-						
+							<table class="table table-striped table-bordered table-hover lockers-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+								<thead>
+
 									<th>Locker no</th>
 									<th>Floor</th>
 									<th>Building</th>
 									<th>Lessee</th>
 									<th>Status</th>
-								
-								
 
-				
-							</thead>
 
-		
 
-						</table>
+
+								</thead>
+
+
+
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-</div>
+	</div>
 </div>	
 
 
@@ -259,25 +279,25 @@
 
 <style>
 	
-.locker-damaged{
-height: 120px;
-width: 75px;
-margin-left: 20px;
-background-color: red;
-}
+	.locker-damaged{
+		height: 120px;
+		width: 75px;
+		margin-left: 20px;
+		background-color: red;
+	}
 
 	
-.locker-available{
-height: 120px;
-width: 75px;
-margin-left: 20px;
-background-color: green;
-}
+	.locker-available{
+		height: 120px;
+		width: 75px;
+		margin-left: 20px;
+		background-color: green;
+	}
 
-.locker-occupied{
-height: 120px;
-width: 75px;
-margin-left: 20px;
-background-color: blue;
-}
+	.locker-occupied{
+		height: 120px;
+		width: 75px;
+		margin-left: 20px;
+		background-color: blue;
+	}
 </style>

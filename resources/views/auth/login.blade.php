@@ -18,30 +18,14 @@
 
 	<body class="white-bg">
 
-		<div class="loginColumns animated fadeInDown">
+		<div class="loginColumns1 ">
+			
 			<div class="row">
 
-				<div class="col-md-6">
-				<img src="/img/lpulogo.png" height="388" width="366">
-	<!-- 				<img src="/img/lpulogo.png" height="388" width="366">
-					<h2><strong>Vision</strong></h2>
-<p>An internationally accredited university dedicated to innovation and excellence in the service of God and country.</p>
-<h2><strong>Mission</strong></h2>
-<p>The Lyceum of the Philippines University - Cavite, espousing the ideals of Jose P. Laurel, is committed to the following mission:</p>
-<ol>
-<li>Advance and preserve knowledge by undertaking research and disseminating and utilizing the results. - <strong>RESEARCH</strong></li>
-<li>Provide equitable access to learning through relevant, innovative, industry-based and environment-conscious programs and services in the context of nationalism and internationalism. - <strong>INSTRUCTION</strong> and <strong>QUALITY SERVICES</strong></li>
-<li>Provide necessary knowledge and skills to meet entrepreneurial development and the managerial requirements of the industry. - <strong>INSTRUCTION</strong></li>
-<li>Establish local and international linkages that will be the source of learning and growth of the members of academic community. - <strong>INSTRUCTION</strong> and <strong>INSTITUTIONAL</strong><strong>DEVELOPMENT</strong></li>
-<li>Support a sustainable community extension program and be a catalyst for social transformation and custodian of Filipino culture and heritage. - <strong>COMMUNITY EXTENSION</strong></li>
-<li>Build a community of God-centered, nationalistic, environment conscious, and globally competitive professionals with wholesome values and attitudes. - <strong>PROFESSIONALISM</strong> and <strong>VALUES</strong></li> -->
-				</div>
-				<div class="col-md-6">
-					<br>
-					<br>
-					<br>
-		
-					<h1>Login</h1>
+				<div class="col-md-5 animated fadeInLeft">
+
+					<center><img src="/img/lpu.png" class="img-responsive" alt="SAO-IS Logo"></center>
+	<h1>Login</h1>
 					<div class="">
 						<form class="m-t" role="form" id="loginForm" method="POST" action="{{ url('/login') }}">
 							{!! csrf_field() !!}
@@ -57,6 +41,8 @@
 
 							</div>
 
+
+							
 							@if (count($errors) > 0)
 
 							@foreach ($errors->all() as $error)
@@ -64,8 +50,9 @@
 								{{ $error }}
 							</div>
 							@endforeach
+
 							@endif
-							<button type="submit id="loginBtn" class="btn btn-lpu block full-width m-b">
+							<button type="submit" id="loginBtn" class="btn btn-lpu block full-width m-b">
 							Login
 							</button>
 							<a href="/password/reset"><center><small>Forgot password?</small></center></a>
@@ -76,21 +63,39 @@
 						
 
 							</div>
-							</div>
-							</div>
 
-							</div>
-							<br><br><br><br>
+
+				</div>
+
+
+
+				<div class="col-md-offset-1 col-md-6 animated fadeInRight" style="text-align: justify;">
+
+					<h2><strong class="lpu-text">Vision</strong></h2>
+					<p>An internationally accredited university dedicated to innovation and excellence in the service of God and country.</p>
+					<h2><strong class="lpu-text">Mission</strong></h2>
+					<p>The Lyceum of the Philippines University - Cavite, espousing the ideals of Jose P. Laurel, is committed to the following mission:</p>
+					<ol>
+						<li>Advance and preserve knowledge by undertaking research and disseminating and utilizing the results. - <strong>RESEARCH</strong></li>
+						<li>Provide equitable access to learning through relevant, innovative, industry-based and environment-conscious programs and services in the context of nationalism and internationalism. - <strong>INSTRUCTION</strong> and <strong>QUALITY SERVICES</strong></li>
+						<li>Provide necessary knowledge and skills to meet entrepreneurial development and the managerial requirements of the industry. - <strong>INSTRUCTION</strong></li>
+						<li>Establish local and international linkages that will be the source of learning and growth of the members of academic community. - <strong>INSTRUCTION</strong> and <strong>INSTITUTIONAL</strong><strong> DEVELOPMENT</strong></li>
+						<li>Support a sustainable community extension program and be a catalyst for social transformation and custodian of Filipino culture and heritage. - <strong>COMMUNITY EXTENSION</strong></li>
+						<li>Build a community of God-centered, nationalistic, environment conscious, and globally competitive professionals with wholesome values and attitudes. - <strong>PROFESSIONALISM</strong> and <strong>VALUES</strong></li>
+
+					</div>
+				</div>
+
+			</div>
+							
 							<hr/>
 							<div class="row">
-							<div class="col-md-8 col-md-offset-2 text-center">
+							<div class="col-md-8 col-md-offset-2 text-center fixed">
 							Lyceum of the Philippines University Cavite
 							<br>
 							<small>Copyright © 2016 · All Rights Reserved</small>
 					</div>
-					<div class="col-md-6">
-
-					</div>
+				
 				</div>
 	</body>
 
