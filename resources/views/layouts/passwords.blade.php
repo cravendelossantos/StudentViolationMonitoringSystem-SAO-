@@ -25,12 +25,15 @@
                     @yield('content')
 
     </div>
-   <hr/>
+    
+                            <hr/>
                             <div class="row">
-                            <div class="col-md-8 col-md-offset-2 text-center">
+                            <div class="col-md-8 col-md-offset-2 text-center fixed">
                             Lyceum of the Philippines University Cavite
                             <br>
                             <small>Copyright © 2016 · All Rights Reserved</small>
                     </div>
+                
+                </div>
     </body>
     </html>

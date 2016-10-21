@@ -42,7 +42,16 @@
                                 </button>
                             </div>
                         </div>
+
+                        
                     </form>
+                    
+                       
+                            <div class="pull-left">
+                               <a href="/login">Back</a>
+
+                            </div>
+                <br>
                 </div>
             </div>
         </div>

@@ -13,19 +13,22 @@ class CreateViolationReportsTable extends Migration
     public function up()
     {
          Schema::create('violation_reports', function (Blueprint $table) {
-            $table->increments('id');
+            $table->string('id')->index()->primary();
             $table->string('student_id');
             $table->integer('violation_id');
             $table->integer('offense_no');
             $table->string('sanction');
             $table->string('offense_level');
-            $table->string('complainant');
+            $table->string('complainant_id');
             $table->enum('status' , array('Pending','Completed'));
             $table->date('date_reported');
+            $table->time('time_reported');
             $table->string('validity');
-            $table->string('updated_by');
+            $table->integer('reporter_id');
         });
-    }
+
+
+        }
 
     /**
      * Reverse the migrations.
