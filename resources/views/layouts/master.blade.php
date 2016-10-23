@@ -265,9 +265,9 @@
 									<a href="/campus"> <i class=""></i> <span class="nav-label ng-binding">Reservation Form</span> </a>
 								</li>
 						</li>
-<!-- 						<li ui-sref-active="active" >
+						<li ui-sref-active="active" >
 							<a href="/reservationReports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
-						</li> -->
+						</li>
 
 					</ul>
 					</li>

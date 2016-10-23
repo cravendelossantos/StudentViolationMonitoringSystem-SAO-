@@ -92,17 +92,27 @@
 
 </div> -->
         <div class="row">
- <div class="container">
-    <div class="ibox float-e-margins">
+
+    
+<div class="col-lg-12">
+  <div class="ibox float-e-margins">
       <div class="ibox-title">
 
-            <div class="col-lg-12 text-center">
+<!--             <div class="col-lg-12 text-center">
                 <h1>Calendar</h1>
                 <div id="calendar" class="col-centered">
                 </div>
+            </div> -->
+              
+              
+               <h4 style="color:red">Note:<br>Click specific date to add reservation<br>Click Event to update reservation<br>Can't Reserve 5 days before the desired date</h4>
+               <center><h1><b>Event Calendar</b></h1></center>
             </div>
+              <div class="ibox-content">
+                    <div id="calendar"></div>
+                </div>
             </div>
-            </div>
+        </div>
         </div>
         <!-- row -->
         
@@ -115,7 +125,7 @@
             
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Add Event</h4>
+                <h4 class="modal-title" id="myModalLabel">F-SAO-0001</h4>
               </div>
               <div class="modal-body">
                 
@@ -161,8 +171,6 @@
                   
                 </select>
 
-
-
                       
                     </div>
                   </div>
@@ -172,25 +180,53 @@
                     <div class="col-sm-10">
                       <select name="status" class="form-control" id="status">
                           <option value="">Choose</option>
-                     
+                          <option style="color:blue;" value="OnProcess">&#9724; OnProcess</option>
                           <option style="color:#FF0000;" value="Reserved">&#9724; Reserved</option>
                           <option style="color:#000;" value="Banned">&#9724; Banned</option>
                           
                         </select>
                     </div>
                   </div>
-                  <div class="form-group">
+
+
+      <div class="form-group">
+        <label for="time" class="col-sm-2 control-label">Time</label>
+        <div class="col-sm-10">
+        <div class="input-group">
+          <input type="text" class="form-control" name="time" id="time" placeholder="Select your time" value="{{ old('time') }}">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+        </div>
+        </div>
+
+
+      </div>
+
+
+<!--                   <div class="form-group">
                     <label for="start" class="col-sm-2 control-label">Start date</label>
                     <div class="col-sm-10">
-                      <input type="text" name="start" class="form-control" id="start" readonly>
-                    </div>
+                      <input type="text" name="start" class="form-control" id="start" > -->
+
+                      <!-- readonly -->
+
+
+
+<!--                     </div>
                   </div>
-                  <div class="form-group">
+
+ -->
+
+
+<!--                   <div class="form-group">
                     <label for="end" class="col-sm-2 control-label">End date</label>
                     <div class="col-sm-10">
-                      <input type="text" name="end" class="form-control" id="end" readonly>
+                      <input type="text" name="end" class="form-control" id="end">
                     </div>
-                  </div>
+                  </div> -->
+
+
 
 <!--                     <div class="form-group">
                     <label for="color" class="col-sm-2 control-label">Remark Status</label>
@@ -208,14 +244,28 @@
                   <div class="form-group">
                     <label for="title" class="col-sm-2 control-label">CVF No.</label>
                     <div class="col-sm-10">
-                      <input type="text" name="cvf_no" class="form-control" id="cvf_no" placeholder="CVF No.">
+                      <input type="text" name="cvf_no" class="form-control" id="cvf_no" placeholder="CVF No." readonly>
                     </div>
                   </div>
-                
+                  <div class="form-group">
+
+                               <label for="color" class="col-sm-2 control-label">S.Y.</label>
+                               <div class="col-sm-10">
+                                <select  name="school_year" id="school_year" class="form-control" readonly>
+                                    @foreach ($schoolyear as $schoolyear)
+                                    <option>{{$schoolyear->school_year }}</option>
+                                    @endforeach
+
+                                    @foreach ($schoolyears as $schoolyear)
+                                    <option hidden>{{$schoolyear->school_year }}</option>
+                                    @endforeach
+                            
+                                </select>
+                  </div>          
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" name="addEvent_btn" id="addEvent_btn" class="btn btn-primary">Save changes</button>
+                <button type="submit" name="addEvent_btn" id="addEvent_btn" class="btn btn-primary">Add Event</button>
               </div>
             </form>
             </div>
@@ -232,10 +282,11 @@
             <div class="modal-content">
             <form class="form-horizontal" id="updateEvent" method="POST" action="/campus/update">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="update_id" id="update_id">
 
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Edit Event</h4>
+                <h4 class="modal-title" id="myModalLabel">Update Event</h4>
               </div>
               <div class="modal-body">
                 
@@ -246,26 +297,91 @@
                     </div>
                   </div>
 
+                  
                   <div class="form-group">
-                    <label for="color" class="col-sm-2 control-label">Status</label>
+                    <label for="title" class="col-sm-2 control-label">Venue</label>
                     <div class="col-sm-10">
-                      <select name="color" class="form-control" id="color">
+                      <!-- <input type="text" name="venue" class="form-control" id="venue" placeholder="Venue"> -->
+                       <select name="venue" class="form-control" id="venue">
                           <option value="">Choose</option>
                      
-                          <option style="color:#FF0000;" value="#FF0000">&#9724; Reserved</option>
-                          <option style="color:#000;" value="#000">&#9724; Banned</option>
+                          <option value="Academic Resource Center">Academic Resource Center</option>
+                          <option value="Lpu Auditirium">Lpu Auditirium</option>
+                          <option value="AVT">AVT</option>
+                          <option value="Multi-purpose Hall<">Multi-purpose Hall</option>
+                          <option value="Phase II lobby">Phase II lobby</option>
+                          <option value="Roofdeck">Roofdeck</option>
+                          <option value="CPAD Lobby">CPAD Lobby</option>
+
                           
                         </select>
                     </div>
                   </div>
-       
-                    <div class="form-group"> 
+
+                  <div class="form-group">
+                    <label for="title" class="col-sm-2 control-label">Organizer</label>
+                    <div class="col-sm-10">
+                      <!-- <input type="text" name="organization" class="form-control" id="organization" placeholder="Organizer"> -->
+                <select name="organization" id="organization" class="form-control" readonly>
+                <option autofocus="" disabled selected >Select Organization</option>
+                  @foreach ($organizations as $organization)
+                  <option>{{$organization->organization }}</option>
+                  
+              
+                
+                  @endforeach
+                  
+                </select>
+
+
+
+                      
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="color" class="col-sm-2 control-label">Status</label>
+                    <div class="col-sm-10">
+                      <select name="status" class="form-control" id="status">
+                          <option value="">Choose</option>
+                          <option style="color:blue;" value="OnProcess">&#9724; OnProcess</option>
+                          <option style="color:#FF0000;" value="Reserved">&#9724; Reserved</option>
+                          <option style="color:#000;" value="Banned">&#9724; Banned</option>
+                          
+                        </select>
+                    </div>
+                  </div>
+
+
+      <div class="form-group">
+        <label  class="col-sm-2 control-label">Time</label>
+        <div class="col-sm-10">
+        <div class="input-group">
+          <input type="text" class="form-control" name="time" id="time" placeholder="Select your time" value="{{ old('time') }}">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+        </div>
+        </div>
+
+
+      </div>
+
+                  <div class="form-group">
+                    <label for="title" class="col-sm-2 control-label">CVF No.</label>
+                    <div class="col-sm-10">
+                      <output type="text" name="cvf_no" class="form-control" id="cvf_no" placeholder="CVF No." ></output>
+                    </div>
+                  </div>
+
+
+<!--                     <div class="form-group"> 
                         <div class="col-sm-offset-2 col-sm-10">
                           <div class="checkbox">
                             <label class="text-danger"><input type="checkbox"  name="delete"> Delete event</label>
                           </div>
                         </div>
-                    </div>
+                    </div> -->
                   
                   <input type="hidden" name="id" class="form-control" id="id">
                 
@@ -314,9 +430,7 @@
         var m = date.getMonth();
         var y = date.getFullYear();
 
-
-
-$.ajax({
+        $.ajax({
   headers : {
         'X-CSRF-Token' : $('input[name="_token"]').val()
       },
@@ -325,12 +439,44 @@ $.ajax({
    data: 'type=fetch',
    async: false,
    success: function(response){
+
      json_events = response;
 
      console.log (json_events);
     
-   }
+   },     error: function(response) { 
+                     json_events = response;
+
+     console.log (json_events);
+                }     
+
 });
+
+                $.ajax({
+  headers : {
+        'X-CSRF-Token' : $('input[name="_token"]').val()
+      },
+    url: '/campus/getCVF_no',
+   type: 'GET',
+
+   success: function(response){
+
+     cvf_no = response;
+
+     console.log (cvf_no);
+    
+   }      
+
+});
+
+
+
+
+
+
+
+
+
 
 
         var calendar1 = $('#calendar').fullCalendar({
@@ -338,7 +484,8 @@ $.ajax({
             header: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'month,agendaWeek,agendaDay'
+                right: 'month,listMonth'
+                // right: 'month,agendaWeek,agendaDay'
                 
             },
 
@@ -346,20 +493,131 @@ $.ajax({
             editable: true,
             eventLimit: true, // allow "more" link when too many events
             selectHelper: true,
-            events: json_events,  
+            // events: json_events,
+                eventSources: [
+        json_events,   
+
+        // [{
+                    
+        //              title: "Exam",
+        //              venue: "Academic Resource Center",
+        //               organization: "LYCESGO",
+        //               remark_status:"Approved",
+        //               start:"2016-10-19 22:01:41",
+        //               status:"Available",
+        //               title:"Research Day",
+        //               venue:"Academic Resource Center",
+        //         },]
+        
+    ],
+
+
+
+
+
+
          
 
-			select: function(start, end) {
+// 			select: function(start, end) {
         
-        $('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
-        $('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
-        $('#ModalAdd').modal('show');
+      
+
+
+//     var check = start._d.toJSON().slice(0,10); 
+//     var today = new Date().toJSON().slice(0,10);
+//     if(check < today)
+//     {
+// alert("hello");
+//     }
+//     else
+//     {
+//   $('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
+//         $('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
+//         $('#ModalAdd').modal('show');
+//     }
+
+ // "maxDate": moment(start).add(1, 'day'),
+
+
+     select: function(start, end, jsEvent, view) {
+
+        $('input[name="time"]').daterangepicker({
+    "minDate": moment(start).format('YYYY-MM-DD HH:mm A'),
+    "maxDate": moment(end).format('YYYY-MM-DD HH:mm A'),
+
+
+
+    "timePicker": true,
+    "timePicker12Hour": true,
+    "timePickerIncrement": 15,
+    "startDate": moment(start).format('YYYY-MM-DD HH:mm A'),
+    "endDate": moment(start).format('YYYY-MM-DD HH:mm A'),
+
+    
+    "autoApply": true,
+    "locale": {
+
+      "timePicker12Hour": true,
+      "format": "YYYY-MM-DD HH:mm A",
+      "separator": " - ",
+    }
+  });
+            if (moment().diff(start, 'days') < -4) {
+                $('#calendar').fullCalendar('unselect');
+                $('#ModalAdd #time').val(moment(start).format('YYYY-MM-DD HH:mm A')+" - "+moment(start).format('YYYY-MM-DD HH:mm A'));
+                  // $('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD HH:mm A'));
+                  // $('#ModalAdd #end').val(moment(start).format('YYYY-MM-DD HH:mm: A'));
+                   // $('#ModalAdd #cvf_no').val(moment(start).format('YYYY')+"-"+cvf_no);
+                    $('#ModalAdd #cvf_no').val(cvf_no);
+
+                  $('#ModalAdd').modal('show');
+                   return false;
+
+
+            }
+
+//                 else
+//     {
+// $(this).css('backgroundColor','red');
+//     }
+
+
       },
             eventRender: function(event, element) {
         element.bind('click', function() {
-          $('#ModalEdit #id').val(event.id);
+
+          $('input[name="time"]').daterangepicker({
+    "minDate": event.start.format('YYYY-MM-DD'),
+
+
+
+    "timePicker": true,
+    "timePicker12Hour": true,
+    "timePickerIncrement": 15,
+    "startDate": event.start.format('YYYY-MM-DD HH:mm A'),
+    "endDate": event.end.format('YYYY-MM-DD HH:mm A'),
+
+    
+    "autoApply": true,
+    "locale": {
+
+      "timePicker12Hour": true,
+      "format": "YYYY-MM-DD HH:mm A",
+      "separator": " - ",
+    }
+  });
+
+
+
+
+          $('#ModalEdit #update_id').val(event.id);
           $('#ModalEdit #title').val(event.title);
-          $('#ModalEdit #color').val(event.color);
+          $('#ModalEdit #venue').val(event.venue);
+          $('#ModalEdit #organization').val(event.organization);
+          $('#ModalEdit #status').val(event.status);
+          $('#ModalEdit #time').val(event.start.format('YYYY-MM-DD HH:mm A')+" - "+event.end.format('YYYY-MM-DD HH:mm A'));
+          $('#ModalEdit #cvf_no').val(event.cvf_no);
+
           $('#ModalEdit').modal('show');
         });
       },
@@ -376,18 +634,14 @@ $.ajax({
       },
 
       eventMouseover: function( event, jsEvent, view ) { 
-        var start = (event.start.format("HH:mm"));
+        var start = (event.start.format("HH:mm A"));
+        var end = event.end.format("HH:mm A");
         var back=event.backgroundColor;
-        if(event.end){
-            var end = event.end.format("HH:mm");
-        }else{var end="No definition";
-        }
-        if(event.allDay){
-            var allDay = "YES";
-        }else{var allDay="NO";
-        }
-        var tooltip = '<div class="tooltip-demo" style="width:230px;height:170px;color:black;background-color:white;'+back+';position:absolute;z-index:10001;">'+'<center>'+ event.title +'</center>'+'Venue: '+event.venue+'<br>'+'Organizer: '+event.organization+'<br>'+'status: '+event.status+'<br>'+'Todo el dia: '+allDay+'<br>'+ 'Start: '+start+'<br>'+ 'End: '+ end  +'<br>'+'Remark Status: '+event.remark_status+'<br>'+'cvf_no: '+event.cvf_no+'<br>'+'</div>';
 
+        var tooltip = '<div class="tooltip-demo " style="width:230px;height:140px;color:black;background-color:white;border:2px solid black;padding-left: 10px;'+back+';position:absolute;z-index:10001;">'+'<b>Start:</b> '+ event.title +'<br>'+'<b>Venue:</b> '+event.venue+'<br>'+'<b>Organizer:</b> '+event.organization+'<br>'+'<b>status:</b> '+event.status+'<br>'+ '<b>Start:</b> '+start+'<br>'+ '<b>End: </b>'+ end  +'<br>'+'<b>cvf_no:</b> '+event.cvf_no+'<br>'+'</div>';
+
+
+// '<b>Remark Status: </b>'+event.remark_status+'<br>'+
         $("body").append(tooltip);
         $(this).mouseover(function(e) {
           $(this).css('z-index', 10000);
@@ -449,8 +703,6 @@ $.ajax({
 
 
 
-    });
-
 
   $('button#addEvent_btn').click(function(e) {
 
@@ -487,18 +739,25 @@ $.ajax({
 
         window.location.reload();
       // $('#calendar').fullCalendar().ajax.reload();
-         // $('#calendar').fullCalendar( 'refetchEvents', events);
-  
+      // $('#calendar').fullCalendar().ajax.url('/get-events').load();
 
+         // $('#calendar').fullCalendar( 'refetchEventsources'); 
+
+
+       
       }
     });
 
 
 
-
-
-
   });
+
+
+
+    });
+
+
+
 
 
       $('button#updateEvent_btn').click(function(e) {
@@ -534,7 +793,9 @@ $.ajax({
          showConfirmButton: false 
         });
 
-        calendar1.ajax.reload();
+        window.location.reload();
+
+         // $('#calendar').fullCalendar().ajax.reload();
 
   
 
@@ -550,9 +811,48 @@ $.ajax({
 
 
 </script>
+<style type = "text/css">
 
-		
+.fc-day.fc-widget-content.fc-sun { visibility: visible;
+  opacity: 0.2;  background-color: gray !important;
+}
+.fc-day.fc-widget-content.fc-sun.fc-today.fc-state-highlight { visibility: visible;
+  opacity: 0.2;  background-color: blue !important;
+}
 
+
+
+
+</style>
+
+
+<link href="{{ url('_asset/css') }}/daterangepicker.css" rel="stylesheet">
+
+<script src="{{ url('_asset/js') }}/daterangepicker.js"></script>
+<!-- <script type="text/javascript">
+$(function () {
+  $('input[name="start"]').daterangepicker({
+    "minDate": moment('<?php echo date('Y-m-d G')?>'),
+    "timePicker": true,
+    "timePicker12Hour": true,
+    "timePickerIncrement": 15,
+
+    
+    
+    "autoApply": true,
+    "locale": {
+
+      "timePicker12Hour": true,
+      "format": "DD/MM/YYYY HH:mm A",
+      "separator": " to ",
+    }
+  });
+});
+</script>
+		 -->
+<!-- HH:mm:ss -->
+
+<!-- HH:mm A -->
  
 @endsection
 

@@ -129,7 +129,7 @@ $organizations = DB::table('requirements')->where('school_year',$selected_year)-
           $activity->school_year =  $request['school_year'];
           $activity->activity = $request['title'];
           $activity->date = $request['date'];
-          $activity->status = '0';
+          $activity->status = $request['status'];
           $activity->save();
         return response()->json(array(
             'success' => true,
@@ -141,7 +141,7 @@ $organizations = DB::table('requirements')->where('school_year',$selected_year)-
         public function postProposalActivitiesUpdate(Request $request)
   {
     $validator = Validator::make($request->all(),[
-          'organizationName' => 'required|alpha|max:255',                   
+          'organization' => 'required|alpha|max:255',                   
       ]);
 
         if ($validator->fails()) {
@@ -151,7 +151,7 @@ $organizations = DB::table('requirements')->where('school_year',$selected_year)-
     else {
   
       $activities = DB::table('activities')->where('id', $request['update_id'])->update([     
-            'organization' => $request['organizationName'],
+            'organization' => $request['organization'],
             'activity' => $request['title'],
             'date' => $request['date'],
             'status' => $request['status'],          

@@ -420,8 +420,9 @@ $('#organizationName')
 			 	 type: "success",  
 			 	 showConfirmButton: false 
 			 	});
-				activities_table.ajax.reload();
-			
+				// activities_table.ajax.reload();
+			$('.activities-DT').DataTable().ajax.url('/activities/ActivitiesByYear').load();
+
 	
 
 			}

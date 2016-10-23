@@ -55,7 +55,7 @@
 						<div class="table-responsive">
 							<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
 
-							<table class="table table-striped table-bordered table-hover requirements-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+							<table class="table table-striped table-bordered table-hover requirements-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid" style="font-size: 10.2px;width: 100%;"  >  
 
 							<thead>
 									<th>Student Organization</th>

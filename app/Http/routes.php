@@ -98,7 +98,7 @@ Route::post('/activity-records/list', 'ActivityRecordsController@getStudentRecor
 
 Route::group(['middleware' => 'roles', 'roles' => ['Super User','Admin','Secretary']],function(){
 
-Route::post('/get-events' , 'CampusVenueReservationController@getEvents');
+
 
 
 // Report violation
@@ -153,11 +153,16 @@ Route::get('/suspension-exclusions/details' , 'SanctionController@getSuspensionD
 Route::get('/sanctions/suspended_students/update' , 'SanctionController@getSuspensionUpdate');
 Route::get('/sanctions/suspended_students/update' , 'SanctionController@postSuspensionUpdate');
 
+
+//campus venue reservation
 Route::get('/campus', 'CampusVenueReservationController@showCampusVenueReservation');
 Route::get('/reservationReports', 'CampusVenueReservationController@showCampusVenueReservationReports');
+Route::get('/campus/getCVF_no', 'CampusVenueReservationController@getCVFno');
+Route::post('/get-events' , 'CampusVenueReservationController@getEvents');
 Route::post('/campus/add', 'CampusVenueReservationController@postCampusVenueReservationAdd');
-
 Route::post('/campus/update', 'CampusVenueReservationController@postCampusVenueReservationUpdate');
+Route::post('/campus/reports', 'CampusVenueReservationController@postCampusVenueReservationReports');
+
 
 // organizations renewal
 Route::get('/organizationsRenewal', 'OrganizationsRenewalController@showOrganizationsRenewal');

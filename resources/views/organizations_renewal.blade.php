@@ -56,7 +56,7 @@
 
 								<label>Select Organization</label>
 								<select name="organizationName" id="organizationName" class="form-control">
-								<option autofocus="" disabled selected >Select Organization</option>
+								<option autofocus="" disabled selected value=>Select Organization</option>
 									@foreach ($organizations as $organization)
 									<option>{{$organization->organization }}</option>
 									
@@ -278,7 +278,7 @@
 				<div class="row"> -->
 					<div class="col-md-6">
 							<div class="form-group">
-								<label>10. Activity Documentaion </label>
+								<label>10. Activity Documentation </label>
 								
                                     <div class="col-sm-10">
                                      
@@ -294,13 +294,25 @@
 
 			<div class="ibox-footer">
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-6">
+							<div class="form-group">
+								<center><label>Deadline for Requirements </label></center>
+								
+                                   
+                                     
+                                       <center><input type="text"  id="deadline" name="deadline"  class="form-control" autofocus="" aria-required="true"></center>
+                                    
+                                    
+							</div>	
+					</div>
+					<div class="col-md-6">
 						<center><label>Remarks</label></center>
 						<div class="form-group">
 							<center><input type="text" placeholder="Input Remarks" id="requirement11" name="requirement11"  class="form-control" autofocus="" aria-required="true"></center>
 
 						</div>
 					</div>
+
 				
 				</div>
 			</div>
@@ -431,7 +443,7 @@
 
 		var req_id = $('#organizationName').val();
 
-		var year_id = $('#year').val();
+		var year_id = $('#school_year').val();
 	
 
 		if (req_id.length <= 0){
@@ -459,7 +471,8 @@
 
 
 				var update_id = data.id;
-				var organization = data.organization;	
+				var organization = data.organization;
+				var deadline = data.deadline;	
 				var requirement1 = data.requirement1;
 				var requirement2 = data.requirement2;
 				var requirement3 = data.requirement3;
@@ -550,6 +563,25 @@
 				$('#requirement10').val(requirement10);
 				$('#requirement11').val(requirement11);
 				$('#update_id').val(update_id);
+
+				var datetoday = new Date();
+				var date = new Date(deadline);
+				var options = {year: "numeric", month: "long", day: "numeric"};
+     			var newdate = date.toLocaleDateString('en-US', options);
+
+
+				if(datetoday>=deadline)
+				{
+				// $('#deadline').val(deadline);
+				$('#deadline').val(newdate).css("color", "red");
+				}
+				else
+				{
+				$('#deadline').val(newdate);
+				// $('#deadline').val("deadline");	
+				}	
+
+
 
 			
 	

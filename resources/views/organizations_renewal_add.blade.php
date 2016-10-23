@@ -46,6 +46,14 @@
 
 					
 					</div>
+					<div class="col-md-3">
+						<label>Deadline for Requirements</label>
+						
+							<input type="text" placeholder="Set Deadline" id="deadline" name="deadline" class="form-control" autofocus="" aria-required="true">
+
+					
+					</div>
+
 
 
 
@@ -577,6 +585,15 @@ setTimeout(function(){
 	}); 
 
 
+
+
+$('#deadline').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+				format: 'yyyy-mm-dd',
+
+            });
 
 
 
