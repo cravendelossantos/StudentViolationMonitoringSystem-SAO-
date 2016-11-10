@@ -20,6 +20,8 @@ return [
     'alpha_dash'           => 'The :attribute may only contain letters, numbers, and dashes.',
     'alpha_num'            => 'The :attribute may only contain letters and numbers.',
     'array'                => 'The :attribute must be an array.',
+    'available'            => 'The :attribute is not available at the selected time.',
+    'available1'           => 'The :attribute is not available at the selected time.',
     'before'               => 'The :attribute must be a date before :date.',
     'between'              => [
         'numeric' => 'The :attribute must be between :min and :max.',
@@ -34,6 +36,7 @@ return [
     'different'            => 'The :attribute and :other must be different.',
     'digits'               => 'The :attribute must be :digits digits.',
     'digits_between'       => 'The :attribute must be between :min and :max digits.',
+    'duration'             => 'The :attribute is not a valid duration.',
     'dimensions'           => 'The :attribute has invalid image dimensions.',
     'distinct'             => 'The :attribute field has a duplicate value.',
     'email'                => 'The :attribute must be a valid email address.',

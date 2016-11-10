@@ -17,11 +17,15 @@ class CreateEventsTable extends Migration
             $table->string('title');
             $table->string('venue');       
             $table->string('organization');
-            $table->enum('status', array('Available', 'Reserved', 'Banned'));
-            $table->datetime('start');
-            $table->datetime('end');
+            $table->string('school_year');
+            $table->enum('status', array('OnProcess', 'Reserved', 'Banned'));
+            $table->timestamp('start');
+            $table->timestamp('end')->nullable();
+            // $table->datetime('start');
+            // $table->datetime('end');
+
             $table->enum('remark_status', array('Approved', 'Disapproved'));
-            $table->integer('cvf_no');
+            $table->string('cvf_no');
  
 
         });

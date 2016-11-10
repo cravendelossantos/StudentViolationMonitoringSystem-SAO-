@@ -143,7 +143,7 @@
 												<label>Complainant ID</label>&nbsp;&nbsp;<a class="btn btn-white btn-xs" id="new_complainant" style="display:none" data-toggle="modal" data-target="#complainant_modal" ><i class="fa fa-male"></i> New Complainant Record</a>
 												<a class="btn btn-white btn-xs" id="new" style="display:none" data-toggle="modal" data-target="#complainant_modal" ><i class="fa fa-male"></i> New Record</a>
 												<div class="input-group">
-													<input type="text" class="form-control" placeholder="Complainant ID" name="complainant" id="complainant" class="form-control" maxlength="10">
+													<input type="text" class="form-control" placeholder="Complainant ID" name="complainant" id="complainant" class="form-control" maxlength="10" style="text-transform: capitalize;">
 													<span class="input-group-btn">
 														<button class="btn btn-default" id="find_complainant" type="button">
 															Find

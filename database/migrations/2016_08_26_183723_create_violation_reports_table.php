@@ -13,7 +13,7 @@ class CreateViolationReportsTable extends Migration
     public function up()
     {
          Schema::create('violation_reports', function (Blueprint $table) {
-            $table->string('id')->index()->primary();
+            $table->string('rv_id')->index()->primary();
             $table->string('student_id');
             $table->integer('violation_id');
             $table->integer('offense_no');

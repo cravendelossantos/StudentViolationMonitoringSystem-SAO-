@@ -41,7 +41,7 @@ public function searchStudent(Request $request)
     return Datatables::of($cs_student)
     ->filter(function ($query) use ($request) {
         if ($request->has('cs_student_no')) {
-            $query->where('student_id', 'like', "%{$request->get('cs_student_no')}%");
+            $query->where('student_id',"{$request->get('cs_student_no')}");
         }
     })
     ->make(true);

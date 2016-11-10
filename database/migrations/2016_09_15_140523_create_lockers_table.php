@@ -20,6 +20,7 @@ class CreateLockersTable extends Migration
             $table->date('start_of_contract');
             $table->date('end_of_contract');
             $table->integer('location_id');
+            $table->date('date_created');
             $table->integer('added_by');
             $table->integer('updated_by');
         });

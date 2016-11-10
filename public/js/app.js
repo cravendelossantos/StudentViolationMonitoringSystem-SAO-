@@ -322,7 +322,7 @@ $('button#report_btn').click(function(e){
 
                     $('#violation_date_picker .input-group.date').datepicker('setDate', null);
                     $('#report_btn').prop('disabled', true);
-                    $('#offense_level').prop('disabled', true);
+                    // $('#offense_level').prop('disabled', true);
                 });
 				});
 			});
@@ -369,17 +369,17 @@ $('#find_student').on('click', function(e){
 						$('#student_number_error').html("Student not found");
 						$('#offense_number').val("").attr("readonly",false);
 						$('#committed_offense_number').val("");
-						$('#offense_level').val("").attr("readonly",false);
+		
 						$('#student_number').val("");
 						$('#violation_id').val("").attr("readonly",false);
 
 						$('#student_name').val("").attr("readonly",false);
 						$('#year_level').val("").attr("readonly",false);
-						$('#offense_level').prop('disabled',true);
+						// $('#offense_level').prop('disabled',true);
 					}
 					else if(data[0].current_status == 'Excluded'){
 						$('#report_btn').prop('disabled', true);
-						$('#offense_level').prop('disabled', true);
+						//$('#offense_level').prop('disabled', true);
 						$('form#reportViolationForm').each(function() {
 							this.reset();
 						});	
@@ -405,7 +405,7 @@ $('#find_student').on('click', function(e){
 				$('#guardian_contact_no').val(guardian_contact_no).attr("readonly",true);
 				$('#guardian_name').val(guardian_name).attr("readonly",true);
 				//countOffense();
-				$('#offense_level').prop('disabled',false);
+				//$('#offense_level').prop('disabled',false);
 			}
 
 		});
@@ -1027,80 +1027,110 @@ $('select#sort_by').change(function(e){
 
 
 //load reports on date change
-$('#month').on('change', function(){
+$('#show_LAF_stats').on('click', function(){
+
+	$.getJSON('/lost-and-found/reports/stats', function (dataTableJson) {
+lava.loadData('IMDB', dataTableJson, function () {
+	console.log(dataTableJson);
+  console.log('Data Loaded');
+});
+
+});
+	
+// 	$.ajax({
+// 		headers : {
+// 			'X-CSRF-Token' : $('input[name="_token"]').val()
+// 		},
+// 		url : "/lost-and-found/reports/stats",
+// 		type: 'POST',
+// 		data : {LAF_stats_from : $('#LAF_stats_from').val(),
+// 				LAF_stats_to : $('#LAF_stats_to').val(),
+// 		},
+// 		async: false,
+// 		success: function(response){
+// 			items = response;
 
 
-	$('#try').show();
+// 		}
+// 	});
 
-	var a  = $('#month').val();
-	$.ajax({
-		headers : {
-			'X-CSRF-Token' : $('input[name="_token"]').val()
-		},
-		url : "/lost-and-found/reports/stats",
-		type: 'POST',
-		data : {month : a},
-		async: false,
-		success: function(response){
-			items = response;
+// 	var data = [{
+// 		label: "UNCLAIMED",
+// 		data: items['unclaimed'],
+// 		color: "#d3d3d3",
+// 	}, {
+// 		label: "CLAIMED",
+// 		data: items['claimed'],
+// 		color: "#54cdb4",
+// 	}, {
+// 		label: "DONATED",
+// 		data: items['donated'],
+// 		color: "#1ab394",
+//     }, ];
 
 
-		}
-	});
+// function labelFormatter(label, series) {
+//     return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>"    + label + "<br/>" + series.data[0][1] + "%</div>";
+// }
 
-	var data = [{
-		label: "UNCLAIMED",
-		data: items['unclaimed'],
-		color: "#d3d3d3",
-	}, {
-		label: "CLAIMED",
-		data: items['claimed'],
-		color: "#54cdb4",
-	}, {
-		label: "DONATED",
-		data: items['donated'],
-		color: "#1ab394",
-    }, /*{
-        label: "TOTAL",
-        data: 52,
-        color: "#1ab394",
-    }*/];
 
-    var plotObj = $.plot($("#flot-pie-chart"), data, {
-    	series: {
-    		pie: {
-    			show: true
-    		}
-    	},
-    	grid: {
-    		hoverable: true
-    	},
-    	tooltip: true,
-    	tooltipOpts: {
-        	 //percentage content: "%y.0, %s", // show value to 0 decimals
-        	 content: function(label,x,y){
-        	 	return y+" item/s "+ "(" + label + ")";
-        	 },
-        	 shifts: {
-        	 	x: 20,
-        	 	y: 0
-        	 },
-        	 defaultTheme: false
-        	}
-        });
+//     var plotObj = $.plot($("#flot-pie-chart"), data, {
+//  series: {
+//         pie: {
+//             show: true,
+//             radius: 1,
+//             label: {
+//                         show: true,
+//                         radius: 2 / 3,
+//                         formatter: function (label, series) {
+//                             return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+
+//                         },
+//                         threshold: 0.1
+//                     }
+//         }
+//     },
+//     legend: {
+//         show: false
+//     },
+
+//    	 	grid: {
+//     		hoverable: true
+//     	},
+//     	tooltip: true,
+//     	tooltipOpts: {
+//         	 //percentage content: "%y.0, %s", // show value to 0 decimals
+//         	 content: function(label,x,y){
+//         	 	return y+" item/s "+ "(" + label + ")";
+//         	 },
+//         	 shifts: {
+//         	 	x: 20,
+//         	 	y: 0
+//         	 },
+//         	 defaultTheme: false
+//         	}
+//         });
 
 
 
     $('.lost-and-found-reports-DT').DataTable().destroy();
     $('.lost-and-found-reports-DT').DataTable({
-
+    	        "bPaginate" : false,
+        "bInfo" :false,
+        "bSort" : false,
+        "bFilter" : false,
+        "processing": true,
+        "serverSide": true,
     	"ajax": {
     		headers : {
     			'X-CSRF-Token' : $('input[name="_token"]').val()
     		},
     		url : "/lost-and-found/reports/list",
     		type: "POST",
-    		data : {month : a},
+    		data: function (d) {
+            d.LAF_stats_from = $('#LAF_stats_from').val();
+            d.LAF_stats_to = $('#LAF_stats_to').val();
+        },
     	},
     	"columns" : [
     	{data: 'claimed'},
@@ -1109,25 +1139,7 @@ $('#month').on('change', function(){
     	{data: 'total'},
     	],
 
-    	dom : '<"html5buttons"B>Tgtip',
-    	buttons : [{
-    		extend : 'csv',
-    		title : 'LOST AND FOUND ITEMS',
-    	}, {
-    		extend :'excel',
-    		title : 'LOST AND FOUND ITEMS',
-    	} , {
-    		extend : 'pdf',
-    		title : 'Lost and Found Reports',
-    	} , {
-    		extend : 'print',
-    		title : 'LOST AND FOUND ITEMS',
-    		customize : function(win) {
-    			$(win.document.body).addClass('white-bg');
-    			$(win.document.body).css('font-size', '8px').prepend('<label>Text</label>');
-    			$(win.document.body).find('table').addClass('compact').css('font-size', 'inherit');
-    		}
-    	}]
+    
     });
     $('#try').hide();
 });
@@ -1388,6 +1400,7 @@ $('#locker_update').click(function(e){
 		//$('#locker_status_update')[0].reset();
 		$('#occupancy_div').hide();
 		$('#lockers_modal').modal('hide');
+		$('form#locker_status_update')[0].reset();
 		swal("Success", "Locker updated!", "success");
 		$('#location_sort').prop('selectedIndex', 0);
 		$('#status_sort').prop('selectedIndex', 0);
@@ -1423,7 +1436,7 @@ var student_records_table = $('.student-records-DT').DataTable({
 	{data : 'last_name'},
 	{data : 'course'},
 	{data : 'year_level'},
-	{data : 'contact_no'},
+	{data : 'student_contact_no'},
 
 
 	],

@@ -213,9 +213,13 @@
 			<div class="ibox float-e-margins">
 
 				<div class="ibox-title">
-
+				<h3>Filter:</h3>
+<div class="row">
 								<div class="form-group">
-				Filter
+				
+<div class="col-md-6">
+
+<label>Status</label>
 				<select id="status_sort" name="status_sort"  class="form-control">
 								<option value="">All</option>
 								<option value="Available">Available</option>
@@ -223,7 +227,9 @@
 								<option value="Damaged">Damaged</option>
 								<option value="Locked">Locked</option>
 				</select>
-
+</div>
+<div class="col-md-6">
+<label>Location</label>
 				<select name="location_sort" id="location_sort" class="form-control">
 									<option value="">All</option>
 									@foreach($locations as $location)
@@ -231,7 +237,7 @@
 									<option value="{{ $location->id }}">{{ $location->building }} Building {{ $location->floor }} Floor </option>
 									@endforeach
 								</select>
-
+</div>
 
 </div>
 

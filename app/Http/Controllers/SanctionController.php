@@ -36,8 +36,8 @@ class SanctionController extends Controller
 
        
         $sanctions_student = ViolationReport::select('*')
-        ->join('students', 'violation_reports.student_id' , '=' , 'students.student_no')->where('current_status' , 'Active');
-                                             ;  
+        ->join('students', 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations', 'violation_reports.violation_id', '=', 'violations.id')->where('current_status' , 'Active');
+                                               
 
         return Datatables::of($sanctions_student)
             ->filter(function ($query) use ($request) {
@@ -59,7 +59,7 @@ class SanctionController extends Controller
     public function getViolationDetails(Request $request)
     {
 
-        $violation_details = ViolationReport::where('id', $request['id'])->first();
+        $violation_details = ViolationReport::where('rv_id', $request['id'])->first();
         return response()->json(array('response' => $violation_details));
 
     }

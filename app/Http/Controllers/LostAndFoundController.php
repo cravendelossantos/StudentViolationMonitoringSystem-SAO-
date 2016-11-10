@@ -12,7 +12,8 @@ use DateTime;
 use Validator;
 use Auth;
 use Yajra\Datatables\Facades\Datatables;
-use Response;	
+use Khill\Lavacharts\Lavacharts;
+use Lava;
 
 class LostAndFoundController extends Controller
 {
@@ -69,10 +70,10 @@ class LostAndFoundController extends Controller
 		$tomorrow = Carbon::tomorrow()->format('y-m-d');
 
 		$messages = [
-        
-            'date_reported.before' => 'Date must be not greater than today.',
-            'time_reported.date_format' => 'Invalid time format',
-        ];
+
+		'date_reported.before' => 'Date must be not greater than today.',
+		'time_reported.date_format' => 'Invalid time format',
+		];
 
 		$validator = Validator::make($request->all(),[
 
@@ -162,32 +163,62 @@ class LostAndFoundController extends Controller
 		return view('lost_and_found_statistics');
 	}	
 
-	public function showLostAndFoundReports()
-	{
+	public function showLostAndFoundReports(Request $request)
+	{	
+
+		$item = LostAndFound::all()->count();
+
+
+	$lava = new Lavacharts; // See note below for Laravel
+
+	$reasons = Lava::DataTable();
+
+	$reasons->addStringColumn('Reasons')
+	->addNumberColumn('Percent')
+	->addRow(['Check Reviews', 5])
+	->addRow(['Watch Trailers', 8])
+	->addRow(['See Actors Other Work', 5])
+	->addRow(['Settle Argument', 73]);
+
+	Lava::PieChart('IMDB', $reasons, [
+
+		'height' => 500,
+		'title'  => '',
+		'is3D'   => true,
+		'slices' => [
+			['offset' => 0.2],
+			['offset' => 0.25],
+			['offset' => 0.3]
+		]
+		]);
+
+
 		return view('lost_and_found_reports');
 	}
 
 	public function postLostAndFoundReportsTable(Request $request)
 	{
-
-		$requested_date = $request['month'];
+		
+		/*$requested_date = $request['month'];
 		$date_start = Carbon::parse($requested_date)->startOfMonth();
-		$date_end = Carbon::parse($requested_date)->endOfMonth();  
+		$date_end = Carbon::parse($requested_date)->endOfMonth();  */
+
+		
 
 		$claimed = LostAndFound::where('status', 'claimed')
-		->whereBetween('created_at', [$date_start, $date_end])
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
 		->count();
 
 		$unclaimed = LostAndFound::where('status', 'unclaimed')
-		->whereBetween('created_at', [$date_start, $date_end])
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
 		->count();
 
 		$donated = LostAndFound::where('status', 'donated')
-		->whereBetween('created_at', [$date_start, $date_end])
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
 		->count();
 
 
-		$total = LostAndFound::whereBetween('created_at', [$date_start, $date_end])
+		$total = LostAndFound::whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
 		->count();
 		
 
@@ -199,8 +230,8 @@ class LostAndFoundController extends Controller
 		'unclaimed' => $unclaimed,
 		'donated' => $donated,  
 		'total' => $total, 
-		'from'=>$date_start, 
-		'to'=>$date_end
+		'from'=>$request['LAF_stats_from'], 
+		'to'=>$request['LAF_stats_to']
 		]
 		];
 		
@@ -224,30 +255,26 @@ class LostAndFoundController extends Controller
 			$total = LostAndFound::whereBetween('created_at', [$date_start, $date_end])
 			->count();*/
 
-			$requested_date = $request['month'];
+			/*$requested_date = $request['month'];
 			$date_start = Carbon::parse($requested_date)->startOfMonth();
-			$date_end = Carbon::parse($requested_date)->endOfMonth();  
+			$date_end = Carbon::parse($requested_date)->endOfMonth();  */
 
 
+		$claimed = LostAndFound::where('status', 'claimed')
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
+		->count();
 
-			$claimed = LostAndFound::where('status', 'claimed')
-			->whereBetween('created_at', [$date_start, $date_end])
-			->count();
+		$unclaimed = LostAndFound::where('status', 'unclaimed')
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
+		->count();
 
-			$unclaimed = LostAndFound::where('status', 'unclaimed')
-			->whereBetween('created_at', [$date_start, $date_end])
-			->count();
+		$donated = LostAndFound::where('status', 'donated')
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
+		->count();
 
-			$donated = LostAndFound::where('status', 'donated')
-			->whereBetween('created_at', [$date_start, $date_end])
-			->count();
 
-			$data= [
-			'claimed' => $claimed, 
-			'unclaimed' => $unclaimed, 
-			'donated' => $donated, 
-			
-			];
+			$data= 
+			['claimed', 20];
 			
 
 			return response()->json($data); 
