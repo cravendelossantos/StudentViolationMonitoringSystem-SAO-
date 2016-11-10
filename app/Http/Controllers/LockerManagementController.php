@@ -105,6 +105,7 @@ class LockerManagementController extends Controller
        $new_locker->locker_no = $start_no;
        $new_locker->location_id = $location;
        $new_locker->status = 1;
+       $new_locker->date_created = Carbon::now()->format('Y-m-d');
        $new_locker->added_by = Auth::user()->id;
        $new_locker->save();
 
@@ -274,4 +275,112 @@ public function showLockerReports()
 {
   return view('locker_reports');
 }
+
+
+
+public function postLockerReportsTable(Request $request)
+  {
+
+
+     $total = DB::table('lockers')->select('status')->whereBetween('date_created', [$request['locker_reports_from'], $request['locker_reports_to']])
+
+    ->count();
+   
+
+     $available = DB::table('lockers')->select('status')->whereBetween('date_created', [$request['locker_reports_from'], $request['locker_reports_to']])
+
+    ->where('status' , 'Available')
+    ->count();
+   
+   $occupied = DB::table('lockers')->select('status')->whereBetween('date_created', [$request['locker_reports_from'], $request['locker_reports_to']])
+
+    ->where('status' , 'occupied')
+    ->count();
+   
+    $locked = DB::table('lockers')->select('status')->whereBetween('date_created', [$request['locker_reports_from'], $request['locker_reports_to']])
+    
+    ->where('status' , 'locked')
+    ->count();
+   
+     $damaged = DB::table('lockers')->select('status')->whereBetween('date_created', [$request['locker_reports_from'], $request['locker_reports_to']])
+    
+    ->where('status' , 'damaged')
+    ->count();
+   
+    
+
+      // into objects..
+    $data = [
+    [ 
+    'total' => $total, 
+    'available' => $available,
+    'occupied' =>$occupied,
+    'locked' => $locked,
+    'damaged' => $damaged
+    ]
+    ];
+    
+
+   // return Datatables::of($lockers)->make(true);
+    return response()->json(['data' => $data]);
+
+
+  }
+
+  public function postLockerStatistics(Request $request)
+  {
+
+
+    $total = DB::table('lockers')->whereBetween('date_created', [$request['locker_reports_from'], $request['locker_reports_to']])
+
+    ->count();
+   
+
+     $available = DB::table('lockers')
+    ->where('status' , 'Available')
+    ->count();
+   
+   $occupied = DB::table('lockers')
+
+    ->where('status' , 'occupied')
+    ->count();
+   
+    $locked = DB::table('lockers')
+    
+    ->where('status' , 'locked')
+    ->count();
+   
+     $damaged = DB::table('lockers')
+    
+    ->where('status' , 'damaged')
+    ->count();
+   
+   
+    
+
+
+      
+      // into objects..
+    $data = [
+    
+    'total' => $total, 
+    'available' => $available,
+    'occupied' =>$occupied,
+    'locked' => $locked,
+    'damaged' => $damaged,
+    
+    ];
+
+
+
+    
+
+   // return Datatables::of($lockers)->make(true);
+    return response()->json($data); 
+
+
+  }
+
+
+
 }

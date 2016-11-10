@@ -117,7 +117,6 @@ Route::post('/activity-records/list', 'ActivityRecordsController@getStudentRecor
 
 Route::group(['middleware' => 'roles', 'roles' => ['Admin','Secretary']],function(){
 
-Route::post('/get-events' , 'CampusVenueReservationController@getEvents');
 
 
 // Report violation
@@ -181,10 +180,11 @@ Route::get('/sanctions/suspended_students/update' , 'SanctionController@postSusp
 
 Route::get('/campus', 'CampusVenueReservationController@showCampusVenueReservation');
 Route::get('/reservationReports', 'CampusVenueReservationController@showCampusVenueReservationReports');
+Route::get('/campus/getCVF_no', 'CampusVenueReservationController@getCVFno');
+Route::post('/get-events' , 'CampusVenueReservationController@getEvents');
 Route::post('/campus/add', 'CampusVenueReservationController@postCampusVenueReservationAdd');
-
 Route::post('/campus/update', 'CampusVenueReservationController@postCampusVenueReservationUpdate');
-
+Route::post('/campus/reports', 'CampusVenueReservationController@postCampusVenueReservationReports');
 // organizations renewal
 Route::get('/organizationsRenewal', 'OrganizationsRenewalController@showOrganizationsRenewal');
 Route::get('/OrganizationsRenewalList', 'OrganizationsRenewalController@showOrganizationsRenewalList');
@@ -248,7 +248,7 @@ Route::get('/lost-and-found/statistics', 'LostAndFoundController@showLostAndFoun
 Route::get('/lost-and-found/reports', 'LostAndFoundController@showLostAndFoundReports');
 Route::post('/lost-and-found/reports/list', 'LostAndFoundController@postLostAndFoundReportsTable');
 
-Route::post('/lost-and-found/reports/stats', 'LostAndFoundController@postLostAndFoundStatistics');
+Route::get('/lost-and-found/reports/stats', 'LostAndFoundController@postLostAndFoundStatistics');
 
 Route::get('/lost-and-found/search','LostAndFoundController@searchLostAndFound');
 
@@ -284,7 +284,8 @@ Route::get('/locker/details' , 'LockerManagementController@getLockerDetails');
 Route::post('/locker/update-status' , 'LockerManagementController@updateLocker');
 Route::get('/locker-reports' , 'LockerManagementController@showLockerReports');
 
-
+Route::post('/locker-reports/list' , 'LockerManagementController@postLockerReportsTable');
+Route::post('/locker-reports/stats' , 'LockerManagementController@postLockerStatistics');
 
 Route::get('/settings/locker-locations' , 'LockerManagementController@showLockerLocations');
 Route::get('/settings/locker-locations/add' , 'LockerManagementController@getLockerLocations');

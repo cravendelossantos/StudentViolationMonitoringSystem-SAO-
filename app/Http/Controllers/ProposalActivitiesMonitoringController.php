@@ -129,7 +129,7 @@ $organizations = DB::table('requirements')->where('school_year',$selected_year)-
           $activity->school_year =  $request['school_year'];
           $activity->activity = $request['title'];
           $activity->date = $request['date'];
-          $activity->status = '0';
+          $activity->status = $request['status'];
           $activity->save();
         return response()->json(array(
             'success' => true,

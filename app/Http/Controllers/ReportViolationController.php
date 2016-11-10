@@ -35,7 +35,7 @@ class ReportViolationController extends Controller
    /*     $violation_reports = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();*/
     $violations = Violation::all()->sortBy('name');
 		$courses = Course::with('college')->get();
-		$id = ViolationReport::select(DB::raw('max(cast((substring(id, 5)) as UNSIGNED)) as max_id'))->first();
+		$id = ViolationReport::select(DB::raw('max(cast((substring(rv_id, 5)) as UNSIGNED)) as max_id'))->first();
 
             if ($id == null){
               $id = 'SAO-1';
@@ -115,7 +115,7 @@ class ReportViolationController extends Controller
 
         $validator = Validator::make($request->all(),[
 
-            'complainantId' => array('required', 'regex:/^[0-9A-Za\s-]+$/', 'unique:complainants,id_no'),
+            'complainantId' => array('required', 'regex:/^[0-9a-zA-Z\s-]+$/', 'unique:complainants,id_no'),
             'complainantName' => 'required|string',
             'complainantPosition' => 'required',
         ]);
@@ -321,7 +321,7 @@ class ReportViolationController extends Controller
 
             # code...
    
-            $id = ViolationReport::select(DB::raw('max(cast((substring(id, 5)) as UNSIGNED)) as max_id'))->first();
+            $id = ViolationReport::select(DB::raw('max(cast((substring(rv_id, 5)) as UNSIGNED)) as max_id'))->first();
 
  
             $id = $id->max_id;
@@ -340,7 +340,7 @@ class ReportViolationController extends Controller
             $complainant = Complainant::select('id_no')->where('id_no', $request['complainant_id'])->first();
 
             $student_violation = new ViolationReport();
-            $student_violation->id = $id;
+            $student_violation->rv_id = $id;
             $student_violation->student_id = $request['student_number'];
             $student_violation->violation_id = $request['violation_id'];
             $student_violation->status = 1;

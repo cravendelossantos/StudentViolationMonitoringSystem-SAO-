@@ -14,7 +14,7 @@ class CreateSuspensionsTable extends Migration
     {
         Schema::create('suspensions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('violation_id');
+            $table->string('violation_id');
             $table->integer('suspension_days');
             $table->enum('status', array('On going', 'Completed'));
             $table->string('student_id');

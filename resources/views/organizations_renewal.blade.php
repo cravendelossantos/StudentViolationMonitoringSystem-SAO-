@@ -1,10 +1,10 @@
 @extends('layouts.master')
 
-@section('title', 'SAO | Create New Organization')
+@section('title', 'SAO | Update Checklist of Requirements')
 
 @section('header-page')
 <div class="col-lg-10">
-	<h1>Create New Organization</h1>
+	<h1>Update Checklist of Requirements</h1>
 </div>
 
 @endsection
@@ -17,11 +17,11 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
-				<h5>Create New Organization</h5>
+				<h5>Update Checklist of Requirements</h5>
 			</div>
 
 			<div class="ibox-content">
-				<form role="form" id="AddRequirement" method="POST" action="/organizationsRenewal/add">
+				<form role="form" id="UpdateRequirement" method="POST" action="/organizationsRenewal/update">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="update_id" id="update_id">
 
@@ -39,31 +39,49 @@
 					
 
 				<div class="row">
-					<div class="col-md-4">
-						<label>Enter name of Organization</label>
-						
+<!-- 					<div class="col-md-4">
+						<label>Select Organization</label>
+						<div class="input-group ">
 							<input type="text" placeholder="Name of Organization" id="organizationName" name="organizationName" class="form-control" autofocus="" aria-required="true">
+						<div class="input-group-btn">
+                            <button type="button" class="btn btn btn-primary" name="search_organizationBtn" id="search_organizationBtn">
+                                Search
+                            </button>
+                        </div>
+						</div>
+					</div> -->
 
-					
+						<div class="col-md-6">
+							<div class="form-group">
+
+								<label>Select Organization</label>
+								<select name="organizationName" id="organizationName" class="form-control">
+								<option autofocus="" disabled selected value=>Select Organization</option>
+									@foreach ($organizations as $organization)
+									<option>{{$organization->organization }}</option>
+									
+							
+								
+									@endforeach
+									
+								</select>	
+
+
+
+
+
+							</div>
 					</div>
-					<div class="col-md-3">
-						<label>Deadline for Requirements</label>
-						
-							<input type="text" placeholder="Set Deadline" id="deadline" name="deadline" class="form-control" autofocus="" aria-required="true">
-
-					
-					</div>
 
 
 
-
-					<div class="col-md-3">
+					<div class="col-md-6">
 						<div class="form-group">
 
 								<label>School Year</label>
-<!-- 								<select name="school_year" id="school_year" class="form-control" >
-\
-									@foreach ($schoolyears as $schoolyear)
+<!-- 								<select name="year" id="year" class="form-control">
+
+									@foreach ($schoolyear as $schoolyear)
 									<option>{{$schoolyear->school_year }}</option>
 									
 							
@@ -72,13 +90,9 @@
 									
 								</select>	 -->
 
+
 									<output id="school_year1" name="school_year1" class="form-control" autofocus="" aria-required="true"  >{{$schoolyear->school_year }}</output>
 									<input type="hidden" id="school_year" name="school_year" class="form-control" autofocus="" aria-required="true" value="{{$schoolyear->school_year }}">
-
-
-
-
-
 					</div>
 					</div>
 				
@@ -264,7 +278,7 @@
 				<div class="row"> -->
 					<div class="col-md-6">
 							<div class="form-group">
-								<label>10. Activity Documentaion </label>
+								<label>10. Activity Documentation </label>
 								
                                     <div class="col-sm-10">
                                      
@@ -280,13 +294,25 @@
 
 			<div class="ibox-footer">
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-6">
+							<div class="form-group">
+								<center><label>Deadline for Requirements </label></center>
+								
+                                   
+                                     
+                                       <center><input type="text"  id="deadline" name="deadline"  class="form-control" autofocus="" aria-required="true"></center>
+                                    
+                                    
+							</div>	
+					</div>
+					<div class="col-md-6">
 						<center><label>Remarks</label></center>
 						<div class="form-group">
 							<center><input type="text" placeholder="Input Remarks" id="requirement11" name="requirement11"  class="form-control" autofocus="" aria-required="true"></center>
 
 						</div>
 					</div>
+
 				
 				</div>
 			</div>
@@ -295,10 +321,9 @@
 
 					<div class="ibox-footer">
 
-						<button class="btn btn-w-m btn-primary" id="add_requirementBtn" type="button">
-							<strong>Add</strong>
+						<button class="btn btn-w-m btn-primary" id="update_requirementBtn" type="button">
+							<strong>Update</strong>
 						</button>
-
 
 						<button class="btn btn-w-m btn-danger" id="cancel_requirementBtn" type="button">
 							<strong>Cancel</strong>
@@ -334,7 +359,7 @@
 			},
 			type : "POST",
 			url : "/organizationsRenewal/add",
-			data : $('form#AddRequirement').serialize(),
+			data : $('form#UpdateRequirement').serialize(),
 
 		}).done(function(data) {
 
@@ -348,7 +373,7 @@
 
 			} else if (data.success == true) {
 
-				$('form#AddRequirement').each(function() {
+				$('form#AddActvity').each(function() {
 					this.reset();
 				});
 
@@ -361,27 +386,6 @@
 		});
 
 	});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -432,13 +436,15 @@
 
 
 
-
+	// $('button#search_organizationBtn').click(function(e) {
 	
 
-	$('button#search_organizationBtn').click(function(e) {
-
+	$('#organizationName').on('change', function(e){
 
 		var req_id = $('#organizationName').val();
+
+		var year_id = $('#school_year').val();
+	
 
 		if (req_id.length <= 0){
 
@@ -455,7 +461,7 @@
 			url : "/OrganizationsRenewal/Search",
 			data : 
 			{
-				organization : req_id
+				organization : req_id, year : year_id
 			},
 
 
@@ -465,7 +471,8 @@
 
 
 				var update_id = data.id;
-				var organization = data.organization;	
+				var organization = data.organization;
+				var deadline = data.deadline;	
 				var requirement1 = data.requirement1;
 				var requirement2 = data.requirement2;
 				var requirement3 = data.requirement3;
@@ -557,6 +564,25 @@
 				$('#requirement11').val(requirement11);
 				$('#update_id').val(update_id);
 
+				var datetoday = new Date();
+				var date = new Date(deadline);
+				var options = {year: "numeric", month: "long", day: "numeric"};
+     			var newdate = date.toLocaleDateString('en-US', options);
+
+
+				if(datetoday>=deadline)
+				{
+				// $('#deadline').val(deadline);
+				$('#deadline').val(newdate).css("color", "red");
+				}
+				else
+				{
+				$('#deadline').val(newdate);
+				// $('#deadline').val("deadline");	
+				}	
+
+
+
 			
 	
 
@@ -574,26 +600,18 @@ function x(){
 	$('#try').show();
 setTimeout(function(){
 
-        $('#try').fadeOut('slow');
-    },700);
+        $('#try').fadeOut('fast');
+    },200);
 }
 
 	$('button#cancel_requirementBtn').click(function() {
-		$('form#AddRequirement').each(function() {
+		$('form#UpdateRequirement').each(function() {
 			this.reset();
 		});
 	}); 
 
 
 
-
-$('#deadline').datepicker({
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-				format: 'yyyy-mm-dd',
-
-            });
 
 
 
@@ -646,4 +664,3 @@ $('#deadline').datepicker({
 
 
 @endsection
-

@@ -3,141 +3,31 @@
 @section('title', 'SAO | List of proposal activities')
 
 @section('header-page')
-<div class="col-lg-10">
-	<h1>List of proposal activities</h1>
-</div>
-
-@endsection
-
-
-@section('content')
 <div class="row">
-<div id="activities_modal" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					&times;
-				</button>
-				<h4 class="modal-title">Update Proposal</h4>
-			</div>
-
-			<div class="ibox-content">
-
-				<form role="form" id="UpdateActvity" method="POST" action="/postUpdateActivity">
-				<input type="hidden" name="_token" value="{{ csrf_token() }}">
-				<input type="hidden" name="update_id" id="update_id">
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group ">
-								<label>Organization</label>
-								<input " placeholder="Name of Organization" name="organization" id="organization" class="form-control" autofocus="" aria-required="true"></output>
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Title</label>
-								<input placeholder="Title of Activity" name="title" id="title" class="form-control"></output>
-							</div>
-						</div>
-
-
-						<div class="col-md-6">
-							<div class="form-group" id="data_1">
-								<label>Date of Activity</label>
-								<div class="input-group date">
-									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									<input type="text" class="form-control" name="date" id="date"placeholder="Pick Date" >
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Submitted Documentation</label>
-								
-                                    <div class="col-sm-10">
-                                     
-                                        <div class="radio i-checks"><label> <input type="radio"  value="1" name="status" id="status"> <i>Submitted&nbsp &nbsp &nbsp</i> </label>    
-                                        <label> <input type="radio" value="0" name="status" id="status1"> <i> To be Submitted</i></label></div>
-                                    
-                                    </div>
-                                
-
-							</div>
-						</div>
-
-					</div>
-
-			</div>
-
-			<div class="modal-footer">
-				<button class="ladda-button btn btn-w-m btn-primary claimItem" id="update_proposalBtn" type="button">
-					<strong>Save</strong>
-				</button>
-				<button type="button" class="btn btn-w-m btn-danger"
-				data-dismiss="modal">
-					<strong>Cancel</strong>
-				<input type="hidden" value="{{Session::token()}}" name="_token">
-				</form>
-				</button>
-			</div>
-		</div>
-
-	</div>
-</div>
-
-	<div class="col-lg-12">
-		<div class="ibox float-e-margins">
-			<div class="ibox-title">
-
-				<h5>Activities</h5>
-
-				<div class="ibox-tools">
-
-			
-
-				</div>
-
-			</div>
-
-			<div class="ibox-content">
-
-
-
-						<div class="col-md-4">
-							<div class="form-group">
+  <div class="col-md-12">
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    {{ csrf_field() }}
+    <div class="row">
+    						  <div class="col-md-6">
+								<div class="form-group">
 
 								<label>Select Organization</label>
 								<select name="organizationName" id="organizationName" class="form-control">
-								<option autofocus="" disabled selected >Select Organization</option>
+								<option autofocus="" disabled selected value="0">Select Organization</option>
 									@foreach ($organizations as $organization)
 									<option>{{$organization->organization }}</option>
-									
-							
 								
 									@endforeach
 									
 								</select>	
 
-
-
+								</div>
 
 
 							</div>
-						</div>
 
-
-		
-
-
-
-
-					<div class="col-md-4">
-						<div class="form-group">
+						<div class="col-md-6">
+							<div class="form-group">
 
 								<label>School Year</label>
 								<select name="school_year" id="school_year" class="form-control">
@@ -150,23 +40,102 @@
 									@endforeach
 									
 								</select>	
-					</div>
-					</div>
+								
+							</div>
+						</div>
+
+    		
+ 	 </div>
+</div>
+</div>
+
+@endsection
 
 
+@section('content')
+
+                     <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+
+                            <h5><b>PROPOSAL OF ACTIVITIES</b></h5>
+                           
+                           
+                             <button type="button" class="btn btn-primary btn-xs m-l-sm pull-right" id="print">Print</button>
+                              <button id="save" class="btn btn-primary  btn-xs m-l-sm pull-right" onclick="save()" type="button">Save</button>
+                              <button id="edit" class="btn btn-primary btn-xs m-l-sm pull-right" onclick="edit()" type="button">Edit</button>
+
+                        </div>
+</div>
+
+ 
+
+<div class="row" id="report_content">
+
+<div class="col-lg-12">
+<div class="click2edit">
+  
+
+    
+    <div class="ibox float-e-margins">
+      <div class="ibox-content p-xl">
+              <div class="row">
+
+<!-- 
+         	<div id="locator">
+              <img src="/img/officialseal1.png" height="100" width="100" class="pic1">
+              <img src="/img/officialseal1.png"  class="pic1">
+              </div>  -->
+          <div class="col-sm-12 text-center">
+              <img src="/img/officialseal1.png"  class="pic1">
+
+          </div>
+        </div>
+        <div class="row">
+         
+<br><br>
+          <div class="col-sm-12 text-center">
+          <h5>Student Affair's Office</h5>
+            <h5>Proposal of Activities School Year Report</h5>
+            <!-- <output id="report_type">Proposal of Activities Report</output>  -->
 
 
+          </div>
+    <br>
+        </div>
+         <div class="row">
+         
+          <div class="form-group col-xs-6 text-left">
+       		
+          <output id="report_from1"></output>
+          </div> 
+         
 
+          <div class="form-group col-xs-6 text-right">   
+            <output id="report_to1"></output>  
+           </div>
+          
+        </div>
 
+         <div class="row">
+         
+          <div class="form-group col-xs-6 text-left">
+       		
+          <output id="report_from"></output>
+          </div> 
+         
 
+          <div class="form-group col-xs-6 text-right">   
+            <output id="report_to"></output>  
+           </div>
+          
+        </div>
+        <div class="row">
 
+          <div class="col-md-12">
+            <div class="table-responsive">
 
-
-			<div class="ibox-content" id="table-content">
-				<div class="table-responsive">
-					<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-
-						<table class="table table-striped table-bordered table-hover activities-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+<br>
+<table class="table table-striped table-bordered table-hover activities-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid" style="width: 100%;" >
 
 							<thead>
 						
@@ -174,86 +143,46 @@
 									<th>Title of Activity</th>
 									<th>Date</th>
 									<th>Status</th>
-									<!-- <th>Action</th> -->
+									
 						
 							</thead>
 							
 						
 						</table>
+        </div>
+        </div>
 
-					</div>
-				</div>
+<br><br>
+       	 <div class="row" style="bottom: -10; margin-left: 10px;">
 
-			</div>
-		</div>
-	</div>
+       <label class="text-center" >Prepared by:</label><br><br> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<br> {{ Auth::user()->roles->first()->name }} , Student Affairs Office
+          </div>
+                <br>
+              <div class="row"   style="bottom: -10; margin-left: 10px;">
+       <label class="text-center">Noted by:</label><br><br> Ms. Lourdes C. Reyes <br>Head, Student Affairs Office 
+                </div>
+      </div>
+    </div>
+  </div>
 </div>
+</div>
+</div>
+
+
 
 
 <script>
 
-		// $(document).ready(function() {
-		// 	$('#').click(function() {
-  //       		var row = $(this).each;
-
-  //       		$('#myModal #organizationName').val(row.organization);
-  //         		$('#myModal #title').val(row.activity);
-  //         		$('#myModal #date').val(row.date);
-  //         		$('#myModal #status').val(row.status);
-  //       		$('#myModal').modal('show');
-  // 			  });
-		// });
-
-	// 	$(document).ready(function(){
- 
-	// 	 $("#").click(function(e){
- // 		e.preventDefault();
- // 		$.ajax({
- // 		headers : {
- // 				'X-CSRF-Token' : $('input[name="_token"]').val()
- // 			},
- // 			url: "/ActivityDetails",
- // 			type: "GET",
- // 			data: {
- // 				id : id	
- // 				},
- // 		}).done(function(data){
-
- 
-	// 	 	var msg = "";
- // 			if (data.success == false) {
- // 				$.each(data.errors, function(k, v) {
- // 					msg = msg + v + "\n";
- // 					swal("Oops...", msg, "warning");
- 
- // 				});
- 
- // 			} else {
- 
- // 				var organization = data.response['organization'];
- // 				var activity = data.response['activity'];
- // 				var date = data.response['date'];
- // 				var status = data.response['status'];
- 				
- 
- // 				$('#organizationName').val(organization);
- // 				$('#title').val(activity);
- // 				$('#date').val(date);
- // 				$('#status').val(status);	
- 
- // 			}
- 
- // });
- 
- // 	$('#myModal').modal("show");
- 
- // });
- 
- // });
-
 
 $(document).ready(function(){
 
+	var date = new Date();
+	var options = {year: "numeric", month: "long", day: "numeric"};
+      var newdate = date.toLocaleDateString('en-US', options);
+// $('#report_from1').val("Report Type: Yearly");
+$('#report_type').val("List of Activities");
+$('#report_to1').val(newdate);
+$('#report_to').val("S.Y." + $('#school_year').val());
 // var sy_id = $('#school_year').val();
 // var org_id = $('#organizationName').val();
 
@@ -273,8 +202,12 @@ var activities_table = $('.activities-DT').DataTable({
         d.organization = $('select#organizationName').val();
     },
 			},
-	"bSort" : true,
-	"bFilter" : true,
+
+	"bPaginate" : false,
+	"bSort" : false,
+	"bFilter" : false,
+
+	"bInfo" :false,
 	"order": [[ 0, "desc" ]],
 	"rowId" : 'id',	
 	"columns" : [
@@ -290,9 +223,9 @@ var activities_table = $('.activities-DT').DataTable({
 		"render":function(data,type,full,meta){
 			console.log("data = " +data);
 			if(data == 0){
-				return '<p style="color:red"> Not Submitted </p>';
+				return '<p> Not Submitted </p>';
 			} else{
-				return '<p style="color:green"> Submitted </p>';
+				return '<p> Submitted </p>';
 			}
 		}
 }]
@@ -301,6 +234,8 @@ var activities_table = $('.activities-DT').DataTable({
 $('select#school_year').change(function(e){
 	// $('.activities-DT').DataTable().draw();
 	$('.activities-DT').DataTable().ajax.url('/activities/ActivitiesByYear').load();
+	$('#report_from1').val("");
+
 });
 
 // $('select#organizationName').change(function(e){
@@ -313,7 +248,7 @@ $('select#organizationName').change(function(e){
 	var sy_id = $('#school_year').val();
 	var org_id = $('#organizationName').val();
 
-	 
+$('#report_from1').val("Organization: " + $('#organizationName').val());
 
 
 
@@ -502,7 +437,94 @@ $('#organizationName')
 
 });
 	});
+
+	$('#print').click(function(e){
+$(this).hide();
+var content = document.getElementById('report_content').innerHTML;
+document.body.innerHTML = content;
+
+window.print();
+// window.location.reload();
+
+
+e.preventDefault();
+});
+
+
+
+
+
+
+
 </script>	
+
+
+     <script src="js/inspinia.js"></script>
+
+    <!-- SUMMERNOTE -->
+    <script src="js/plugins/summernote/summernote.min.js"></script>
+     <script>
+        $(document).ready(function(){
+
+            $('.summernote').summernote();
+
+
+       });
+        var edit = function() {
+            $('.click2edit').summernote({focus: true});
+
+        };
+        var save = function() {
+            var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+            $('.click2edit').destroy();
+        };
+    </script>
+
+    <style type = "text/css">
+
+/*.pic1{
+float:left;
+	margin-left:50px; 
+	position: absolute;
+
+		top: 250px;
+		left: 70px;
+}*/
+
+/*#locator { position: absolute; visibility: visible; left: 450px; top: 10px; height: 100px; width: 150px; z-index: 200; float: right;}
+*/
+.note-codable {
+display:none;
+}
+.note-help {
+display:none;
+}
+.note-insert {
+display:none;
+}
+.note-view {
+display:none;
+}
+
+
+.note-toolbar {
+    /*background-color: white;*/
+/*position: absolute;
+    bottom: 330px;
+    right: 200px;*/
+/*padding-left: 30px;*/
+padding-bottom: 30px;
+/*border-bottom:1px solid #a9a9a9*/
+}
+
+
+
+
+
+
+
+
+</style>
 
 @endsection
 

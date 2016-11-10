@@ -17,6 +17,7 @@ class CreateRequirementsTable extends Migration
             $table->timestamps();
             $table->string('school_year');
             $table->string('organization');
+            $table->date('deadline');
             $table->boolean('requirement1');
             $table->boolean('requirement2');
             $table->boolean('requirement3');

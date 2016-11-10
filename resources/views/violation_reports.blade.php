@@ -7,7 +7,7 @@
   <div class="col-md-12">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     {{ csrf_field() }}
-
+       <h1>Violation Reports</h1>
 
     <div class="row">
       <div class="col-md-6">
@@ -41,8 +41,7 @@
       </div>
     </div>
 
-    <div class="hr-line-solid"></div>
-
+  
 
 
   </div>

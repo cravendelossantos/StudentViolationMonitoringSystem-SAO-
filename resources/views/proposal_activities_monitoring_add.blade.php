@@ -110,8 +110,8 @@
 								
                                     <div class="col-sm-10">
                                      
-                                        <div class="radio i-checks"><label> <input type="radio" disabled="" value="1" name="status"> <i>Submitted&nbsp &nbsp &nbsp</i> </label>    
-                                        <label> <input type="radio" disabled="" checked=""  value="0" name="status"> <i> Not Submitted</i></label></div>
+                                        <div class="radio i-checks"><label> <input type="radio"  value="1" name="status"> <i>Submitted&nbsp &nbsp &nbsp</i> </label>    
+                                        <label> <input type="radio"  checked=""  value="0" name="status"> <i> Not Submitted</i></label></div>
                                     
                                     </div>
                                 

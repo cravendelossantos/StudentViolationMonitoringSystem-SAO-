@@ -139,6 +139,7 @@ $schoolyear = DB::table('school_years')->select('school_year')->where('term_name
             
             $validator = Validator::make($request->all(),[
             'organizationName' => 'required|string|max:255',
+            'deadline' => 'required|date',
            
         ]);
 
@@ -163,6 +164,7 @@ $sy = DB::table('school_years')->select('school_year')->where('term_name' , 'Sch
           $requirement = new Requirements();
           $requirement->school_year =  $request['school_year'];
           $requirement->organization =  $request['organizationName'];
+          $requirement->deadline     =  $request['deadline'];
           $requirement->requirement1 = $request['requirement1'];
           $requirement->requirement2 = $request['requirement2'];
           $requirement->requirement3 = $request['requirement3'];

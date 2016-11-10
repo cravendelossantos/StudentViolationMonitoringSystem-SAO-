@@ -61,7 +61,7 @@ class StudentRecordsController extends Controller
 									'last_name' =>$value->last_name,
 									'course' => $value->course,
 									'year_level' =>$value->year_level,
-									'contact_no' =>$value->contact_no,
+									'student_contact_no' =>$value->contact_no,
 									'date_created' =>$value->date_created
 									];
 				}
@@ -69,7 +69,7 @@ class StudentRecordsController extends Controller
 					DB::table('students')->insert($insert);
 							$messages = "File successfully imported!";
 			/*		dd('Import Successful!');	*/
-					return redirect('/activity-records')->with('success', $messages); 
+					return redirect('/student-records')->with('success', $messages); 
 				}
 
 			}
