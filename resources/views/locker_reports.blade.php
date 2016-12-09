@@ -44,6 +44,7 @@
 
 	</div>
 
+			<div  id="report_content">
 	<div class="col-md-12">
 
 
@@ -75,7 +76,6 @@
 
 			<br><br>
 
-			<div  id="report_content">
 
 
 				{!! csrf_field() !!}
@@ -85,8 +85,8 @@
 
 
 
-
-				<div class="row">
+				<div id="visualization" class="" style="width: 900px; height: 400px;"></div>
+				<!-- <div class="row">
 					<div class="col-md-12">
 
 						<div class="flot-chart">
@@ -95,7 +95,7 @@
 
 					</div>
 				</div>
-
+ -->
 
 
 
@@ -154,35 +154,36 @@
 
 $('#print').click(function(e){
 
-    html2canvas($("#flot-pie-chart"), {
-      onrendered: function(canvas) {
-        var img = canvas.toDataURL("image/jpg");  
-        var pdf = new jsPDF("p", "pt", "letter");
-        pdf.setProperties({
-          title: 'Locker Reports and Statistics',
-          subject: '',     
-          keywords: 'generated',
-          creator: '{{ Auth::user()->first_name }}'
-        });
-
-
-        var content = document.getElementById('report_content').innerHTML;
-
-
-        
-
-        var body = document.body.innerHTML =  "<h1 style='text-align: center;'>Locker Reports and Statistics</h1><br><br><center><img src=" + img + " class='img-responsive'><br><br>" + content + "</center>";
-        window.print();
-        window.location.reload();
-      }
-    });
+    $(this).hide();
+   var content = document.getElementById('report_content').innerHTML;
+   
+   document.body.innerHTML = content;
+   window.location.reload();
+   
+   /* $('.google-visualization-controls-rangefilter').hide();*/
+   window.print();
 
 
 });
 
 
 	$('#show_locker_reports').click(function(e){
-
+		drawVisualization();
+	function drawVisualization() {
+    var options = {
+       
+          /*title: 'Total number of Lost and Found items',*/
+          is3D: false,
+          pieHole: 0.4,
+          pieSliceText: 'label',
+          slices: {
+            0: { color: 'green' },
+            1: { color: 'blue' },
+            2: { color: 'gold' },
+          	3: { color: 'red' }
+          }
+       
+        };
 		$.ajax({
 			headers : {
 				'X-CSRF-Token' : $('input[name="_token"]').val()
@@ -198,10 +199,32 @@ $('#print').click(function(e){
 				items = response;
 
 				console.log(items);
+				var items = response;
+      console.log(items);
+      var c_data = google.visualization.arrayToDataTable([
+          
+          ['Statistics',   'Lockers'],
+          ['Available',   items.available],
+          ['Occupied',   items.occupied],
+          ['Locked',   items.locked],
+          ['Damaged',   items.damaged]
+        ]);
+
+        var LAF_chart = new google.visualization.PieChart(document.getElementById('visualization'));
+        LAF_chart.draw(c_data, options);
 			}
 		});
 
-		var data = [{
+
+	
+
+
+           google.setOnLoadCallback(drawVisualization);
+
+    
+        
+      }
+		/*var data = [{
 			label: "TOTAL",
 			data: items['total'],
 			color: "#d3d3d3",
@@ -265,7 +288,7 @@ $('#print').click(function(e){
         	 },
         	 defaultTheme: false
         	}
-        });
+        });*/
 
 
 

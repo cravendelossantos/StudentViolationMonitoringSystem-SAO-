@@ -495,7 +495,8 @@
 	<!-- Register --> 
 	<script src="/js/register.js"></script>
 
-
+<script type="text/javascript" src="/js/jsapi.js"></script>
+<script type="text/javascript" src="/js/uds_api_contents.js"></script>
 
 		<!-- Flot -->
 	<script src="/js/plugins/flot/jquery.flot.js"></script>

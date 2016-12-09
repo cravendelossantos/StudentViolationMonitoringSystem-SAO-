@@ -248,7 +248,7 @@ Route::get('/lost-and-found/statistics', 'LostAndFoundController@showLostAndFoun
 Route::get('/lost-and-found/reports', 'LostAndFoundController@showLostAndFoundReports');
 Route::post('/lost-and-found/reports/list', 'LostAndFoundController@postLostAndFoundReportsTable');
 
-Route::get('/lost-and-found/reports/stats', 'LostAndFoundController@postLostAndFoundStatistics');
+Route::post('/lost-and-found/reports/stats', 'LostAndFoundController@postLostAndFoundStatistics');
 
 Route::get('/lost-and-found/search','LostAndFoundController@searchLostAndFound');
 

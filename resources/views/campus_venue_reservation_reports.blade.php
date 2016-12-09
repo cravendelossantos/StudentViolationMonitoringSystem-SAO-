@@ -119,7 +119,7 @@
          
 <br><br>
           <div class="col-sm-12 text-center">
-          <h5>Student Affair's Office</h5>
+          <h5>Student Affairs Office</h5>
             <h5>Campus Venue Reservation Report</h5>
 
 

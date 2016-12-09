@@ -1027,15 +1027,10 @@ $('select#sort_by').change(function(e){
 
 
 //load reports on date change
-$('#show_LAF_stats').on('click', function(){
+/*$('#show_LAF_stats').on('click', function(){
 
-	$.getJSON('/lost-and-found/reports/stats', function (dataTableJson) {
-lava.loadData('IMDB', dataTableJson, function () {
-	console.log(dataTableJson);
-  console.log('Data Loaded');
-});
 
-});
+});*/
 	
 // 	$.ajax({
 // 		headers : {
@@ -1112,37 +1107,6 @@ lava.loadData('IMDB', dataTableJson, function () {
 //         });
 
 
-
-    $('.lost-and-found-reports-DT').DataTable().destroy();
-    $('.lost-and-found-reports-DT').DataTable({
-    	        "bPaginate" : false,
-        "bInfo" :false,
-        "bSort" : false,
-        "bFilter" : false,
-        "processing": true,
-        "serverSide": true,
-    	"ajax": {
-    		headers : {
-    			'X-CSRF-Token' : $('input[name="_token"]').val()
-    		},
-    		url : "/lost-and-found/reports/list",
-    		type: "POST",
-    		data: function (d) {
-            d.LAF_stats_from = $('#LAF_stats_from').val();
-            d.LAF_stats_to = $('#LAF_stats_to').val();
-        },
-    	},
-    	"columns" : [
-    	{data: 'claimed'},
-    	{data: 'unclaimed'},
-    	{data: 'donated'},
-    	{data: 'total'},
-    	],
-
-    
-    });
-    $('#try').hide();
-});
 
 
 //load current month reports
