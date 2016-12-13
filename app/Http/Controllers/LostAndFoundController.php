@@ -274,7 +274,11 @@ class LostAndFoundController extends Controller
 
 
 			$data= 
-			['claimed', 20];
+			[	'claimed' => $claimed, 
+		'unclaimed' => $unclaimed,
+		'donated' => $donated,  
+
+		];
 			
 
 			return response()->json($data); 

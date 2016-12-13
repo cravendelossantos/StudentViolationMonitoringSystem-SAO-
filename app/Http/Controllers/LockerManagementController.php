@@ -329,32 +329,40 @@ public function postLockerReportsTable(Request $request)
 
   public function postLockerStatistics(Request $request)
   {
+    $validator = Validator::make($request->all(),[
+  'locker_reports_from' => 'required|date',
+  'locker_reports_to' => 'required|date',
 
+  ]);
+ 
+  if ($validator->fails()) {
+  return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
+  
+  } else {
 
     $total = DB::table('lockers')->whereBetween('date_created', [$request['locker_reports_from'], $request['locker_reports_to']])
 
     ->count();
    
+$available = DB::table('lockers')->select('status')->whereBetween('date_created', [$request['locker_reports_from'], $request['locker_reports_to']])
 
-     $available = DB::table('lockers')
     ->where('status' , 'Available')
     ->count();
    
-   $occupied = DB::table('lockers')
+   $occupied = DB::table('lockers')->select('status')->whereBetween('date_created', [$request['locker_reports_from'], $request['locker_reports_to']])
 
     ->where('status' , 'occupied')
     ->count();
    
-    $locked = DB::table('lockers')
+    $locked = DB::table('lockers')->select('status')->whereBetween('date_created', [$request['locker_reports_from'], $request['locker_reports_to']])
     
     ->where('status' , 'locked')
     ->count();
    
-     $damaged = DB::table('lockers')
+     $damaged = DB::table('lockers')->select('status')->whereBetween('date_created', [$request['locker_reports_from'], $request['locker_reports_to']])
     
     ->where('status' , 'damaged')
     ->count();
-   
    
     
 
@@ -370,7 +378,7 @@ public function postLockerReportsTable(Request $request)
     'damaged' => $damaged,
     
     ];
-
+  }
 
 
     

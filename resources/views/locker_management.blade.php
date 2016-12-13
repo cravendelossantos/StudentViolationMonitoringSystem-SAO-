@@ -31,19 +31,19 @@
 					{!! csrf_field() !!}
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<div class="text-center">	<p>Current Status:
-								<strong><output name="m_current_status" id="m_current_status">
-								</output></strong></p></div>
+						<strong><output name="m_current_status" id="m_current_status">
+						</output></strong></p></div>
 
-					<div class="form-group">
-						
-						<div class="col-md-10 col-md-offset-1">
-							<label class="control-label">Locker no</label>
-							<input type="hidden" name="_m_locker_no" id="_m_locker_no">
-							<output class="form-control" name="m_locker_no" id="m_locker_no"></output>
-							<span class="help-block m-b-none text-danger"></span>
+						<div class="form-group">
+
+							<div class="col-md-10 col-md-offset-1">
+								<label class="control-label">Locker no</label>
+								<input type="hidden" name="_m_locker_no" id="_m_locker_no">
+								<output class="form-control" name="m_locker_no" id="m_locker_no"></output>
+								<span class="help-block m-b-none text-danger"></span>
+							</div>
+
 						</div>
-
-					</div>
 
 
 				<!-- 	<div class="form-group">
@@ -62,7 +62,7 @@
 
 							<label class="control-label">Update status</label><br>
 							<select class="form-control" name="m_update_status" id="m_update_status">
-							<option disabled="" selected="">Update Status</option>
+								<option disabled="" selected="">Update Status</option>
 								<option value="Available">Available</option>
 								<option value="Occupied">Occupied</option>
 								<option value="Damaged">Damaged</option>
@@ -71,79 +71,133 @@
 							</select>
 							
 							<br>
-					<div id="occupancy_div">		
-							<div>
-								<input type="text" class="form-control" placeholder="Name of Lessee" name="m_lessee_name" id="m_lessee_name" style="text-transform: capitalize;">
-							</div>
-							<br>
-							<div>
-								<input type="text" class="form-control" placeholder="Lessee ID No." name="m_lessee_id" id="m_lessee_id">
-							</div>
-							<br>
-							<select class="form-control" name="contract" id="contract">
+							<div id="occupancy_div">		
+								<div>
+									<input type="text" class="form-control" placeholder="Name of Lessee" name="m_lessee_name" id="m_lessee_name" style="text-transform: capitalize;">
+								</div>
+								<br>
+								<div>
+									<input type="text" class="form-control" placeholder="Lessee ID No." name="m_lessee_id" id="m_lessee_id">
+								</div>
+								<br>
+								<select class="form-control" name="contract" id="contract">
 
-								<option disabled="" selected="">Select Contract</option>
-								@foreach ( $dates as $date )
-								<option value="{{ $date->id }}">{{ $date->term_name }} ( S.Y - {{ $date->school_year }})</option>
-								@endforeach
-							</select>
-							
-							<span class="help-block m-b-none text-danger"></span>
-						</div>
+									<option disabled="" selected="">Select Contract</option>
+									@foreach ( $dates as $date )
+									<option value="{{ $date->id }}">{{ $date->term_name }} ( S.Y - {{ $date->school_year }})</option>
+									@endforeach
+								</select>
+
+								<span class="help-block m-b-none text-danger"></span>
 							</div>
+						</div>
 					</div>
 
 
 
 
-							
-						</div>
 
-						<div class="modal-footer">
-							<button class="ladda-button btn btn-w-m btn-primary claimItem" id="locker_update" type="button">
-								<strong>Save</strong>
-							</button>
-							<button type="button" class="btn btn-w-m btn-danger"
-							data-dismiss="modal">
-							<strong>Cancel</strong>
-						</button>
-					</form>
 				</div>
-			</div>
 
+				<div class="modal-footer">
+					<button class="ladda-button btn btn-w-m btn-primary claimItem" id="locker_update" type="button">
+						<strong>Save</strong>
+					</button>
+					<button type="button" class="btn btn-w-m btn-danger"
+					data-dismiss="modal">
+					<strong>Cancel</strong>
+				</button>
+			</form>
 		</div>
 	</div>
 
+</div>
+</div>
+
+<div id="locker_contract">
+<div class="ibox float-e-margins">
+	<div class="ibox-title">
+
+		<h5><b>Locker Contract</b></h5>
 
 
-	<div class="row">
+		<button type="button" class="btn btn-primary btn-xs m-l-sm pull-right" id="print">Print</button>
+		<button id="save" class="btn btn-primary  btn-xs m-l-sm pull-right" onclick="save()" type="button">Save</button>
+		<button id="edit" class="btn btn-primary btn-xs m-l-sm pull-right" onclick="edit()" type="button">Edit</button>
 
-		<div class="col-lg-12">
+	</div>
+</div>
+
+
+
+<div class="row" id="contract_content">
+
+	<div class="col-lg-12">
+		<div class="click2edit">
+
+
+
 			<div class="ibox float-e-margins">
+				<div class="ibox-content p-xl">
+					<div class="row">
+						<div class="col-sm-12 text-center">
+							<img src="/img/officialseal1.png"  class="pic1">
 
-				<div class="ibox-title">
-					<h5>Add Lockers</h5>
-					<div class="ibox-tools">
-
+						</div>
 					</div>
+					<div class="row">
+
+						<br><br>
+						<div class="col-sm-12 text-center">
+							<h5>Student Affairs Office</h5>
+							<h5>Locker Contract</h5>
+
+
+						</div>
+
+
+						<br>
+					</div>
+
+
+
+					
+
 				</div>
-				<div class="ibox-content">
+			</div>
+		</div>
+	</div>
+</div>
+</div>
 
-					<form role="form" id="add_locker_form" method="POST" action="/lockers/add">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+<div class="row">
 
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group ">
-									<label>No of lockers</label>
-									<input type="number" placeholder="No of Lockers" name="no_of_lockers" id="no_of_lockers" class="form-control" autofocus="" aria-required="true">
-								</div>
+	<div class="col-lg-12">
+		<div class="ibox float-e-margins">
+
+			<div class="ibox-title">
+				<h5>Add Lockers</h5>
+				<div class="ibox-tools">
+
+				</div>
+			</div>
+			<div class="ibox-content">
+
+				<form role="form" id="add_locker_form" method="POST" action="/lockers/add">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group ">
+								<label>No of lockers</label>
+								<input type="number" placeholder="No of Lockers" name="no_of_lockers" id="no_of_lockers" class="form-control" autofocus="" aria-required="true">
 							</div>
+						</div>
 
-							<div class="col-md-6">
+						<div class="col-md-6">
 
 
-								<div class="form-group">
+							<div class="form-group">
 									<!-- <label>Building</label>
 
 									<select name="location" id="location" class="form-control">
@@ -213,97 +267,140 @@
 			<div class="ibox float-e-margins">
 
 				<div class="ibox-title">
-				<h3>Filter:</h3>
-<div class="row">
-								<div class="form-group">
-				
-<div class="col-md-6">
+					<h3>Filter:</h3>
+					<div class="row">
+						<div class="form-group">
 
-<label>Status</label>
-				<select id="status_sort" name="status_sort"  class="form-control">
-								<option value="">All</option>
-								<option value="Available">Available</option>
-								<option value="Occupied">Occupied</option>
-								<option value="Damaged">Damaged</option>
-								<option value="Locked">Locked</option>
-				</select>
-</div>
-<div class="col-md-6">
-<label>Location</label>
-				<select name="location_sort" id="location_sort" class="form-control">
+							<div class="col-md-6">
+
+								<label>Status</label>
+								<select id="status_sort" name="status_sort"  class="form-control">
+									<option value="">All</option>
+									<option value="Available">Available</option>
+									<option value="Occupied">Occupied</option>
+									<option value="Damaged">Damaged</option>
+									<option value="Locked">Locked</option>
+								</select>
+							</div>
+							<div class="col-md-6">
+								<label>Location</label>
+								<select name="location_sort" id="location_sort" class="form-control">
 									<option value="">All</option>
 									@foreach($locations as $location)
 
 									<option value="{{ $location->id }}">{{ $location->building }} Building {{ $location->floor }} Floor </option>
 									@endforeach
 								</select>
-</div>
+							</div>
 
-</div>
+						</div>
 
-				</div>
+					</div>
 
-				<div class="ibox-content" id="table-content">
-					<div class="table-responsive">
-						<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+					<div class="ibox-content" id="table-content">
+						<div class="table-responsive">
+							<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
 
-							<table class="table table-striped table-bordered table-hover lockers-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
-								<thead>
+								<table class="table table-striped table-bordered table-hover lockers-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+									<thead>
 
-									<th>Locker no</th>
-									<th>Floor</th>
-									<th>Building</th>
-									<th>Lessee</th>
-									<th>Status</th>
-
-
-
-
-								</thead>
+										<th>Locker no</th>
+										<th>Floor</th>
+										<th>Building</th>
+										<th>Lessee</th>
+										<th>Status</th>
 
 
 
-							</table>
+
+									</thead>
+
+
+
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>	
+	</div>	
 
 
 
 
 
 
-@endsection
 
-<script>
-	
-</script>
+	<script src="js/plugins/summernote/summernote.min.js"></script>
+	<script>
 
-<style>
-	
-	.locker-damaged{
-		height: 120px;
-		width: 75px;
-		margin-left: 20px;
-		background-color: red;
-	}
+		$(document).ready(function(){
 
-	
-	.locker-available{
-		height: 120px;
-		width: 75px;
-		margin-left: 20px;
-		background-color: green;
-	}
+			$('.summernote').summernote();
 
-	.locker-occupied{
-		height: 120px;
-		width: 75px;
-		margin-left: 20px;
-		background-color: blue;
-	}
+		});
+		var edit = function() {
+			$('.click2edit').summernote({focus: true});
+		};
+		var save = function() {
+            var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+            $('.click2edit').destroy();
+        };
+
+        $('#locker_contract').hide();
+
+    </script>
+
+    <style>
+
+    	.locker-damaged{
+    		height: 120px;
+    		width: 75px;
+    		margin-left: 20px;
+    		background-color: red;
+    	}
+
+
+    	.locker-available{
+    		height: 120px;
+    		width: 75px;
+    		margin-left: 20px;
+    		background-color: green;
+    	}
+
+    	.locker-occupied{
+    		height: 120px;
+    		width: 75px;
+    		margin-left: 20px;
+    		background-color: blue;
+    	}
+
+
+
+    	.note-codable {
+    		display:none;
+    	}
+    	.note-help {
+    		display:none;
+    	}
+    	.note-insert {
+    		display:none;
+    	}
+    	.note-view {
+    		display:none;
+    	}
+
+
+    	.note-toolbar {
+    		/*background-color: white;*/
+/*position: absolute;
+    bottom: 330px;
+    right: 200px;*/
+    /*padding-left: 30px;*/
+    padding-bottom: 30px;
+    /*border-bottom:1px solid #a9a9a9*/
+}
+
 </style>
+@endsection

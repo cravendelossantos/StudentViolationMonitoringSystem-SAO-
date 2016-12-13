@@ -78,7 +78,7 @@ class ReportViolationController extends Controller
             'course' => 'required',
             'studentContactNo' => 'required|numeric',
             'guardianName' => 'required|string|min:2',
-            'guardianContactNo' => 'required|numeric',
+            /*'guardianContactNo' => 'required|numeric',*/
             
         ]);
      
@@ -431,7 +431,7 @@ class ReportViolationController extends Controller
               ['2', $cas],
               ['3' , $cba],
               ['4' , $coecsa],
-              ['5' , $cithm],
+          
 
             
           ];

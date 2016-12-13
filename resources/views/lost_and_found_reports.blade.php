@@ -44,7 +44,7 @@
   </div>
 
   <div class="col-md-12">
-
+ <div id="report_content">
 
     <div class="ibox-content">
       <div class="row">
@@ -74,17 +74,16 @@
 
     <br><br>
 
-    <div id="report_content">
 
 
       {!! csrf_field() !!}
       <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 
-      
-      <div id="chart-div"></div>
+   
+  <div id="visualization" class="" style="width: 900px; height: 400px;"></div>
 
-      @piechart('IMDB', 'chart-div')
+    
      <!--  <div class="row">
         <div class="col-md-12">
 
@@ -156,13 +155,102 @@
 </div>
 
 </div>			 -->
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+
+<script type="text/javascript">
+
+
+$('#show_LAF_stats').on('click', function(){
+drawVisualization();
+ function drawVisualization() {
+    var options = {
+       
+          /*title: 'Total number of Lost and Found items',*/
+          is3D: true,
+       
+        };
+
+
+          $.ajax({
+   headers : {
+     'X-CSRF-Token' : $('input[name="_token"]').val()
+   },
+   url : "/lost-and-found/reports/stats",
+   type: 'POST',
+   data : {LAF_stats_from : $('#LAF_stats_from').val(),
+       LAF_stats_to : $('#LAF_stats_to').val(),
+   },
+   async: false,
+   success: function(response){
+    var items = response;
+      console.log(items);
+      var c_data = google.visualization.arrayToDataTable([
+          
+          ['Statistics',   'Lost and Found'],
+          ['Claimed',   items['claimed'],],
+          ['Unclaimed',   items['unclaimed'],],
+          ['Donated',   items['donated'],]
+        ]);
+
+        var LAF_chart = new google.visualization.PieChart(document.getElementById('visualization'));
+        LAF_chart.draw(c_data, options);
+ 
+   }
+ });
+
+
+
+    
+        
+      }
+
+
+      google.setOnLoadCallback(drawVisualization);
+    $('.lost-and-found-reports-DT').DataTable().destroy();
+    $('.lost-and-found-reports-DT').DataTable({
+              "bPaginate" : false,
+        "bInfo" :false,
+        "bSort" : false,
+        "bFilter" : false,
+        "processing": true,
+        "serverSide": true,
+      "ajax": {
+        headers : {
+          'X-CSRF-Token' : $('input[name="_token"]').val()
+        },
+        url : "/lost-and-found/reports/list",
+        type: "POST",
+        data: function (d) {
+            d.LAF_stats_from = $('#LAF_stats_from').val();
+            d.LAF_stats_to = $('#LAF_stats_to').val();
+        },
+      },
+      "columns" : [
+      {data: 'claimed'},
+      {data: 'unclaimed'},
+      {data: 'donated'},
+      {data: 'total'},
+      ],
+
+    
+    });
+    $('#try').hide();
+});
+
+
+     
+    </script>
+
 <script type="text/javascript">
 
   $('#print').click(function(e){
     var content = document.getElementById('report_content').innerHTML;
-        // $(this).hide();
-        $('.google-visualization-controls-rangefilter').hide();
+    
+    document.body.innerHTML = content;
+    window.location.reload();
+        $(this).hide();
+       /* $('.google-visualization-controls-rangefilter').hide();*/
         window.print();
       });
 
