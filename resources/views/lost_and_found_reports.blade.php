@@ -30,6 +30,30 @@
 
 @section('content')
 
+<div class="ibox float-e-margins">
+  <div class="ibox-title">
+
+    <h5><b>Locker Report and Statistics</b></h5>
+
+
+    <button type="button" class="btn btn-primary btn-xs m-l-sm pull-right" id="print">Print</button>
+    <button id="save" class="btn btn-primary  btn-xs m-l-sm pull-right" onclick="save()" type="button">Save</button>
+    <button id="edit" class="btn btn-primary btn-xs m-l-sm pull-right" onclick="edit()" type="button">Edit</button>
+<!--                             <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-wrench"></i>
+                                </a>
+
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div> -->
+                        </div>
+                    </div>
+
 
 <div class="row">
   <div id="try" style="display:none">
@@ -43,19 +67,34 @@
 
   </div>
 
+
+
   <div class="col-md-12">
- <div id="report_content">
-
+   <div id="report_content">
+   <div class="click2edit">
+    <div class="ibox float-e-margins">
     <div class="ibox-content">
+
+
       <div class="row">
-       <button class="btn btn-outline btn-info  dim" id="print" type="button"><i class="fa fa-print"></i> </button>
-       <div class="col-sm-12 text-center">
-        <h1>Lost and Founds Reports and Statistics</h1>
+        <div class="col-sm-12 text-center">
+          <img src="/img/officialseal1.png"  class="pic1">
 
-
+        </div>
       </div>
+      <div class="row">
 
-    </div>
+        <br><br>
+        <div class="col-sm-12 text-center">
+          <h5>Student Affair's Office</h5>
+          <h5>Lost And Found Reports and Statistics</h5>
+
+
+        </div>
+
+
+        <br>
+      </div>
 
 
 
@@ -63,12 +102,17 @@
 
 
     <div class="row">
-      <div class="col-md-6 text-left" id="report_ranges">
+      <div class="form-group col-xs-6 text-left" id="report_ranges">
 
         <output id="report_from"></output>         
         <output id="report_to"></output>      
 
       </div>
+
+      <div class="form-group col-xs-6 text-right">   
+          <output id="date"></output>  
+      </div>
+
     </div>
 
 
@@ -76,12 +120,12 @@
 
 
 
-      {!! csrf_field() !!}
-      <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    {!! csrf_field() !!}
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 
-   
-  <div id="visualization" class="" style="width: 900px; height: 400px;"></div>
+
+    <div id="visualization" class="" style="width: 900px; height: 400px; display: block; margin: auto;"></div>
 
     
      <!--  <div class="row">
@@ -108,7 +152,7 @@
 
 
 
-          <table class="table table-striped table-bordered table-hover lost-and-found-reports-DT DataTable" id="asd" aria-describedby="DataTables_Table_0_info" role="grid">
+          <table class="table table-striped table-bordered table-hover lost-and-found-reports-DT DataTable" id="asd" aria-describedby="DataTables_Table_0_info" role="grid" style="width: 100%;">
 
             <thead>
               <tr>
@@ -131,18 +175,18 @@
 
 
 <div class="row" style="bottom: -10; margin-left: 10px;">
- <label class="text-center" >Prepared by:</label> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }} ({{ Auth::user()->roles->first()->name }} , Student Affairs Office)
+  <label class="text-center" >Prepared by:</label><br><br> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<br> {{ Auth::user()->roles->first()->name }} , Student Affairs Office
 </div>
 <br>
-<br>
 <div class="row"   style="bottom: -10; margin-left: 10px;">
- <label class="text-center">Noted by:</label> Ms. Lourdes C. Reyes (Head, Student Affairs Office) 
+  <label class="text-center">Noted by:</label><br><br> Ms. Lourdes C. Reyes <br>Head, Student Affairs Office 
 </div>
 
 </div>        </div>
 </div>
 </div>
-
+</div>
+</div>
 
 <!-- 
 
@@ -161,60 +205,77 @@
 <script type="text/javascript">
 
 
-$('#show_LAF_stats').on('click', function(){
-drawVisualization();
- function drawVisualization() {
-    var options = {
-       
-          /*title: 'Total number of Lost and Found items',*/
-          is3D: true,
-       
-        };
+  $('#show_LAF_stats').on('click', function(){
 
 
-          $.ajax({
-   headers : {
-     'X-CSRF-Token' : $('input[name="_token"]').val()
-   },
-   url : "/lost-and-found/reports/stats",
-   type: 'POST',
-   data : {LAF_stats_from : $('#LAF_stats_from').val(),
+
+
+    if ($('#LAF_stats_from').val() != ""  || $('#LAF_stats_to').val() != ""){
+    // swal("Ooops!", "Please the select dates range", "warning");
+    $('#report_from').val("From: " + $('#LAF_stats_from').val());
+    $('#report_to').val("To: " + $('#LAF_stats_to').val());
+  }
+
+
+
+
+
+
+
+
+    drawVisualization();
+    function drawVisualization() {
+      var options = {
+
+        /*title: 'Total number of Lost and Found items',*/
+        is3D: true,
+
+      };
+
+
+      $.ajax({
+       headers : {
+         'X-CSRF-Token' : $('input[name="_token"]').val()
+       },
+       url : "/lost-and-found/reports/stats",
+       type: 'POST',
+       data : {LAF_stats_from : $('#LAF_stats_from').val(),
        LAF_stats_to : $('#LAF_stats_to').val(),
-   },
-   async: false,
-   success: function(response){
-    var items = response;
+     },
+     async: false,
+     success: function(response){
+      var items = response;
       console.log(items);
       var c_data = google.visualization.arrayToDataTable([
-          
-          ['Statistics',   'Lost and Found'],
-          ['Claimed',   items['claimed'],],
-          ['Unclaimed',   items['unclaimed'],],
-          ['Donated',   items['donated'],]
+
+        ['Statistics',   'Lost and Found'],
+        ['Claimed',   items['claimed'],],
+        ['Unclaimed',   items['unclaimed'],],
+        ['Donated',   items['donated'],]
         ]);
 
-        var LAF_chart = new google.visualization.PieChart(document.getElementById('visualization'));
-        LAF_chart.draw(c_data, options);
- 
-   }
- });
+      var LAF_chart = new google.visualization.PieChart(document.getElementById('visualization'));
+      LAF_chart.draw(c_data, options);
+
+    }
+  });
 
 
 
-    
-        
-      }
 
 
-      google.setOnLoadCallback(drawVisualization);
+    }
+
+
+    google.setOnLoadCallback(drawVisualization);
     $('.lost-and-found-reports-DT').DataTable().destroy();
     $('.lost-and-found-reports-DT').DataTable({
-              "bPaginate" : false,
-        "bInfo" :false,
-        "bSort" : false,
-        "bFilter" : false,
-        "processing": true,
-        "serverSide": true,
+      "bPaginate" : false,
+      "bInfo" :false,
+      "bSort" : false,
+      "bFilter" : false,
+      "processing": true,
+      "serverSide": true,
       "ajax": {
         headers : {
           'X-CSRF-Token' : $('input[name="_token"]').val()
@@ -222,8 +283,8 @@ drawVisualization();
         url : "/lost-and-found/reports/list",
         type: "POST",
         data: function (d) {
-            d.LAF_stats_from = $('#LAF_stats_from').val();
-            d.LAF_stats_to = $('#LAF_stats_to').val();
+          d.LAF_stats_from = $('#LAF_stats_from').val();
+          d.LAF_stats_to = $('#LAF_stats_to').val();
         },
       },
       "columns" : [
@@ -233,14 +294,14 @@ drawVisualization();
       {data: 'total'},
       ],
 
-    
+
     });
     $('#try').hide();
-});
+  });
 
 
-     
-    </script>
+
+</script>
 
 <script type="text/javascript">
 
@@ -249,10 +310,10 @@ drawVisualization();
     
     document.body.innerHTML = content;
     window.location.reload();
-        $(this).hide();
-       /* $('.google-visualization-controls-rangefilter').hide();*/
-        window.print();
-      });
+    $(this).hide();
+    /* $('.google-visualization-controls-rangefilter').hide();*/
+    window.print();
+  });
 
 
  /* $('#print').click(function (){
@@ -399,6 +460,99 @@ drawVisualization();
 
 
   </script>
+
+  <script src="js/inspinia.js"></script>
+
+<!-- SUMMERNOTE -->
+<script src="js/plugins/summernote/summernote.min.js"></script>
+
+
+<script>
+
+
+  $(document).ready(function(){
+
+//  $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Reservations");
+
+//     $('select#school_year').change(function(e){   
+//     $('.activities-DT').DataTable().ajax.url('/activities/ActivitiesByYear').load();
+//     $('#schoolyear').val("S.Y."+ $('select#school_year').val());
+//     $('#report_from').val("");
+//     $('#report_to').val("");
+//     $('#v_reports_from').val("");
+//     $('#v_reports_to').val("");
+//     $('#report_type').val("");
+//     $('#v_reports_offense_level').val("");
+
+
+// });
+
+
+//         $('select#v_reports_offense_level').change(function(e){   
+//             $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Reservations");
+
+
+// });
+
+
+var date = new Date();
+var options = {year: "numeric", month: "long", day: "numeric"};
+var newdate = date.toLocaleDateString('en-US', options);
+$('#date').val(newdate);
+$('#schoolyear').val("S.Y." + $('#school_year').val());
+
+
+
+$('.summernote').summernote();
+
+
+});
+  var edit = function() {
+    $('.click2edit').summernote({focus: true});
+
+  };
+  var save = function() {
+            var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+            $('.click2edit').destroy();
+        };
+    </script>
+
+
+    <style type = "text/css">
+
+
+      .note-codable {
+        display:none;
+      }
+      .note-help {
+        display:none;
+      }
+      .note-insert {
+        display:none;
+      }
+      .note-view {
+        display:none;
+      }
+
+
+      .note-toolbar {
+        /*background-color: white;*/
+/*position: absolute;
+    bottom: 330px;
+    right: 200px;*/
+    /*padding-left: 30px;*/
+    padding-bottom: 30px;
+    /*border-bottom:1px solid #a9a9a9*/
+}
+
+
+
+
+
+
+
+
+</style>
 
   <style>
     .sk-spinner-wave.sk-spinner {

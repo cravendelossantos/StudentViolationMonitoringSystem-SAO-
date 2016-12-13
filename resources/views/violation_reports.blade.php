@@ -59,30 +59,87 @@
 
 @section('content')
 
+<div class="ibox float-e-margins">
+  <div class="ibox-title">
+
+    <h5><b>Locker Report and Statistics</b></h5>
+
+
+    <button type="button" class="btn btn-primary btn-xs m-l-sm pull-right" id="print">Print</button>
+    <button id="save" class="btn btn-primary  btn-xs m-l-sm pull-right" onclick="save()" type="button">Save</button>
+    <button id="edit" class="btn btn-primary btn-xs m-l-sm pull-right" onclick="edit()" type="button">Edit</button>
+<!--                             <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-wrench"></i>
+                                </a>
+
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div> -->
+                        </div>
+                    </div>
+
 
 <div class="row" id="report_content">
   <div class="col-lg-12">
 
 
-
+<div class="click2edit">
     <div class="ibox float-e-margins">
       <div class="ibox-content p-xl">
-        <div class="row">
-        <button class="btn btn-outline btn-info  dim" id="print" type="button"><i class="fa fa-print"></i> </button>
-          <div class="col-sm-12 text-center">
-            <h1>Violation Reports</h1>
 
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <img src="/img/officialseal1.png"  class="pic1">
 
-          </div>
         </div>
+      </div>
+      <div class="row">
+
+        <br><br>
+        <div class="col-sm-12 text-center">
+          <h5>Student Affair's Office</h5>
+          <h5>Violation Reports</h5>
+
+
+        </div>
+
+
+        <br>
+      </div>
+
+
+
+
          <div class="row">
-          <div class="col-md-6 text-left">
+          <div class="form-group col-xs-6 text-left">
        
           <output id="report_from"></output>         
           <output id="report_to"></output>      
            
             </div>
+        <div class="form-group col-xs-6 text-right">   
+          <output id="date"></output>  
+        </div>
+
+
+
+
             </div>
+            <div class="row">
+
+
+              <div class="col-sm-12 text-center">
+                <output id="report_type"></output>
+
+              </div>
+            </div>
+
+
         
         <div class="row">
 
@@ -94,7 +151,7 @@
           <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
 
  -->
-
+            <br>
             <table class="table table-striped table-bordered table-hover violation-reports-reports-DT DataTable" id="violation-reports-reports-DT" aria-describedby="DataTables_Table_0_info" role="grid" style="width: 100%;">
 
               <thead>
@@ -118,6 +175,7 @@
         <!--   </div> -->
         </div>
         </div>
+        <br><br>
    <!--      <table class="table invoice-total">
           <tbody>
             <tr>
@@ -142,18 +200,18 @@
           It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
         </div> -->
 
-        <div class="row" style="bottom: -10; margin-left: 10px;">
-       <label class="text-center" >Prepared by:</label> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }} ({{ Auth::user()->roles->first()->name }} , Student Affairs Office)
-                </div>
-                <br>
-              <div class="row"   style="bottom: -10; margin-left: 10px;">
-       <label class="text-center">Noted by:</label> Ms. Lourdes C. Reyes (Head, Student Affairs Office) 
-                </div>
+<div class="row" style="bottom: -10; margin-left: 10px;">
+  <label class="text-center" >Prepared by:</label><br><br> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<br> {{ Auth::user()->roles->first()->name }} , Student Affairs Office
+</div>
+<br>
+<div class="row"   style="bottom: -10; margin-left: 10px;">
+  <label class="text-center">Noted by:</label><br><br> Ms. Lourdes C. Reyes <br>Head, Student Affairs Office 
+</div>
       </div>
     </div>
   </div>
 </div>
-
+</div>
 
 
 <script type="text/javascript">
@@ -165,6 +223,7 @@ e.preventDefault();
 
 $('#report_from').val("From: " + $('#v_reports_from').val());
 $('#report_to').val("To: " + $('#v_reports_to').val());
+$('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Offenses");
 
 if ($('#v_reports_from').val() == ""  || $('#v_reports_to').val() == ""){
 	swal("Ooops!", "Please the select dates range", "warning");
@@ -247,5 +306,99 @@ format: 'yyyy-mm-dd',
 
 
 </script>
+
+
+<script src="js/inspinia.js"></script>
+
+<!-- SUMMERNOTE -->
+<script src="js/plugins/summernote/summernote.min.js"></script>
+
+
+<script>
+
+
+  $(document).ready(function(){
+
+//  $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Reservations");
+
+//     $('select#school_year').change(function(e){   
+//     $('.activities-DT').DataTable().ajax.url('/activities/ActivitiesByYear').load();
+//     $('#schoolyear').val("S.Y."+ $('select#school_year').val());
+//     $('#report_from').val("");
+//     $('#report_to').val("");
+//     $('#v_reports_from').val("");
+//     $('#v_reports_to').val("");
+//     $('#report_type').val("");
+//     $('#v_reports_offense_level').val("");
+
+
+// });
+
+
+//         $('select#v_reports_offense_level').change(function(e){   
+//             $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Reservations");
+
+
+// });
+
+
+var date = new Date();
+var options = {year: "numeric", month: "long", day: "numeric"};
+var newdate = date.toLocaleDateString('en-US', options);
+$('#date').val(newdate);
+$('#schoolyear').val("S.Y." + $('#school_year').val());
+
+
+
+$('.summernote').summernote();
+
+
+});
+  var edit = function() {
+    $('.click2edit').summernote({focus: true});
+
+  };
+  var save = function() {
+            var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+            $('.click2edit').destroy();
+        };
+    </script>
+
+
+    <style type = "text/css">
+
+
+      .note-codable {
+        display:none;
+      }
+      .note-help {
+        display:none;
+      }
+      .note-insert {
+        display:none;
+      }
+      .note-view {
+        display:none;
+      }
+
+
+      .note-toolbar {
+        /*background-color: white;*/
+/*position: absolute;
+    bottom: 330px;
+    right: 200px;*/
+    /*padding-left: 30px;*/
+    padding-bottom: 30px;
+    /*border-bottom:1px solid #a9a9a9*/
+}
+
+
+
+
+
+
+
+
+</style>
 
 @endsection
