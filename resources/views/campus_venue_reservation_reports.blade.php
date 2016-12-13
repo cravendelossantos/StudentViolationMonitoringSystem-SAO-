@@ -6,8 +6,8 @@
 <!-- <div class="col-lg-10">
 	<h1>Campus Venue Reservation Reports</h1>
 </div>
- -->
- <div class="row">
+-->
+<div class="row">
   <div class="col-md-12">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     {{ csrf_field() }}
@@ -43,27 +43,27 @@
         </select>
 
       </div>
-                            <div class="col-md-4">
-                            <div class="form-group">
+      <div class="col-md-4">
+        <div class="form-group">
 
-                                <label>School Year</label>
-                                <select name="school_year" id="school_year" class="form-control">
-                                    @foreach ($schoolyear as $schoolyear)
-                                    <option>{{$schoolyear->school_year }}</option>
-                                    @endforeach
+          <label>School Year</label>
+          <select name="school_year" id="school_year" class="form-control">
+            @foreach ($schoolyear as $schoolyear)
+            <option>{{$schoolyear->school_year }}</option>
+            @endforeach
 
-                                    @foreach ($schoolyears as $schoolyear)
-                                    <option>{{$schoolyear->school_year }}</option>
-                                    @endforeach
+            @foreach ($schoolyears as $schoolyear)
+            <option>{{$schoolyear->school_year }}</option>
+            @endforeach
 
-                                    
-                                </select>   
-                                
-                            </div>
-                        </div>
+            
+          </select>   
+          
+        </div>
+      </div>
     </div>
 
-   <!--  <div class="hr-line-solid"></div> -->
+    <!--  <div class="hr-line-solid"></div> -->
 
 
 
@@ -74,15 +74,15 @@
 
 @section('content')
 
-                     <div class="ibox float-e-margins">
-                        <div class="ibox-title">
+<div class="ibox float-e-margins">
+  <div class="ibox-title">
 
-                            <h5><b>CAMPUS VENUES RESERVATION</b></h5>
-                           
-                           
-                             <button type="button" class="btn btn-primary btn-xs m-l-sm pull-right" id="print">Print</button>
-                              <button id="save" class="btn btn-primary  btn-xs m-l-sm pull-right" onclick="save()" type="button">Save</button>
-                              <button id="edit" class="btn btn-primary btn-xs m-l-sm pull-right" onclick="edit()" type="button">Edit</button>
+    <h5><b>CAMPUS VENUES RESERVATION</b></h5>
+    
+    
+    <button type="button" class="btn btn-primary btn-xs m-l-sm pull-right" id="print">Print</button>
+    <button id="save" class="btn btn-primary  btn-xs m-l-sm pull-right" onclick="save()" type="button">Save</button>
+    <button id="edit" class="btn btn-primary btn-xs m-l-sm pull-right" onclick="edit()" type="button">Edit</button>
 <!--                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
@@ -94,116 +94,116 @@
                                 <a class="close-link">
                                     <i class="fa fa-times"></i>
                                 </a>
-                            </div> -->
-                        </div>
-</div>
+                              </div> -->
+                            </div>
+                          </div>
 
- 
+                          
 
-<div class="row" id="report_content">
+                          <div class="row" id="report_content">
 
-<div class="col-lg-12">
-<div class="click2edit">
-  
+                            <div class="col-lg-12">
+                              <div class="click2edit">
+                                
 
-    
-    <div class="ibox float-e-margins">
-      <div class="ibox-content p-xl">
-        <div class="row">
-          <div class="col-sm-12 text-center">
-              <img src="/img/officialseal1.png"  class="pic1">
+                                
+                                <div class="ibox float-e-margins">
+                                  <div class="ibox-content p-xl">
+                                    <div class="row">
+                                      <div class="col-sm-12 text-center">
+                                        <img src="/img/officialseal1.png"  class="pic1">
 
-          </div>
-        </div>
-        <div class="row">
-         
-<br><br>
-          <div class="col-sm-12 text-center">
-          <h5>Student Affairs Office</h5>
-            <h5>Campus Venue Reservation Report</h5>
-
-
-          </div>
-
-  
-           <br>
-        </div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                     
+                                      <br><br>
+                                      <div class="col-sm-12 text-center">
+                                        <h5>Student Affairs Office</h5>
+                                        <h5>Campus Venue Reservation Report</h5>
 
 
+                                      </div>
 
-         <div class="row">
-         
-          <div class="form-group col-xs-6 text-left">
-            
-          <output id="report_from"></output>
-          </div> 
-         
-
-          <div class="form-group col-xs-6 text-right">   
-            <output id="date"></output>  
-           </div>
-          
-        </div>
-
-            <div class="row">
-          <div class="form-group col-xs-6 text-left">
-            
-          <output id="report_to"></output>
-          </div> 
-         
-
-          <div class="form-group col-xs-6 text-right">   
-            <output id="schoolyear"></output>  
-           </div>
-
-          
-        </div>
-
-        <div class="row">
+                                      
+                                      <br>
+                                    </div>
 
 
-        <div class="col-sm-12 text-center">
-          <output id="report_type"></output>
-            
-          </div>
-        </div>
-         <div class="row">
-        
-        <div class="row">
 
-          <div class="col-md-12">
-            <div class="table-responsive">
+                                    <div class="row">
+                                     
+                                      <div class="form-group col-xs-6 text-left">
+                                        
+                                        <output id="report_from"></output>
+                                      </div> 
+                                      
+
+                                      <div class="form-group col-xs-6 text-right">   
+                                        <output id="date"></output>  
+                                      </div>
+                                      
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="form-group col-xs-6 text-left">
+                                        
+                                        <output id="report_to"></output>
+                                      </div> 
+                                      
+
+                                      <div class="form-group col-xs-6 text-right">   
+                                        <output id="schoolyear"></output>  
+                                      </div>
+
+                                      
+                                    </div>
+
+                                    <div class="row">
+
+
+                                      <div class="col-sm-12 text-center">
+                                        <output id="report_type"></output>
+                                        
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      
+                                      <div class="row">
+
+                                        <div class="col-md-12">
+                                          <div class="table-responsive">
 
 
 <!-- 
           <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
 
- -->
-<br>
-            <table class="table table-striped table-bordered table-hover violation-reports-reports-DT1 DataTable" id="violation-reports-reports-DT1" aria-describedby="DataTables_Table_0_info" role="grid" style="width: 100%;">
+          -->
+          <br>
+          <table class="table table-striped table-bordered table-hover violation-reports-reports-DT1 DataTable" id="violation-reports-reports-DT1" aria-describedby="DataTables_Table_0_info" role="grid" style="width: 100%;">
 
-              <thead>
-                <tr>
-                  <th>Title</th>
-<!--                   <th>Last Name</th> -->
-                  <th>Venue</th>
-<!--                   <th>Complainant</th> -->
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Organizer</th>
-                  <th>CVF No.</th>  
-                </tr>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <!--                   <th>Last Name</th> -->
+                <th>Venue</th>
+                <!--                   <th>Complainant</th> -->
+                <th>Date</th>
+                <th>Time</th>
+                <th>Organizer</th>
+                <th>CVF No.</th>  
+              </tr>
 
-              </thead>
+            </thead>
 
 
 
-            </table>
+          </table>
 
-        <!--   </div> -->
+          <!--   </div> -->
         </div>
-        </div>
-<br><br>
+      </div>
+      <br><br>
 
    <!--      <table class="table invoice-total">
           <tbody>
@@ -230,15 +230,18 @@
         </div> -->
 
         <div class="row" style="bottom: -10; margin-left: 10px;">
-       <label class="text-center" >Prepared by:</label><br><br> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<br> {{ Auth::user()->roles->first()->name }} , Student Affairs Office
-                </div>
-                <br>
-              <div class="row"   style="bottom: -10; margin-left: 10px;">
-       <label class="text-center">Noted by:</label><br><br> Ms. Lourdes C. Reyes <br>Head, Student Affairs Office 
-                </div>
-      </div>
-    </div>
-  </div>
+          <label class="text-center" >Prepared by:</label><br><br> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<br> {{ Auth::user()->roles->first()->name }} , Student Affairs Office
+        </div>
+        <br>
+        <div class="row"   style="bottom: -10; margin-left: 10px;">
+         <label class="text-center">Noted by:</label><br><br> Ms. Lourdes C. Reyes <br>Head, Student Affairs Office 
+       </div>
+     </div>
+   </div>
+ </div>
+
+
+</div>
 </div>
 </div>
 </div>
@@ -246,12 +249,12 @@
 <script type="text/javascript">
 
 
-$('#print').click(function(e){
-$(this).hide();
-var content = document.getElementById('report_content').innerHTML;
-document.body.innerHTML = content;
+  $('#print').click(function(e){
+    $(this).hide();
+    var content = document.getElementById('report_content').innerHTML;
+    document.body.innerHTML = content;
 
-window.print();
+    window.print();
 // window.location.reload();
 
 
@@ -259,79 +262,79 @@ e.preventDefault();
 });
 
 
-$('#show_v_reports').click(function (e){
-e.preventDefault();
+  $('#show_v_reports').click(function (e){
+    e.preventDefault();
 
 
 
-getCampusVenueReports();
-if ($('#v_reports_from').val() != ""  || $('#v_reports_to').val() != ""){
+    getCampusVenueReports();
+    if ($('#v_reports_from').val() != ""  || $('#v_reports_to').val() != ""){
     // swal("Ooops!", "Please the select dates range", "warning");
     $('#report_from').val("From: " + $('#v_reports_from').val());
-$('#report_to').val("To: " + $('#v_reports_to').val());
-}
-else{
+    $('#report_to').val("To: " + $('#v_reports_to').val());
+  }
+  else{
     getCampusVenueReports();
     
-}
+  }
 
 
 });
 
   $('#v_reports_range .input-daterange').datepicker({
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-format: 'yyyy-mm-dd',
-            });
+    keyboardNavigation: false,
+    forceParse: false,
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+  });
 
 
 
   function getCampusVenueReports(){
-$('.violation-reports-reports-DT1').DataTable().destroy();
-var v_reports_table = $('.violation-reports-reports-DT1').DataTable({
+    $('.violation-reports-reports-DT1').DataTable().destroy();
+    var v_reports_table = $('.violation-reports-reports-DT1').DataTable({
 
-"bPaginate" : false,
-  "bInfo" :false,
-  "bSort" : false,
-  "bFilter" : false,
-  "processing": true,
-    "serverSide": true,
-"ajax": {
-    headers : {
-      'X-CSRF-Token' : $('input[name="_token"]').val()
-    },
-    url : "/campus/reports",
-  type: "POST",
+      "bPaginate" : false,
+      "bInfo" :false,
+      "bSort" : false,
+      "bFilter" : false,
+      "processing": true,
+      "serverSide": true,
+      "ajax": {
+        headers : {
+          'X-CSRF-Token' : $('input[name="_token"]').val()
+        },
+        url : "/campus/reports",
+        type: "POST",
 
-     data: function (d) {
-              d.v_reports_from = $('#v_reports_from').val();
-              d.v_reports_to = $('#v_reports_to').val();
-              d.v_reports_offense_level = $('#v_reports_offense_level').val();
-              d.school_year = $('#school_year').val();
-          },
+        data: function (d) {
+          d.v_reports_from = $('#v_reports_from').val();
+          d.v_reports_to = $('#v_reports_to').val();
+          d.v_reports_offense_level = $('#v_reports_offense_level').val();
+          d.school_year = $('#school_year').val();
+        },
 
-},
-"columns" : [
-{data : 'title'},
-{data : 'venue',},
-{"data" : "start",
-"render": function(data, type, full, meta){
-                if(type == "display"){
-                        var date = new Date(data);
-                        var options = {year: "numeric", month: "long", day: "numeric"};
-                        return date.toLocaleDateString('en-US', options);
-                      
+      },
+      "columns" : [
+      {data : 'title'},
+      {data : 'venue',},
+      {"data" : "start",
+      "render": function(data, type, full, meta){
+        if(type == "display"){
+          var date = new Date(data);
+          var options = {year: "numeric", month: "long", day: "numeric"};
+          return date.toLocaleDateString('en-US', options);
+          
 
-                }
+        }
 
-                return date;
-        }},
-{"data" : "start",
-"render": function(data, type, full, meta){
-                if(type == "display"){
-                        var date = new Date(data);
-                        var date1 = new Date(full.end);
+        return date;
+      }},
+      {"data" : "start",
+      "render": function(data, type, full, meta){
+        if(type == "display"){
+          var date = new Date(data);
+          var date1 = new Date(full.end);
                         // var time = date.getTime();  
                         // var time2 = date2.getTime();
                         var options = {year: "numeric", month: "long", day: "numeric", hour:"numeric"};
@@ -356,19 +359,19 @@ var v_reports_table = $('.violation-reports-reports-DT1').DataTable({
                         // return date.toLocaleDateString('en-US', options)+" to "+date2.toLocaleDateString('en-US', options);
                         // return time+" to "+ time2;
 
-                }
+                      }
 
-                return date;
-        }},
-{data : 'organization'},
-{data : 'cvf_no'},
-],
+                      return date;
+                    }},
+                    {data : 'organization'},
+                    {data : 'cvf_no'},
+                    ],
 
 
 //     "columnDefs":[{
 //         "targets":4, 
 //         "render":function(data,type,full,meta){
-            
+  
 //             // $dataaa = data;
 //             // $time = explode(" ", $dataaa);
 //             //  $data = $time[1];
@@ -395,26 +398,26 @@ var v_reports_table = $('.violation-reports-reports-DT1').DataTable({
 
 
 
-}
+  }
 
 
 
 
 </script>
-     <script src="js/inspinia.js"></script>
+<script src="js/inspinia.js"></script>
 
-    <!-- SUMMERNOTE -->
-    <script src="js/plugins/summernote/summernote.min.js"></script>
-
-
-     <script>
+<!-- SUMMERNOTE -->
+<script src="js/plugins/summernote/summernote.min.js"></script>
 
 
-        $(document).ready(function(){
+<script>
 
- $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Reservations");
 
-    $('select#school_year').change(function(e){   
+  $(document).ready(function(){
+
+   $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Reservations");
+
+   $('select#school_year').change(function(e){   
     $('.activities-DT').DataTable().ajax.url('/activities/ActivitiesByYear').load();
     $('#schoolyear').val("S.Y."+ $('select#school_year').val());
     $('#report_from').val("");
@@ -425,65 +428,65 @@ var v_reports_table = $('.violation-reports-reports-DT1').DataTable({
     $('#v_reports_offense_level').val("");
 
 
-});
+  });
 
 
-        $('select#v_reports_offense_level').change(function(e){   
-            $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Reservations");
+   $('select#v_reports_offense_level').change(function(e){   
+    $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Reservations");
 
 
-});
+  });
 
 
-                var date = new Date();
-                var options = {year: "numeric", month: "long", day: "numeric"};
-                 var newdate = date.toLocaleDateString('en-US', options);
-                 $('#date').val(newdate);
-                 $('#schoolyear').val("S.Y." + $('#school_year').val());
+   var date = new Date();
+   var options = {year: "numeric", month: "long", day: "numeric"};
+   var newdate = date.toLocaleDateString('en-US', options);
+   $('#date').val(newdate);
+   $('#schoolyear').val("S.Y." + $('#school_year').val());
 
 
 
-            $('.summernote').summernote();
+   $('.summernote').summernote();
 
 
-       });
-        var edit = function() {
-            $('.click2edit').summernote({focus: true});
+ });
+  var edit = function() {
+    $('.click2edit').summernote({focus: true});
 
-        };
-        var save = function() {
+  };
+  var save = function() {
             var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
             $('.click2edit').destroy();
-        };
-    </script>
+          };
+        </script>
 
 
-<style type = "text/css">
+        <style type = "text/css">
 
 
-.note-codable {
-display:none;
-}
-.note-help {
-display:none;
-}
-.note-insert {
-display:none;
-}
-.note-view {
-display:none;
-}
+          .note-codable {
+            display:none;
+          }
+          .note-help {
+            display:none;
+          }
+          .note-insert {
+            display:none;
+          }
+          .note-view {
+            display:none;
+          }
 
 
-.note-toolbar {
-    /*background-color: white;*/
+          .note-toolbar {
+            /*background-color: white;*/
 /*position: absolute;
     bottom: 330px;
     right: 200px;*/
-/*padding-left: 30px;*/
-padding-bottom: 30px;
-/*border-bottom:1px solid #a9a9a9*/
-}
+    /*padding-left: 30px;*/
+    padding-bottom: 30px;
+    /*border-bottom:1px solid #a9a9a9*/
+  }
 
 
 

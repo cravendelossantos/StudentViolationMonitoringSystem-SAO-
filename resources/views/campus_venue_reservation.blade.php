@@ -516,6 +516,7 @@
 
 
 
+
          
 
 // 			select: function(start, end) {
@@ -584,6 +585,23 @@
 
       },
             eventRender: function(event, element) {
+
+              if (event.status == "Banned"){
+                element.css('background-color', '#ed5565');
+                element.css('border-color', '#ed5565');
+
+
+              }
+              else if (event.status == "OnProcess")
+                {
+                element.css('background-color', '#378006');
+                element.css('border-color', '#378006');
+              }
+              else
+              {
+
+              };
+
         element.bind('click', function() {
 
           $('input[name="time"]').daterangepicker({
