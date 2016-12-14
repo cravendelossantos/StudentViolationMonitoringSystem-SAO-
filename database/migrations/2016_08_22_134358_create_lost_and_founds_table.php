@@ -17,6 +17,8 @@ class CreateLostAndFoundsTable extends Migration
             $table->date('date_reported');
             $table->time('time_reported');
 			$table->string('item_description');
+            $table->string('distinctive_marks');
+            //brand?
 			$table->string('endorser_name');
 			$table->string('found_at');
 			$table->string('owner_name');

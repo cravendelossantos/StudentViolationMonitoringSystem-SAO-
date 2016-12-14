@@ -151,6 +151,13 @@
 						</div>
 
 						<div class="col-md-6">
+							<div class="form-group">
+								<label>Distinctive Marks</label>
+								<textarea  style="text-transform: capitalize;" name="distinctive_marks" id="distinctive_marks" placeholder="Item Distinctive Marks" class="form-control"></textarea>
+							</div>
+						</div>
+
+						<div class="col-md-6">
 						<div class="form-group" id="LAF_date_picker">
 								<label>Date Reported</label>
 								<div class="input-group date" id="data_1">
@@ -271,5 +278,21 @@
 
 	});
 </script>
+
+
+<style>
+#distinctive_marks { 
+   resize: none;
+   height: 107px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+</style>
 @endsection
 
