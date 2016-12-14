@@ -14,6 +14,7 @@ use Auth;
 use Yajra\Datatables\Facades\Datatables;
 use Khill\Lavacharts\Lavacharts;
 use Lava;
+use Response;
 
 class LostAndFoundController extends Controller
 {
@@ -80,6 +81,7 @@ class LostAndFoundController extends Controller
 			'date_reported' => 'required|date|before:' .$tomorrow,
 			'time_reported' => 'required|date_format:h:ia',
 			'itemName' => 'required|string|max:255',
+			'distinctive_marks' => 'required|string|max:255',
 			'endorserName' => 'required|string|max:255',
 			'foundAt' => 'required|string',
 			
@@ -96,13 +98,11 @@ class LostAndFoundController extends Controller
 	{
 		$now = Carbon::now();
 		
-
-		
-
 		$report = new LostAndFound();
 		$report->time_reported = $request['time_reported'];
 		$report->date_reported = $request['date_reported'];
 		$report->item_description =  ucwords($request['itemName']);
+		$report->distinctive_marks = ucwords($request['distinctive_marks']);
 		$report->endorser_name = ucwords($request['endorserName']);
 		$report->found_at = ucwords($request['foundAt']);
 		$report->owner_name = ucwords($request['ownerName']);
