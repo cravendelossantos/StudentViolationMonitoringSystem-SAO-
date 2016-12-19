@@ -103,9 +103,24 @@
                 <div id="calendar" class="col-centered">
                 </div>
             </div> -->
-              
+               <div class="row">
+          <div class="form-group col-xs-6 text-left">
               
                <h4 style="color:red">Note:<br>Click specific date to add reservation<br>Click Event to update reservation<br>Can't Reserve 5 days before the desired date</h4>
+
+               </div>
+                    <div class="col-lg-6">
+              
+               <a href="#"> <i class="fa fa-circle text-navy"></i> On Process </a>
+               <br>
+               <a href="#"> <i class="fa fa-circle text-danger"></i> Banned</a>
+               <br>
+               <a href="#"> <i class="fa fa-circle text-primary"></i> Reserved</a>
+
+
+               </div>
+               </div>
+
                <center><h1><b>Event Calendar</b></h1></center>
             </div>
               <div class="ibox-content">
@@ -180,9 +195,9 @@
                     <div class="col-sm-10">
                       <select name="status" class="form-control" id="status">
                           <option value="">Choose</option>
-                          <option style="color:blue;" value="OnProcess">&#9724; OnProcess</option>
-                          <option style="color:#FF0000;" value="Reserved">&#9724; Reserved</option>
-                          <option style="color:#000;" value="Banned">&#9724; Banned</option>
+                          <option style="color:#04803A;" value="OnProcess">OnProcess</option>
+                          <option style="color:#3a87ad;" value="Reserved">Reserved</option>
+                          <option style="color:#9B0D0D;" value="Banned">Banned</option>
                           
                         </select>
                     </div>
@@ -344,9 +359,9 @@
                     <div class="col-sm-10">
                       <select name="status" class="form-control" id="status">
                           <option value="">Choose</option>
-                          <option style="color:blue;" value="OnProcess">&#9724; OnProcess</option>
-                          <option style="color:#FF0000;" value="Reserved">&#9724; Reserved</option>
-                          <option style="color:#000;" value="Banned">&#9724; Banned</option>
+                          <option style="color:#04803A;" value="OnProcess">&#9724; OnProcess</option>
+                          <option style="color:#3a87ad;" value="Reserved">&#9724; Reserved</option>
+                          <option style="color:#9B0D0D;" value="Banned">&#9724; Banned</option>
                           
                         </select>
                     </div>
@@ -587,15 +602,15 @@
             eventRender: function(event, element) {
 
               if (event.status == "Banned"){
-                element.css('background-color', '#ed5565');
-                element.css('border-color', '#ed5565');
+                element.css('background-color', '#9B0D0D');
+                element.css('border-color', '#9B0D0D');
 
 
               }
               else if (event.status == "OnProcess")
                 {
-                element.css('background-color', '#378006');
-                element.css('border-color', '#378006');
+                element.css('background-color', '#04803A');
+                element.css('border-color', '#04803A');
               }
               else
               {
