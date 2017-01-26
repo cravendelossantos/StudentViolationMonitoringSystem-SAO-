@@ -7,10 +7,10 @@
   <div class="col-md-12">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     {{ csrf_field() }}
-       <h1>Violation Reports</h1>
+
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="form-group" id="v_reports_range">
           <output name="v_reports_range">Select date range:</output>
 
@@ -25,11 +25,12 @@
           </div>
 
           <br>
+          <br>
           <button type="button" class="btn btn-w-m btn-primary" id="show_v_reports">Show</button>
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-2">
         <output name="v_reports_range">Offense level:</output>
         <select class="form-control" name="v_reports_offense_level" id="v_reports_offense_level">
           <option value="">All</option>
@@ -38,7 +39,48 @@
           <option value="Very Serious">Very Serious Offenses</option>
         </select>
 
+          <output name="v_reports_range">College:</output>
+            <select class="form-control" id="college" name="college">
+              <option autofocus="" disabled selected value="">Select course</option>
+              @foreach ($colleges as $college)
+              <option value="{{ $college->id }}">{{$college->description}}</option>
+              @endforeach
+
+            </select>
+
       </div>
+
+             <div class="col-md-2">
+              <output name="v_reports_range">Course</output>
+            <select class="form-control" id="course" name="course">
+              <option autofocus="" disabled selected value="">Select course</option>
+              @foreach ($courses as $course)
+              <option value="{{ $course->description }}" >{{$course->description}}</option>
+              @endforeach
+
+            </select>
+
+
+
+
+            <div class="form-group">
+
+                <output name="v_reports_range">School Year:</output>
+                <select name="school_year" id="school_year" class="form-control">
+                  @foreach ($schoolyear as $schoolyear)
+                  <option>{{$schoolyear->school_year }}</option>
+                  @endforeach
+
+                  @foreach ($schoolyears as $schoolyear)
+                  <option>{{$schoolyear->school_year }}</option>
+                  @endforeach
+                  
+                </select> 
+          </div>
+      </div>
+
+
+    
     </div>
 
   
@@ -62,7 +104,7 @@
 <div class="ibox float-e-margins">
   <div class="ibox-title">
 
-    <h5><b>Locker Report and Statistics</b></h5>
+    <h5><b>Violation Reports</b></h5>
 
 
     <button type="button" class="btn btn-primary btn-xs m-l-sm pull-right" id="print">Print</button>
@@ -235,6 +277,22 @@ else{
 
 });
 
+$('#course').change(function (e){
+e.preventDefault();
+
+alert($('#course').val());
+
+
+});
+
+$('#college').change(function (e){
+e.preventDefault();
+
+alert($('#course').val());
+
+
+});
+
 
 $('#print').click(function(e){
 $(this).hide();
@@ -275,6 +333,9 @@ var v_reports_table = $('.violation-reports-reports-DT').DataTable({
               d.v_reports_from = $('#v_reports_from').val();
               d.v_reports_to = $('#v_reports_to').val();
               d.v_reports_offense_level = $('#v_reports_offense_level').val();
+              d.v_reports_college = $('#college').val();
+              d.v_reports_course = $('#course').val();
+
           },
 
 

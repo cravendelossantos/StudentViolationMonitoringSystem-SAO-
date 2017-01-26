@@ -14,7 +14,7 @@
 
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="form-group" id="v_reports_range">
           <output name="v_reports_range">Select date range:</output>
 
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <output name="v_reports_range">Category:</output>
         <select class="form-control" name="v_reports_offense_level" id="v_reports_offense_level">
           <option value="">All</option>
@@ -42,11 +42,45 @@
           <option value="OnProcess">OnProcess</option>
         </select>
 
-      </div>
-      <div class="col-md-4">
-        <div class="form-group">
 
-          <label>School Year</label>
+                <output name="Oveneu">Venue:</output>
+                       <select name="venue" class="form-control" id="venue">
+                          <option value="">Choose</option>
+                     
+                          <option value="Academic Resource Center">Academic Resource Center</option>
+                          <option value="Lpu Auditirium">Lpu Auditirium</option>
+                          <option value="AVT">AVT</option>
+                          <option value="Multi-purpose Hall<">Multi-purpose Hall</option>
+                          <option value="Phase II lobby">Phase II lobby</option>
+                          <option value="Roofdeck">Roofdeck</option>
+                          <option value="CPAD Lobby">CPAD Lobby</option>
+
+                          
+                        </select>
+
+      </div>
+
+
+
+        <div class="col-md-2">
+        <output name="Omonth">Month</output>
+        <select class="form-control" name="month" id="month">
+          <option value="">Choose</option>
+          <option value="Reserved">January</option>
+          <option value="Banned">February</option>
+          <option value="Banned">March</option>
+          <option value="Banned">April</option>
+          <option value="Banned">May</option>
+          <option value="Banned">June</option>
+          <option value="Banned">July</option>
+          <option value="Banned">August</option>
+          <option value="Banned">September</option>
+          <option value="Banned">October</option>
+          <option value="Banned">November</option>
+          <option value="OnProcess">December</option>
+        </select>
+
+                  <label>School Year</label>
           <select name="school_year" id="school_year" class="form-control">
             @foreach ($schoolyear as $schoolyear)
             <option>{{$schoolyear->school_year }}</option>
@@ -57,7 +91,20 @@
             @endforeach
 
             
-          </select>   
+          </select>  
+
+      </div>
+
+            <div class="col-md-2">
+
+
+      </div>
+
+
+      <div class="col-md-2">
+        <div class="form-group">
+
+ 
           
         </div>
       </div>
@@ -312,6 +359,7 @@ e.preventDefault();
           d.v_reports_to = $('#v_reports_to').val();
           d.v_reports_offense_level = $('#v_reports_offense_level').val();
           d.school_year = $('#school_year').val();
+          d.venue = $('#venue').val();
         },
 
       },

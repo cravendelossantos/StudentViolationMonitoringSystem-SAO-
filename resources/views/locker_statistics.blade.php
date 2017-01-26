@@ -22,29 +22,7 @@
 		</div>
 	</div>
 
-
-      							<div class="col-md-2">
-
-								<label>Status</label>
-								<select id="status_sort" name="status_sort"  class="form-control">
-									<option value="">All</option>
-									<option value="Available">Available</option>
-									<option value="Occupied">Occupied</option>
-									<option value="Damaged">Damaged</option>
-									<option value="Locked">Locked</option>
-								</select>
-							</div>
-							<div class="col-md-2">
-								<label>Location</label>
-								<select name="location_sort" id="location_sort" class="form-control">
-									<option value="">All</option>
-									@foreach($locations as $location)
-
-									<option value="{{ $location->id }}">{{ $location->building }} Building {{ $location->floor }} Floor </option>
-									@endforeach
-								</select>
-							</div>
-										     <div class="col-md-2">
+		     <div class="col-md-2">
         <div class="form-group" id="v_reports_range">
 
                 <output name="v_reports_range">School Year:</output>
@@ -61,6 +39,8 @@
 
         </div>
       </div>
+
+
 </div>
 
 @endsection
@@ -165,13 +145,13 @@
 
 
 			{!! csrf_field() !!}
-<!-- 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 
 
 
 
-			<div id="visualization" class="" style="width: 900px; height: 400px; display: block; margin: auto;"></div> -->
+			<div id="visualization" class="" style="width: 900px; height: 400px; display: block; margin: auto;"></div>
 				<!-- <div class="row">
 					<div class="col-md-12">
 
@@ -191,26 +171,30 @@
 					<center><div class="table-responsive">
 
 
-							<!-- <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap"> -->
 
-								<table class="table table-striped table-bordered table-hover lockers1-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid" style="font-size: 11px; width: 100%;">
-									<thead>
-
-										<th>Locker no</th>
-										<th>Floor</th>
-										<th>Building</th>
-										<th>Lessee</th>
-										<th>Status</th>
+						<!-- <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap"> -->
 
 
 
+						<table class="table table-striped table-bordered table-hover locker-reports-DT DataTable" id="asd" aria-describedby="DataTables_Table_0_info" role="grid" style="width: 100%;">
 
-									</thead>
+							<thead>
+								<tr>
+									<th>No. of Lockers</th>
+									<th>Available</th>
+									<th>Occupied</th>
+									<th>Damaged</th>
+									<th>Locked</th>
+									<!--    <th>TOTAL NO OF LOST AND FOUND ITEMS</th> -->
+								</tr>
+
+							</thead>
 
 
 
-								</table>
-						<!-- 	</div> -->
+						</table>
+<!-- 
+</div> -->
 </div></center>
 </div>
 </div>
@@ -234,55 +218,6 @@
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
 <script>
-
-
-
-var lockers_table1 = $('.lockers1-DT').DataTable({
-	"processing": true,
-	"serverSide": true,
-		 "bPaginate" : false,
-        "bInfo" :false,
-        "bSort" : false,
-        "bFilter" : false,
-
-
-	"ajax": {
-		headers : {
-			'X-CSRF-Token' : $('input[name="_token"]').val()
-		},
-		url : "/lockers/all",
-		type: "POST",
-		data: function (d) {
-                d.status_sort = $('#status_sort').val(),
-                d.location_sort = $('#location_sort').val();
-            },
-	}, 
-
-
-	"rowId" : 'locker_no',	
-	"columns" : [
-
-	{data : 'locker_no'},
-	{data : 'floor'},
-	{data : 'building'},
-	{data : 'lessee_name'},
-	{data : 'status'},		  
-
-
-
-
-	],
-
-});
-$('#status_sort').change(function(){
-	lockers_table1.ajax.reload();
-});
-
-
-$('#location_sort').change(function(){
-	lockers_table1.ajax.reload();
-});
-
 
 
 	$('#print').click(function(e){
@@ -311,106 +246,172 @@ $('#location_sort').change(function(){
 
 
 
-		// drawVisualization();
-		// function drawVisualization() {
-		// 	var options = {
+		drawVisualization();
+		function drawVisualization() {
+			var options = {
 
-		// 		legend : {
-		// 			position: 'right',
-		// 		},
-		// 		backgroundColor: { fill:'transparent' },
-		// 		/*title: 'Total number of Lost and Found items',*/
-		// 		is3D: false,
-		// 		pieHole: 0.4,
-		// 		pieSliceText: 'percentage',
-		// 		slices: {
-		// 			0: { color: 'green'},
-		// 			1: { color: 'blue', offset: 0.2},
-		// 			2: { color: 'gold', offset: 0.1},
-		// 			3: { color: 'red', offset: 0.3},
-		// 		}
+				legend : {
+					position: 'right',
+				},
+				backgroundColor: { fill:'transparent' },
+				/*title: 'Total number of Lost and Found items',*/
+				is3D: false,
+				pieHole: 0.4,
+				pieSliceText: 'percentage',
+				slices: {
+					0: { color: 'green'},
+					1: { color: 'blue', offset: 0.2},
+					2: { color: 'gold', offset: 0.1},
+					3: { color: 'red', offset: 0.3},
+				}
 
-		// 	};
-		// 	$.ajax({
-		// 		headers : {
-		// 			'X-CSRF-Token' : $('input[name="_token"]').val()
-		// 		},
-		// 		url : "/locker-reports/stats",
-		// 		type: 'POST',
-		// 		data:  {
-		// 			locker_reports_from : $('#locker_reports_from').val(),
-		// 			locker_reports_to : $('#locker_reports_to').val()
-		// 		},
-		// 		async: false,
-		// 	}).fail(function(data){
-		// 		var errors = $.parseJSON(data.responseText);
-		// 		var msg="";
+			};
+			$.ajax({
+				headers : {
+					'X-CSRF-Token' : $('input[name="_token"]').val()
+				},
+				url : "/locker-reports/stats",
+				type: 'POST',
+				data:  {
+					locker_reports_from : $('#locker_reports_from').val(),
+					locker_reports_to : $('#locker_reports_to').val()
+				},
+				async: false,
+			}).fail(function(data){
+				var errors = $.parseJSON(data.responseText);
+				var msg="";
 				
-		// 		$.each(errors.errors, function(k, v) {
-		// 			msg = msg + v + "\n";
-		// 			swal("Oops...", msg, "warning");
-		// 		});
+				$.each(errors.errors, function(k, v) {
+					msg = msg + v + "\n";
+					swal("Oops...", msg, "warning");
+				});
 
-		// 	}).done(function(response){
-		// 		items = response;
+			}).done(function(response){
+				items = response;
 
-		// 		console.log(items);
-		// 		var items = response;
+				console.log(items);
+				var items = response;
 
-		// 		var c_data = google.visualization.arrayToDataTable([
+				var c_data = google.visualization.arrayToDataTable([
 
-		// 			['Statistics',   'Lockers'],
-		// 			['Available',   items.available],
-		// 			['Occupied',   items.occupied],
-		// 			['Locked',   items.locked],
-		// 			['Damaged',   items.damaged]
-		// 			]);
+					['Statistics',   'Lockers'],
+					['Available',   items.available],
+					['Occupied',   items.occupied],
+					['Locked',   items.locked],
+					['Damaged',   items.damaged]
+					]);
 
-		// 		var LAF_chart = new google.visualization.PieChart(document.getElementById('visualization'));
-		// 		LAF_chart.draw(c_data, options);
+				var LAF_chart = new google.visualization.PieChart(document.getElementById('visualization'));
+				LAF_chart.draw(c_data, options);
 
-		// 	});
-
-
+			});
 
 
 
-		// 	google.setOnLoadCallback(drawVisualization);
+
+
+			google.setOnLoadCallback(drawVisualization);
 
 
 
-		// }
+		}
+		/*var data = [{
+			label: "TOTAL",
+			data: items['total'],
+			color: "#d3d3d3",
+		}, {
+			label: "AVAILABLE",
+			data: items['available'],
+			color: "#54cdb4",
+		}, {
+			label: "OCCUPIED",
+			data: items['occupied'],
+			color: "#00b33c",
+		}, {
+			label: "LOCKED",
+			data: items['locked'],
+			color: "#e6e600",
+		},{
+			label: "DAMAGED",
+			data: items['damaged'],
+			color: "#e60000",
+		}
+		];
+
+
+		function labelFormatter(label, series) {
+			return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>"    + label + "<br/>" + series.data[0][1] + "%</div>";
+		}
+
+
+		var plotObj = $.plot($("#flot-pie-chart"), data, {
+			series: {
+				pie: {
+					show: true,
+					radius: 1,
+					label: {
+						show: true,
+						radius: 2 / 3,
+						formatter: function (label, series) {
+							return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+
+						},
+						threshold: 0.1
+					}
+				}
+			},
+			legend: {
+				show: false
+			},
+
+			grid: {
+				hoverable: true
+			},
+			tooltip: true,
+			tooltipOpts: {
+        	 //percentage content: "%y.0, %s", // show value to 0 decimals
+        	 content: function(label,x,y){
+        	 	return y+" item/s "+ "(" + label + ")";
+        	 },
+        	 shifts: {
+        	 	x: 20,
+        	 	y: 0
+        	 },
+        	 defaultTheme: false
+        	}
+        });*/
+
 
 
         $('.locker-reports-DT').DataTable().destroy();
-        // $('.locker-reports-DT').DataTable({
-        // 	"bPaginate" : false,
-        // 	"bInfo" :false,
-        // 	"bSort" : false,
-        // 	"bFilter" : false,
-        // 	"processing": true,
-        // 	"serverSide": true,
-        // 	"ajax": {
-        // 		headers : {
-        // 			'X-CSRF-Token' : $('input[name="_token"]').val()
-        // 		},
-        // 		url : "/locker-reports/list",
-        // 		type: "POST",
-        // 		data: function (d) {
-        // 			d.locker_reports_from = $('#locker_reports_from').val();
-        // 			d.locker_reports_to = $('#locker_reports_to').val();
-        // 		},
-        // 	},
-        // 	"columns" : [
-        // 	{data: 'total'},
-        // 	{data: 'available'},
-        // 	{data: 'occupied'},	
-        // 	{data: 'damaged'},
-        // 	{data: 'locked'},
-        // 	],
+        $('.locker-reports-DT').DataTable({
+        	"bPaginate" : false,
+        	"bInfo" :false,
+        	"bSort" : false,
+        	"bFilter" : false,
+        	"processing": true,
+        	"serverSide": true,
+        	"ajax": {
+        		headers : {
+        			'X-CSRF-Token' : $('input[name="_token"]').val()
+        		},
+        		url : "/locker-reports/list",
+        		type: "POST",
+        		data: function (d) {
+        			d.locker_reports_from = $('#locker_reports_from').val();
+        			d.locker_reports_to = $('#locker_reports_to').val();
+        		},
+        	},
+        	"columns" : [
+        	{data: 'total'},
+        	{data: 'available'},
+        	{data: 'occupied'},	
+        	{data: 'damaged'},
+        	{data: 'locked'},
+        	],
 
 
-        // });
+        });
     });
 	
 	$('#locker_reports_range .input-daterange').datepicker({

@@ -132,6 +132,25 @@ $schoolyear = DB::table('school_years')->select('school_year')->where('term_name
     return Datatables::eloquent(Requirements::query()->where('school_year',$request['school_year']))->make(true);
     }
 
+        public function searchRequirementsByYearAndStatus(Request $request)
+    {
+
+if ($request['sort_by'] == "All")
+
+     $data = DB::table('requirements')->where('school_year',$request['school_year'])->get();
+
+
+elseif ($request['sort_by'] == "Submitted All Requirements")
+
+     $data = DB::table('requirements')->where('school_year',$request['school_year'])->where('requirement1',1)->where('requirement2',1)->where('requirement3',1)->where('requirement4',1)->where('requirement5',1)->where('requirement6',1)->where('requirement7',1)->where('requirement8',1)->where('requirement9',1)->get();
+
+elseif ($request['sort_by'] == "Not Submitted All Requirements")
+
+     $data = DB::table('requirements')->where('school_year',$request['school_year'])->where('requirement1',0)->orWhere('requirement1',0)->where('requirement2',1)->orWhere('requirement2',0)->where('requirement3',1)->orWhere('requirement3',0)->where('requirement4',1)->orWhere('requirement4',0)->where('requirement5',1)->orWhere('requirement5',0)->where('requirement6',1)->orWhere('requirement6',0)->where('requirement7',1)->orWhere('requirement7',0)->where('requirement8',1)->orWhere('requirement8',0)->where('requirement9',1)->orWhere('requirement9',0)->get();
+    
+    return response()->json(['data' => $data]);
+    }
+
 
         public function postRequirementsRenewalAdd(Request $request)
     {

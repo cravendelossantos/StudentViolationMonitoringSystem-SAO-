@@ -24,31 +24,62 @@ class LostAndFoundController extends Controller
 	}
 
 	public function showLostAndFound()
-	{       
-		return view('lost_and_found');
+	{      
+		 $current_time = Carbon::now()->format('Y-m-d');
+	 
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+      $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+		return view('lost_and_found',['schoolyears' => $schoolyears,'schoolyear' => $schoolyear ]);
 	}
 	
-	public function getLostAndFoundTable()
+	public function getLostAndFoundTable(Request $request)
 	{	
 		$today = Carbon::now();
 		LostAndFound::where('disposal_date','<', $today)->update(['status' => 3]);
 		
-		return Datatables::eloquent(LostAndFound::query())->make(true);
+		return Datatables::eloquent(LostAndFound::query()->where('school_year',$request['school_year']))->make(true);
+	}
+
+		public function getLostAndFoundTableReport(Request $request)
+	{	
+		
+		if($request['LAF_stats_from'] == "" and $request['LAF_stats_to'] == "" and $request['sort_by'] == "" )
+		{
+		$data = LostAndFound::where('school_year',$request['school_year'])->get();
+		}
+		elseif($request['LAF_stats_from'] == "" and $request['LAF_stats_to'] == ""  )
+		{
+		$data =  LostAndFound::where('school_year',$request['school_year'])->where('status',$request['sort_by'])->get();
+		}
+		elseif($request['sort_by'] == "")
+		{
+		$data = LostAndFound::where('school_year',$request['school_year'])->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])->get();
+		}
+		else
+		{
+		$data = LostAndFound::where('school_year',$request['school_year'])->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])->where('status',$request['sort_by'])->get();	
+		}
+		return response()->json(['data' => $data]);
 	}
 
 	public function TableFilterClaimed(Request $request)
 	{
-		return Datatables::eloquent(LostAndFound::query()->where('status', 'claimed'))->make(true);	
+		return Datatables::eloquent(LostAndFound::query()->where('school_year',$request['school_year'])->where('status', 'claimed'))->make(true);	
 	}
 
 	public function TableFilterUnclaimed(Request $request)
 	{
-		return Datatables::eloquent(LostAndFound::query()->where('status', 'unclaimed'))->make(true);	
+		return Datatables::eloquent(LostAndFound::query()->where('school_year',$request['school_year'])->where('status', 'unclaimed'))->make(true);	
 	}
 
 	public function TableFilterDonated(Request $request)
 	{
-		return Datatables::eloquent(LostAndFound::query()->where('status', 'donated'))->make(true);	
+		return Datatables::eloquent(LostAndFound::query()->where('school_year',$request['school_year'])->where('status', 'donated'))->make(true);	
 	}
 
 	public function searchLostAndFound(Request $request)
@@ -101,6 +132,7 @@ class LostAndFoundController extends Controller
 		$report = new LostAndFound();
 		$report->time_reported = $request['time_reported'];
 		$report->date_reported = $request['date_reported'];
+		$report->school_year = $request['school_year'];
 		$report->item_description =  ucwords($request['itemName']);
 		$report->distinctive_marks = ucwords($request['distinctive_marks']);
 		$report->endorser_name = ucwords($request['endorserName']);
@@ -160,7 +192,18 @@ class LostAndFoundController extends Controller
 
 	public function showLostAndFoundStatistics()
 	{
-		return view('lost_and_found_statistics');
+ 	  $current_time = Carbon::now()->format('Y-m-d');
+
+
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+      $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+
+		return view('lost_and_found_statistics',['schoolyears' => $schoolyears],['schoolyear' => $schoolyear]);
 	}	
 
 	public function showLostAndFoundReports(Request $request)
@@ -192,8 +235,18 @@ class LostAndFoundController extends Controller
 		]
 		]);
 
+ 	  $current_time = Carbon::now()->format('Y-m-d');
 
-		return view('lost_and_found_reports');
+
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+      $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+
+		return view('lost_and_found_reports',['schoolyears' => $schoolyears],['schoolyear' => $schoolyear]);
 	}
 
 	public function postLostAndFoundReportsTable(Request $request)
@@ -202,23 +255,21 @@ class LostAndFoundController extends Controller
 		/*$requested_date = $request['month'];
 		$date_start = Carbon::parse($requested_date)->startOfMonth();
 		$date_end = Carbon::parse($requested_date)->endOfMonth();  */
-
-		
-
-		$claimed = LostAndFound::where('status', 'claimed')
-		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
+if($request['LAF_stats_from'] == "" and $request['LAF_stats_to'] == ""){
+			$claimed = LostAndFound::where('status', 'claimed')
+		->where('school_year',$request['school_year'])
 		->count();
 
 		$unclaimed = LostAndFound::where('status', 'unclaimed')
-		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
+		->where('school_year',$request['school_year'])
 		->count();
 
 		$donated = LostAndFound::where('status', 'donated')
-		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
+		->where('school_year',$request['school_year'])
 		->count();
 
 
-		$total = LostAndFound::whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
+		$total = LostAndFound::where('school_year',$request['school_year'])
 		->count();
 		
 
@@ -234,6 +285,43 @@ class LostAndFoundController extends Controller
 		'to'=>$request['LAF_stats_to']
 		]
 		];
+
+}
+		
+else{
+
+	$claimed = LostAndFound::where('status', 'claimed')
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])->where('school_year',$request['school_year'])
+		->count();
+
+		$unclaimed = LostAndFound::where('status', 'unclaimed')
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])->where('school_year',$request['school_year'])
+		->count();
+
+		$donated = LostAndFound::where('status', 'donated')
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])->where('school_year',$request['school_year'])
+		->count();
+
+
+		$total = LostAndFound::whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])->where('school_year',$request['school_year'])
+		->count();
+		
+
+		
+
+			//into objects..
+		$data = [
+		[	'claimed' => $claimed, 
+		'unclaimed' => $unclaimed,
+		'donated' => $donated,  
+		'total' => $total, 
+		'from'=>$request['LAF_stats_from'], 
+		'to'=>$request['LAF_stats_to']
+		]
+		];
+
+}
+		
 		
 
 		return response()->json(['data' => $data]);
@@ -259,17 +347,18 @@ class LostAndFoundController extends Controller
 			$date_start = Carbon::parse($requested_date)->startOfMonth();
 			$date_end = Carbon::parse($requested_date)->endOfMonth();  */
 
-
-		$claimed = LostAndFound::where('status', 'claimed')
-		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
+if($request['LAF_stats_from'] == "" and $request['LAF_stats_to'] == "")
+		{
+					$claimed = LostAndFound::where('status', 'claimed')
+		->where('school_year',$request['school_year'])
 		->count();
 
 		$unclaimed = LostAndFound::where('status', 'unclaimed')
-		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
+		->where('school_year',$request['school_year'])
 		->count();
 
 		$donated = LostAndFound::where('status', 'donated')
-		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])
+		->where('school_year',$request['school_year'])
 		->count();
 
 
@@ -279,6 +368,31 @@ class LostAndFoundController extends Controller
 		'donated' => $donated,  
 
 		];
+		
+
+		}
+else
+		{		
+	$claimed = LostAndFound::where('status', 'claimed')
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])->where('school_year',$request['school_year'])
+		->count();
+
+		$unclaimed = LostAndFound::where('status', 'unclaimed')
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])->where('school_year',$request['school_year'])
+		->count();
+
+		$donated = LostAndFound::where('status', 'donated')
+		->whereBetween('date_reported', [$request['LAF_stats_from'], $request['LAF_stats_to']])->where('school_year',$request['school_year'])
+		->count();
+
+
+			$data= 
+			[	'claimed' => $claimed, 
+		'unclaimed' => $unclaimed,
+		'donated' => $donated,  
+
+		];}
+
 			
 
 			return response()->json($data); 

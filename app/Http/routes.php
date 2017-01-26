@@ -193,6 +193,7 @@ Route::get('/OrganizationsRenewal/Search', 'OrganizationsRenewalController@searc
 Route::post('/organizationsRenewal/requirements/all', 'OrganizationsRenewalController@getRequirementsTable');
 Route::post('/organizationsRenewal/requirements/specific', 'OrganizationsRenewalController@getRequirementsByName');
 Route::post('/organizationsRenewal/requirements/ByYear', 'OrganizationsRenewalController@searchRequirementsByYear');
+Route::post('/organizationsRenewal/requirements/ByYearAndStatus', 'OrganizationsRenewalController@searchRequirementsByYearAndStatus');
 Route::post('/organizationsRenewal/add', 'OrganizationsRenewalController@postRequirementsRenewalAdd');
 Route::post('/organizationsRenewal/update', 'OrganizationsRenewalController@postRequirementsRenewalUpdate');
 
@@ -208,6 +209,7 @@ Route::post('/postAddActivity', 'ProposalActivitiesMonitoringController@postProp
 Route::post('/postUpdateActivity', 'ProposalActivitiesMonitoringController@postProposalActivitiesUpdate');
 Route::post('/activities/ActivitiesByYear', 'ProposalActivitiesMonitoringController@getActivitiesByYear');
 Route::post('/activities/ActivitiesByYearAndOrg', 'ProposalActivitiesMonitoringController@getActivitiesByYearAndOrg');
+Route::post('/activities/ActivitiesByYearAndOrgAndStatus', 'ProposalActivitiesMonitoringController@getActivitiesByYearAndOrgAndStatus');
 Route::post('/activities/OrganizationByYear', 'ProposalActivitiesMonitoringController@getOrganizationByYear');
 
 Route::post('/activities/list' , 'ProposalActivitiesMonitoringController@getActivitiesTable');
@@ -239,6 +241,7 @@ Route::get('/lost-and-found', [
 
 //Lost and Found Tables
 Route::post('/lost-and-founds/items/all', 'LostAndFoundController@getLostAndFoundTable');
+Route::post('/lost-and-founds/items/reports', 'LostAndFoundController@getLostAndFoundTableReport');
 Route::post('/lost-and-founds/items/sort_by=claimed' , 'LostAndFoundController@TableFilterClaimed');
 Route::post('/lost-and-founds/items/sort_by=unclaimed' , 'LostAndFoundController@TableFilterUnclaimed');
 Route::post('/lost-and-founds/items/sort_by=donated' , 'LostAndFoundController@TableFilterDonated');
@@ -283,6 +286,7 @@ Route::post('/lockers/all' , 'LockerManagementController@showLockersTable');
 Route::get('/locker/details' , 'LockerManagementController@getLockerDetails');
 Route::post('/locker/update-status' , 'LockerManagementController@updateLocker');
 Route::get('/locker-reports' , 'LockerManagementController@showLockerReports');
+Route::get('/locker-statistics' , 'LockerManagementController@showLockerStatistics');
 
 Route::post('/locker-reports/list' , 'LockerManagementController@postLockerReportsTable');
 Route::post('/locker-reports/stats' , 'LockerManagementController@postLockerStatistics');

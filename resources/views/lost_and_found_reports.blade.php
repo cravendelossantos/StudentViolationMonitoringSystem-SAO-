@@ -4,9 +4,7 @@
 
 @section('header-page')
 <div class="row">
-  <div class="col-md-12">
-   <h1>Lost and Found Reports and Statistics</h1>
-
+  <div class="col-md-4">
    <div class="form-group" id="LAF_stats_range">
     <output name="LAF_stats_range">Select date range:</output>
 
@@ -23,6 +21,35 @@
     <button type="button" class="btn btn-w-m btn-primary" id="show_LAF_stats">Show</button>
   </div>
 </div>
+
+     <div class="col-md-2">
+        <div class="form-group" id="v_reports_range">
+                       
+        <output name="v_reports_range">Filter</output>
+        <select id="sort_by" name="sort_by"  class="form-control">
+          <option value="">All</option>
+          <option value="Unclaimed">Unclaimed</option>
+          <option value="Claimed">Claimed</option>
+          <option value="Donated">Donated</option>
+        </select>
+
+
+                <output name="v_reports_range">School Year:</output>
+                <select name="school_year" id="school_year" class="form-control">
+                  @foreach ($schoolyear as $schoolyear)
+                  <option>{{$schoolyear->school_year }}</option>
+                  @endforeach
+
+                  @foreach ($schoolyears as $schoolyear)
+                  <option>{{$schoolyear->school_year }}</option>
+                  @endforeach
+                  
+                </select> 
+
+        </div>
+      </div>
+
+
 </div>
 
 @endsection
@@ -33,7 +60,7 @@
 <div class="ibox float-e-margins">
   <div class="ibox-title">
 
-    <h5><b>Lost and Found Report and Statistics</b></h5>
+    <h5><b>Lost and Found Statistics</b></h5>
 
 
     <button type="button" class="btn btn-primary btn-xs m-l-sm pull-right" id="print">Print</button>
@@ -121,11 +148,11 @@
 
 
                                     {!! csrf_field() !!}
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+<!--                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 
 
-                                    <div id="visualization" class="" style="width: 900px; height: 400px; display: block; margin: auto;"></div>
+                                    <div id="visualization" class="" style="width: 900px; height: 400px; display: block; margin: auto;"></div> -->
 
 
      <!--  <div class="row">
@@ -152,7 +179,7 @@
 
 
 
-          <table class="table table-striped table-bordered table-hover lost-and-found-reports-DT DataTable" id="asd" aria-describedby="DataTables_Table_0_info" role="grid" style="width: 100%;">
+<!--           <table class="table table-striped table-bordered table-hover lost-and-found-reports-DT DataTable" id="asd" aria-describedby="DataTables_Table_0_info" role="grid" style="width: 100%;">
 
             <thead>
               <tr>
@@ -166,7 +193,34 @@
 
 
 
-          </table>
+          </table> -->
+
+            <table class="table table-striped table-bordered table-hover lost-and-found dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid" >
+
+              <thead>
+        
+        <tr>
+                  <th>Date Endorsed</th>
+                  <th>Item Description</th>
+                  <th>Found by</th>
+                  <th>Founded at</th>
+                  <th>Owner's Name</th>
+                  <th>Status</th>
+                  <th>Date Claimed</th>
+                  <th>Claimed By</th>
+
+          </tr> 
+              </thead>
+
+              
+
+            </table>
+
+
+
+
+
+
 <!-- 
 </div> -->
 </div></center>
@@ -205,8 +259,76 @@
 <script type="text/javascript">
 
 
+
+  
+// $('select#sort_by').change(function(e){
+//   e.preventDefault();
+//   var selected = $('select#sort_by option:selected').index();
+  
+
+//   if (selected == 0) {
+//     lost_and_found.ajax.url('/lost-and-founds/items/all').load();   
+//   } else if (selected == 1) {
+//     lost_and_found.ajax.url('/lost-and-founds/items/sort_by=unclaimed').load();
+//   } else if (selected == 2) {
+//     lost_and_found.ajax.url('/lost-and-founds/items/sort_by=claimed').load(); 
+//   } else if (selected == 3) {
+//     lost_and_found.ajax.url('/lost-and-founds/items/sort_by=donated').load(); 
+//   }
+  
+
+  
+// });
+
+
+
+  function getLAFReports(){
+    $('.lost-and-found').DataTable().destroy();
+
+ var lost_and_found = $('.lost-and-found').DataTable({
+  "processing": true,
+  "serverSide": true,
+  "ajax": {
+    headers : {
+      'X-CSRF-Token' : $('input[name="_token"]').val()
+    },
+    url : "/lost-and-founds/items/reports",
+    type: "POST",
+          data: function (d) {
+          d.LAF_stats_from = $('#LAF_stats_from').val();
+          d.LAF_stats_to = $('#LAF_stats_to').val();
+          d.sort_by = $('#sort_by').val();
+          d.school_year = $('#school_year').val();
+        },
+  },
+      "bPaginate" : false,
+      "bInfo" :false,
+      "bSort" : false,
+      "bFilter" : false,
+      
+  "order": [[ 0, "desc" ]],
+  "rowId" : 'id', 
+  "columns" : [
+  {data : 'date_reported'},
+  {data : 'item_description'},
+  {data : 'endorser_name'},
+  {data : 'found_at'},
+  {data : 'owner_name'},
+  {data : 'status'},
+  {data : 'date_claimed'},
+  {data : 'claimer_name'},
+  ],
+  
+});
+
+  }
+
+
+
   $('#show_LAF_stats').on('click', function(){
 
+
+getLAFReports();
 
 
 
@@ -219,84 +341,80 @@
 
 
 
+//   drawVisualization();
+//   function drawVisualization() {
+//     var options = {
+
+//       /*title: 'Total number of Lost and Found items',*/
+//       is3D: true,
+//       backgroundColor: { fill:'transparent' },  
+//     };
 
 
+//     $.ajax({
+//      headers : {
+//        'X-CSRF-Token' : $('input[name="_token"]').val()
+//      },
+//      url : "/lost-and-found/reports/stats",
+//      type: 'POST',
+//      data : {LAF_stats_from : $('#LAF_stats_from').val(),
+//      LAF_stats_to : $('#LAF_stats_to').val(),
+//    },
+//    async: false,
+//    success: function(response){
+//     var items = response;
+//     console.log(items);
+//     var c_data = google.visualization.arrayToDataTable([
 
+//       ['Statistics',   'Lost and Found'],
+//       ['Claimed',   items['claimed'],],
+//       ['Unclaimed',   items['unclaimed'],],
+//       ['Donated',   items['donated'],]
+//       ]);
 
-  drawVisualization();
-  function drawVisualization() {
-    var options = {
+//     var LAF_chart = new google.visualization.PieChart(document.getElementById('visualization'));
+//     LAF_chart.draw(c_data, options);
 
-      /*title: 'Total number of Lost and Found items',*/
-      is3D: true,
-      backgroundColor: { fill:'transparent' },  
-    };
-
-
-    $.ajax({
-     headers : {
-       'X-CSRF-Token' : $('input[name="_token"]').val()
-     },
-     url : "/lost-and-found/reports/stats",
-     type: 'POST',
-     data : {LAF_stats_from : $('#LAF_stats_from').val(),
-     LAF_stats_to : $('#LAF_stats_to').val(),
-   },
-   async: false,
-   success: function(response){
-    var items = response;
-    console.log(items);
-    var c_data = google.visualization.arrayToDataTable([
-
-      ['Statistics',   'Lost and Found'],
-      ['Claimed',   items['claimed'],],
-      ['Unclaimed',   items['unclaimed'],],
-      ['Donated',   items['donated'],]
-      ]);
-
-    var LAF_chart = new google.visualization.PieChart(document.getElementById('visualization'));
-    LAF_chart.draw(c_data, options);
-
-  }
-});
+//   }
+// });
 
 
 
 
 
-  }
+//   }
 
 
-  google.setOnLoadCallback(drawVisualization);
-  $('.lost-and-found-reports-DT').DataTable().destroy();
-  $('.lost-and-found-reports-DT').DataTable({
-    "bPaginate" : false,
-    "bInfo" :false,
-    "bSort" : false,
-    "bFilter" : false,
-    "processing": true,
-    "serverSide": true,
-    "ajax": {
-      headers : {
-        'X-CSRF-Token' : $('input[name="_token"]').val()
-      },
-      url : "/lost-and-found/reports/list",
-      type: "POST",
-      data: function (d) {
-        d.LAF_stats_from = $('#LAF_stats_from').val();
-        d.LAF_stats_to = $('#LAF_stats_to').val();
-      },
-    },
-    "columns" : [
-    {data: 'claimed'},
-    {data: 'unclaimed'},
-    {data: 'donated'},
-    {data: 'total'},
-    ],
+  // google.setOnLoadCallback(drawVisualization);
+  // $('.lost-and-found-reports-DT').DataTable().destroy();
+  // $('.lost-and-found-reports-DT').DataTable({
+  //   "bPaginate" : false,
+  //   "bInfo" :false,
+  //   "bSort" : false,
+  //   "bFilter" : false,
+  //   "processing": true,
+  //   "serverSide": true,
+  //   "ajax": {
+  //     headers : {
+  //       'X-CSRF-Token' : $('input[name="_token"]').val()
+  //     },
+  //     url : "/lost-and-found/reports/list",
+  //     type: "POST",
+  //     data: function (d) {
+  //       d.LAF_stats_from = $('#LAF_stats_from').val();
+  //       d.LAF_stats_to = $('#LAF_stats_to').val();
+  //     },
+  //   },
+  //   "columns" : [
+  //   {data: 'claimed'},
+  //   {data: 'unclaimed'},
+  //   {data: 'donated'},
+  //   {data: 'total'},
+  //   ],
 
 
-  });
-  $('#try').hide();
+  // });
+  // $('#try').hide();
 });
 
 
@@ -427,6 +545,8 @@
           defaultTheme: false
         }
       });
+
+
 
 
       $('.lost-and-found-reports-DT').DataTable({

@@ -58,7 +58,27 @@ $organizations = DB::table('requirements')->where('school_year',$selected_year)-
 
     return Datatables::eloquent(Activity::query()->where('school_year',$request['school_year'])->where('organization',$request['organization']))->make(true);
        
-    }  
+    }
+
+    public function getActivitiesByYearAndOrgAndStatus(Request $request)
+    {
+       if ($request['sort_by'] == "")
+       {
+         $data = Activity::where('school_year',$request['school_year'])->get();
+       }
+
+       elseif ($request['organizationName'] == 0)
+       {
+         $data = Activity::where('school_year',$request['school_year'])->where('status',$request['sort_by'])->get();
+       }
+       else
+       {
+         $data = Activity::where('school_year',$request['school_year'])->where('organization',$request['organization'])->where('status',$request['sort_by'])->get();
+       }
+
+  return response()->json(['data' => $data]);
+       
+    }    
 
 
        public function getOrganizationByYear(Request $request)

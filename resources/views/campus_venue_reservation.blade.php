@@ -604,6 +604,7 @@
               if (event.status == "Banned"){
                 element.css('background-color', '#9B0D0D');
                 element.css('border-color', '#9B0D0D');
+                element.css('color', 'white');
 
 
               }
@@ -611,6 +612,7 @@
                 {
                 element.css('background-color', '#04803A');
                 element.css('border-color', '#04803A');
+                element.css('color', 'white');
               }
               else
               {
