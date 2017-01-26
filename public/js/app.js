@@ -783,7 +783,12 @@ var lost_and_found_table = $('.lost-and-found-DT').DataTable({
 		},
 		url : "/lost-and-founds/items/all",
 		type: "POST",
+		          data: function (d) {
+
+          d.school_year = $('#school_year').val();
+        },
 	},
+	
 	"bSort" : true,
 	"bFilter" : true,
 	"order": [[ 0, "desc" ]],
@@ -1203,6 +1208,7 @@ var lockers_table = $('.lockers-DT').DataTable({
                 d.location_sort = $('#location_sort').val();
             },
 	},
+	
 	// "bSort" : true,
 	/*"bFilter" : true,*/
 	// "order": [[ 0, "desc" ]],

@@ -16,6 +16,7 @@ class CreateLostAndFoundsTable extends Migration
             $table->increments('id');
             $table->date('date_reported');
             $table->time('time_reported');
+            $table->string('school_year');
 			$table->string('item_description');
             $table->string('distinctive_marks');
             //brand?

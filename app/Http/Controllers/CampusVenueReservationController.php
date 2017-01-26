@@ -247,34 +247,57 @@ return response()->json($data);
 
       public function postCampusVenueReservationReports(Request $request)
   {
-    if ($request['v_reports_offense_level'] == "" and $request['v_reports_from'] =="" and $request['v_reports_to']=="")
+  //WALA LAHAT ITO
+    if ($request['v_reports_offense_level'] == "" and $request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['venue']=="")
     {
           $data = events::where('school_year',$request['school_year'])->get();
 
     }
-   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="")
+        //PAG WALANG FROM AT TO AT VENUE
+   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['venue'] =="" )
     {
           $data = events::where('school_year',$request['school_year'])->where('status',$request['v_reports_offense_level'])->get();
 
     }
+    //PAG WALANG FROM AT TO AT CATEGORY
+   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['v_reports_offense_level'] =="" )
+    {
+          $data = events::where('school_year',$request['school_year'])->where('venue',$request['venue'])->get();
 
-    elseif ($request['v_reports_offense_level'] == "")
+    }
+    //PAG WALANG FROM AT TO 
+   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="")
+    {
+          $data = events::where('school_year',$request['school_year'])->where('venue',$request['venue'])->where('status',$request['v_reports_offense_level'])->get();
+
+    }
+    //PAG WALANG CATEGORY AT VENUE
+    elseif ($request['v_reports_offense_level'] == "" and $request['venue'] =="" )
     {
           $data = events::whereBetween('start', [$request['v_reports_from'], $request['v_reports_to']])->where('school_year',$request['school_year'])->get();  
-      
-               
-  
+                      
     }
+    //PAG WALANG VENUE
+    elseif ($request['venue'] =="")
+    {
+          $data = events::whereBetween('start', [$request['v_reports_from'], $request['v_reports_to']])->where('school_year',$request['school_year'])->where('status',$request['v_reports_offense_level'])->get();  
+                      
+    }
+        //PAG WALANG VENUE
+    elseif ($request['v_reports_offense_level'] =="")
+    {
+          $data = events::whereBetween('start', [$request['v_reports_from'], $request['v_reports_to']])->where('school_year',$request['school_year'])->where('venue',$request['venue'])->get();  
+                      
+    }
+
     else
     {
- 
-$data = events::whereBetween('start', [$request['v_reports_from'], $request['v_reports_to']])->where('status',$request['v_reports_offense_level'])->where('school_year',$request['school_year'])->get();  
+ //LAHAT MERON
+$data = events::whereBetween('start', [$request['v_reports_from'], $request['v_reports_to']])->where('status',$request['v_reports_offense_level'])->where('school_year',$request['school_year'])->where('venue',$request['venue'])->get();  
     // $data = events::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->get();
     }    
      return response()->json(['data' => $data]);
   }
-
-
 
 }
 
