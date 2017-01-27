@@ -69,11 +69,11 @@
 
 
 
-			<div class="col-md-offset-1 col-md-6 animated fadeInRight">
+				<div class="col-md-offset-1 col-md-6 animated fadeInRight">
 
-			{!! $content->value !!}
+					{!! $content->value !!}
 	
-			</div>
+				</div>
 			</div>
 
 		</div>
