@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use Validator;
 use DB;
@@ -24,13 +23,13 @@ use Auth;
 
 class ReportViolationController extends Controller
 {
-    public function __construct()
-    {
-    	$this->middleware('roles');
-    }
+  public function __construct()
+  {
+   	$this->middleware('roles');
+  }
     
  	public function showReportViolation()
-    {
+  {
     	//$violation_reports = ViolationReport::all()
    /*     $violation_reports = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();*/
     $violations = Violation::all()->sortBy('name');
@@ -354,7 +353,30 @@ class ReportViolationController extends Controller
    /*         $student_violation->validity = $validity;*/
             $student_violation->save();
 
-            return Response::json(['success' => true, 'response' => ++$id], 200);
+
+
+            //sendSMS
+            //$a = popen('gammu sendsms TEXT '.$_number.' -text "'.$_message.'"', 'r'); 
+
+            // $_number = $request['guardian_contact_no'];
+            // $_message = 'hahaha';
+            
+
+            // $a = popen('gammu sendsms TEXT '.$_number.' -text "' .$_message. '"', 'r'); 
+            
+            // while($b = fgets($a, 2048)) { 
+
+            //   $message = $b."\n"; 
+            //   if (strpos($message, 'OK') !== false){
+            //     $message = 'Message Sent!';
+            //   return Response::json(['success' => true, 'response' => ++$id, 'message' => $message], 200);
+            //   }
+            //   return Response::json(['success' => false, 'errors' => $message], 400);
+            //   ob_flush();flush(); 
+            // } 
+            // pclose($a); 
+
+             return Response::json(['success' => true, 'response' => ++$id], 200);
             
 		      
 

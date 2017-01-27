@@ -78,6 +78,20 @@ return [
             'schema' => 'public',
         ],
 
+        'gammu' => [
+        'driver' => 'mysql',
+        'host' => env('DB_GAMMU_HOST', 'localhost'),
+        'port' => env('DB_GAMMU_PORT', '3306'),
+        'database' => env('DB_GAMMU_DATABASE', 'sao'),
+        'username' => env('DB_GAMMU_USERNAME', 'sao'),
+        'password' => env('DB_GAMMU_PASSWORD', ''),
+        'charset' => 'utf8',
+        'collation' => 'utf8_unicode_ci',
+        'prefix' => '',
+        'strict' => true,
+        'engine' => null,
+        
+        ],
     ],
 
     /*
@@ -116,5 +130,7 @@ return [
         ],
 
     ],
+
+
 
 ];

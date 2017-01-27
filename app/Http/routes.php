@@ -1,7 +1,5 @@
 <?php
 
-
-
 /*//Super user route group
 Route::group(['middleware' => 'roles', 'roles' => ['Super User']],function(){
 
@@ -64,6 +62,11 @@ Route::post('/upload/avatar' , 'sysController@updateAvatar');
 //Change password
 Route::post('/change_password', 'sysController@changePassword');
 
+//Content management
+Route::get('/content-management', 'sysController@showCMSpage');
+
+Route::post('/content-management/save', 'sysController@postCMS');
+Route::get('/page-content/load' , 'sysController@loadContent');
 
 });
 
@@ -294,6 +297,28 @@ Route::post('/settings/locker-locations/add' , 'LockerManagementController@postL
 //SMS
 Route::get('/text-messaging', 'sysController@showSMS');
 Route::post('/text-messaging/send', 'sysController@sendSMS');
+
+Route::post('/getussd' , 'sysController@getussd');
+
+Route::get('/modem-test', function(){
+	$a = popen('gammu identify', 'r');  
+
+	while($b = fgets($a, 2048)) { 
+		echo $b."<br>\n"; 
+		ob_flush();flush(); 
+	} 
+	pclose($a); 
+});	
+Route::post('/modem-info', function(){
+	$a = popen('gammu monitor 1', 'r');  
+
+	while($b = fgets($a, 2048)) { 
+		echo $b."<br>\n"; 
+		ob_flush();flush(); 
+	} 
+	pclose($a); 
+});	
+
 
 });
 

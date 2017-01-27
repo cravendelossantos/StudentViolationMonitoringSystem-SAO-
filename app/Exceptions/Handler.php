@@ -10,6 +10,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Content;
 
 class Handler extends ExceptionHandler
 {
@@ -47,10 +48,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        $content = Content::where('page', '404')->first();
 
-         if($e instanceof NotFoundHttpException)
+        if($e instanceof NotFoundHttpException)
         {
-        return response()->view('errors.404', [], 404);
+        
+        return response()->view('errors.404', ['content' => $content], 404);
         }
         return parent::render($request, $e);
     }

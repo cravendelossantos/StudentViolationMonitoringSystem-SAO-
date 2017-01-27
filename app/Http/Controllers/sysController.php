@@ -17,11 +17,47 @@ use App\Role;
 use Yajra\Datatables\Facades\Datatables;
 use Image;
 use Hash;
+use App\Content;
+
 class sysController extends Controller {
 	
 	public function __construct()
     {
         $this->middleware('roles');
+    }
+
+    public function showCMSpage()
+    {
+        $pages = Content::all();
+
+        return view('content_management',['pages' => $pages]);
+    }
+ 
+    public function loadContent(Request $request)
+    {
+        return Content::where('id', $request['page_id'])->first();
+    }
+
+    public function postCMS(Request $request)
+    {
+        $messages = [
+            'page_id.required' => 'Please choose a page to be edited',
+        ];
+        
+        $validator= Validator::make($request->all(),[
+            'page_id' => 'required',
+        ],$messages);
+    
+        if($validator->fails()){
+        
+             return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
+
+        } else {
+       
+            $new_content = Content::where('id',$request['page_id'])->update(['value' => $request['new_content']]);
+        
+            return Response::json(['success' => true, 'response' => ''], 200);
+        }
     }
 
     public function changePassword(Request $request)
@@ -388,17 +424,91 @@ $data = array(
         return view('text_messaging');
     }
 
+
+    public function getussd(Request $request)
+    {
+        $ussd_code = $request['ussd_code'];
+
+        try {
+            
+        $a = system("gammu getussd $ussd_code".$ussd_code, $message);
+        
+          return back()->with('ussd' , $message);
+        
+        } catch (Exception $e) {
+            return back()->with('ussd' , $e);
+        }
+        
+        /* $a = popen('gammu getussd *143*5*2#', 'r'); 
+        
+
+        while($b = fgets($a, 2048)) { 
+            
+            $message = $b."\n"; 
+             return back()->with('ussd' , $message);
+            ob_flush();flush(); 
+        } 
+        pclose($a); */
+        
+    }
+
+
     public function sendSMS(Request $request)
     {
-        $number = $request['number'];
-        $message = $request['message'];
-               
-//exec("C:\.....\ gammu.exe" -sendsms etc etc);
-        $a = shell_exec('"C:\Program Files\Gammu\bin\gammu.exe" --sendsms TEXT '.$number.' -text "hello world"');
-        //$response = shell_exec('gammu sendsms TEXT  '.$number.' -text'  "enews");
-        return $a;
 
-    }
+        
+        $_number = $request['mobile_number'];
+        $_message = $request['message'];
+        $_apikey = 'CRAVE936905_PWJDB';
+
+        $a = popen('gammu sendsms TEXT '.$_number.' -text "'.$_message.'"', 'r'); 
+        while($b = fgets($a, 2048)) { 
+            
+            $message = $b."\n"; 
+            if (strpos($message, 'OK') !== false){
+                $message = 'Message Sent!';
+            }
+            return back()->with('response' , $message);
+            ob_flush();flush(); 
+        } 
+        pclose($a); 
+        
+     
+
+     /*   function itexmo($number,$message,$apicode){
+            $url = 'https://www.itexmo.com/php_api/api.php';
+            $itexmo = array('1' => $number, '2' => $message, '3' => $apicode);
+            $param = array(
+                'http' => array(
+                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                    'method'  => 'POST',
+                    'content' => http_build_query($itexmo),
+                    ),
+                );
+            $context  = stream_context_create($param);
+            return file_get_contents($url, false, $context);
+
+        }
+
+
+
+
+
+        $result = itexmo($_number,$_message,$_apikey);
+        if ($result == ""){
+            echo "iTexMo: No response from server!!!
+            Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
+            Please CONTACT US for help. ";  
+        }else if ($result == 0){
+            echo "Message Sent!";
+        }
+        else{   
+            echo "Error Num ". $result . " was encountered!";
+        }*/
+
+   }
+
+
    
 	public function showCommunityService()
     {

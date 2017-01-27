@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Content;
 
 class HomeController extends Controller
 {
@@ -29,7 +30,9 @@ class HomeController extends Controller
 
       $timezone = date("Asia\Manila");
 
-      if ($time < "12") {
+      $content = Content::where('page', 'home')->first();
+
+    if ($time < "12") {
         $day =  "Good Morning";
     } else
 
@@ -44,6 +47,6 @@ class HomeController extends Controller
     if ($time >= "19") {
         $day = "Good Night";
     }
-        return view('index',['greeting' => $day]);
+        return view('index',['greeting' => $day, 'content' => $content]);
     }
 }

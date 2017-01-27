@@ -39,4 +39,11 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'gammu' => [
+    'method' => env('GAMMU_METHOD', 'api'),
+    'auth' => env('GAMMU_AUTH', 'gammu-api-key'),
+    'url' => env('GAMMU_URL', 'http://gammu.api/')
+    ],
+
+
 ];

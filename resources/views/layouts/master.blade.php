@@ -309,9 +309,9 @@
 
 
 
-						<!-- 	<li >
+							<li >
 								<a href="/text-messaging"><i class="fa fa-mobile"></i> <span class="nav-label ng-binding">Text Messaging</span> </a>
-							</li> -->
+							</li>
 
 							<li>
 								<a href="#"><i class="fa fa-exchange"></i> <span class="nav-label ng-binding">Import/Export Records</span><span class="fa arrow"></span></a>
@@ -351,6 +351,11 @@
 									</li>
 
 								</ul>
+							</li>
+
+
+							<li ui-sref-active="active">
+								<a href="/content-management"><i class="fa fa-edit"></i> <span class="nav-label ng-binding">Content Management</span> </a>
 							</li>
 							@else
 

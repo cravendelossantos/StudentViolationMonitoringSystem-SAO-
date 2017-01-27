@@ -166,7 +166,7 @@ class LostAndFoundController extends Controller
 	public function showLostAndFoundReports(Request $request)
 	{	
 
-		$item = LostAndFound::all()->count();
+	/*	$item = LostAndFound::all()->count();
 
 
 	$lava = new Lavacharts; // See note below for Laravel
@@ -191,7 +191,7 @@ class LostAndFoundController extends Controller
 			['offset' => 0.3]
 		]
 		]);
-
+*/
 
 		return view('lost_and_found_reports');
 	}

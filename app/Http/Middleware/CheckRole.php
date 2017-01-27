@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Content;
 
 class CheckRole
 {
@@ -15,6 +16,8 @@ class CheckRole
      */
     public function handle($request, Closure $next)
     {
+        $content = Content::where('page', '401')->first();
+
     	if ($request->user() == null){
     		return redirect('/login');
     	}
@@ -25,7 +28,7 @@ class CheckRole
 		if ($request->user()->hasAnyRole($roles) || !$roles){ 
 			 return $next($request);
 		}
-			 return response()->view('errors.401', [], 401);
+			 return response()->view('errors.401', ['content' => $content], 401);
        
     }
 }

@@ -284,6 +284,13 @@ $('button#report_btn').click(function(e){
 						type : "POST",
 						url : "/report-violation/report",
 						data : $('form#reportViolationForm').serialize(),
+					}).fail(function (data){
+
+						var errors = $.parseJSON(data.responseText);
+						
+						swal("Oops...", errors.errors, "warning");
+						
+	
 					}).done(function(data){
 						swal({   
 							title: "Success!",  
@@ -294,7 +301,7 @@ $('button#report_btn').click(function(e){
 
 
 						});
-
+						
 						$('#v_id').val(data.response);
 						$('form#reportViolationForm').each(function() {
 							this.reset();

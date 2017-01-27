@@ -20,13 +20,7 @@
 
 
 			<div class="middle-box text-center animated fadeInDown">
-				<h1>401</h1>
-				<h3 class="font-bold">401 - Unauthorized: Access Denied!</h3>
-
-				<div class="error-desc">
-					You do not have permission to view this directory or page!<br/>
-					
-				</div>
+				{!! $content->value !!}
 			</div>
 
 			<!-- Mainly scripts -->
