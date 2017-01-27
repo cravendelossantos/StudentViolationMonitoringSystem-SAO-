@@ -225,6 +225,9 @@
 						<li>
 							<a href="#"><i class="fa fa-lock"></i> <span class="nav-label ng-binding">Locker Management</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
+								<li ui-sref-active="active" >
+									<a href="/locker-statistics"> <i class=""></i> <span class="nav-label ng-binding">Statistics</span> </a>
+								</li>
 
 								<li ui-sref-active="active" >
 									<a href="/lockers"> <i class=""></i> <span class="nav-label ng-binding">Locker Assignment</span> </a>
@@ -238,10 +241,10 @@
 						<li>
 							<a href="#"><i class="fa fa-book"></i> <span class="nav-label ng-binding">Lost and Found</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
-						<!-- 		<li ui-sref-active="active">
+						 		<li ui-sref-active="active">
 									<a href="/lost-and-found/statistics"> <i class=""></i> <span class="nav-label ng-binding">Statistics</span> </a>
 								</li>
-							-->
+							
 							<li ui-sref-active="active">
 								<a href="/lost-and-found"><i class=""></i> <span class="nav-label ng-binding">Add / Claim Items</span> </a>
 							</li>

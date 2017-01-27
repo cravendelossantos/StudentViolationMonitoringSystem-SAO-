@@ -390,13 +390,40 @@ class ReportViolationController extends Controller
 
     public function showStatistics()
     {
-        return view('violation_statistics');
+
+       $current_time = Carbon::now()->format('Y-m-d');
+
+
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+      $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+
+
+        return view('violation_statistics',['schoolyears' => $schoolyears],['schoolyear' => $schoolyear]);
     }
 	 
 
     public function showViolationReports()
     {
-      return view('violation_reports');
+       $current_time = Carbon::now()->format('Y-m-d');
+
+
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+      $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+      $courses = Course::with('college')->get();
+      $colleges = College::all()->sortBy('description');
+
+
+      return view('violation_reports',['schoolyears' => $schoolyears],['schoolyear' => $schoolyear, 'courses' => $courses,'colleges' => $colleges]);
     }
 
     public function postViolationStatistics(Request $request)
@@ -466,7 +493,7 @@ class ReportViolationController extends Controller
   public function postViolationReports(Request $request)
   {
 
-    if ($request['v_reports_offense_level'] == "")
+    if ($request['v_reports_offense_level'] == "" and $request['v_reports_college'] == "" and $request['v_reports_course'] == "" and $request['v_reports_college'] == "")
     {
           $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->get();  
 
@@ -484,7 +511,7 @@ class ReportViolationController extends Controller
     {
 
 
-    $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->get();
+    $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->where('courses.description',$request['v_reports_course'])->where('colleges.id',$request['v_reports_college'])->get();
 
     foreach ($data as $key => $value) {
         $report[] = ['name' => $value->first_name. " ".$value->last_name,
@@ -498,7 +525,7 @@ class ReportViolationController extends Controller
 
    
     }
-      return response()->json(['data' => $report]);
+      return response()->json(['data' => $data]);
 /*
     return Datatables::eloquent(ViolationReport::query()->join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id'))->make(true);*/
   

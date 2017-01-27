@@ -273,7 +273,33 @@ return Response::json(['success'=> true, 'new_locker_location' => $new_locker_lo
 
 public function showLockerReports()
 {
-  return view('locker_reports');
+      $locations = LockerLocation::all();
+      
+
+       $current_time = Carbon::now()->format('Y-m-d');
+   
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+      $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+  return view('locker_reports',['schoolyears' => $schoolyears,'schoolyear' => $schoolyear,'locations' => $locations ]);
+}
+
+public function showLockerStatistics()
+{
+         $current_time = Carbon::now()->format('Y-m-d');
+   
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+      $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+  return view('locker_statistics',['schoolyears' => $schoolyears,'schoolyear' => $schoolyear ]);
 }
 
 

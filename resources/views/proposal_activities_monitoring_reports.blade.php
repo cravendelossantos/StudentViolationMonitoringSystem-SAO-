@@ -8,7 +8,7 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     {{ csrf_field() }}
     <div class="row">
-    						  <div class="col-md-6">
+    					<div class="col-md-3">
 								<div class="form-group">
 
 								<label>Select Organization</label>
@@ -19,6 +19,12 @@
 								
 									@endforeach
 									
+								</select>
+																<label>Status</label>
+								<select id="sort_by" name="sort_by"  class="form-control">
+									<option value="">All</option>
+									<option value="1">Submitted</option>
+									<option value="0">Not Submitted</option>
 								</select>	
 
 								</div>
@@ -26,7 +32,8 @@
 
 							</div>
 
-						<div class="col-md-6">
+
+						<div class="col-md-3">
 							<div class="form-group">
 
 								<label>School Year</label>
@@ -200,6 +207,7 @@ var activities_table = $('.activities-DT').DataTable({
         d.school_year = $('select#school_year').val();
 
         d.organization = $('select#organizationName').val();
+        d.sort_by = $('select#sort_by').val();
     },
 			},
 
@@ -237,6 +245,14 @@ $('select#school_year').change(function(e){
 	$('#report_from1').val("");
 
 });
+
+$('select#sort_by').change(function(e){
+	// $('.activities-DT').DataTable().draw();
+	$('.activities-DT').DataTable().ajax.url('/activities/ActivitiesByYearAndOrgAndStatus').load();
+	$('#report_from1').val("");
+
+});
+
 
 // $('select#organizationName').change(function(e){
 // 	$('.activities-DT').DataTable().draw();

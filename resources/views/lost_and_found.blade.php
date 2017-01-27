@@ -5,9 +5,11 @@
 @section('header-page')
 <div class="row">
 
-	<div class="col-md-12">
+	<div class="col-md-6">
 		<h1>Lost and Found</h1>
+
 	</div>
+
 </div>
 
 @endsection
@@ -157,7 +159,7 @@
 							</div>
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-2">
 						<div class="form-group" id="LAF_date_picker">
 								<label>Date Reported</label>
 								<div class="input-group date" id="data_1">
@@ -166,6 +168,22 @@
 								</div>
 							</div>
 						</div>
+
+								<div class="col-md-2">
+
+<!-- 		               <label>School Year</label>
+          <select name="school_year" id="school_year" class="form-control">
+            @foreach ($schoolyear as $schoolyear)
+            <option>{{$schoolyear->school_year }}</option>
+            @endforeach
+
+
+            
+          </select>   -->
+          							<label>School Year</label>
+									<output id="school_year1" name="school_year1" class="form-control" autofocus="" aria-required="true"  >{{$schoolyear->school_year }}</output>
+									<input type="hidden" id="school_year" name="school_year" class="form-control" autofocus="" aria-required="true" value="{{$schoolyear->school_year }}">
+	</div>
 
 						<div class="col-md-6">
 							<div class="form-group">
@@ -228,6 +246,8 @@
 					<option>Claimed</option>
 					<option>Donated</option>
 				</select>
+
+
 
 
 </div>
