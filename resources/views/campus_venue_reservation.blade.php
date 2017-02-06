@@ -337,7 +337,7 @@
                     <label for="title" class="col-sm-2 control-label">Organizer</label>
                     <div class="col-sm-10">
                       <!-- <input type="text" name="organization" class="form-control" id="organization" placeholder="Organizer"> -->
-                <select name="organization" id="organization" class="form-control" readonly>
+<!--                 <select name="organization" id="organization" class="form-control" readonly>
                 <option autofocus="" disabled selected >Select Organization</option>
                   @foreach ($organizations as $organization)
                   <option>{{$organization->organization }}</option>
@@ -346,7 +346,12 @@
                 
                   @endforeach
                   
-                </select>
+                </select> -->
+
+
+                      <output type="text" name="organization" class="form-control" id="organization"></output>
+                    
+                    
 
 
 
@@ -359,9 +364,9 @@
                     <div class="col-sm-10">
                       <select name="status" class="form-control" id="status">
                           <option value="">Choose</option>
-                          <option style="color:#04803A;" value="OnProcess">&#9724; OnProcess</option>
-                          <option style="color:#3a87ad;" value="Reserved">&#9724; Reserved</option>
-                          <option style="color:#9B0D0D;" value="Banned">&#9724; Banned</option>
+                          <option style="color:#04803A;" value="OnProcess">OnProcess</option>
+                          <option style="color:#3a87ad;" value="Reserved">Reserved</option>
+                          <option style="color:#9B0D0D;" value="Banned">Banned</option>
                           
                         </select>
                     </div>

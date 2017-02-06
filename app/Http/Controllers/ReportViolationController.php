@@ -30,7 +30,24 @@ class ReportViolationController extends Controller
   }
     
  	public function showReportViolation()
+<<<<<<< HEAD
   {
+=======
+    {
+
+  $current_time = Carbon::now()->format('Y-m-d');
+
+
+      $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+       $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+      $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+
+
+>>>>>>> origin/master
     	//$violation_reports = ViolationReport::all()
    /*     $violation_reports = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();*/
     $violations = Violation::all()->sortBy('name');
@@ -45,7 +62,7 @@ class ReportViolationController extends Controller
                 $id = 'SAO-'.++$id;
             } 
         // return view('report_violation', ['violations' => $violations])->with(['courses' => $courses]);
-        return view('report_violation', ['violations' => $violations , 'courses' => $courses, 'violation_id' => $id]);
+        return view('report_violation', ['violations' => $violations , 'courses' => $courses, 'violation_id' => $id,'schoolyears' => $schoolyears],['schoolyear' => $schoolyear]);
 
         //course will be autofilled if we already have the student records.
     }
@@ -371,6 +388,8 @@ class ReportViolationController extends Controller
             $student_violation->offense_no = $request['offense_number'];
             $student_violation->date_reported = $date_committed;
             $student_violation->time_reported = $time_reported;
+            $student_violation->sanction = $request['sanction'];
+            $student_violation->school_year = $request['school_year'];
             $student_violation->reporter_id = Auth::user()->id;
    /*         $student_violation->validity = $validity;*/
             $student_violation->save();
@@ -434,40 +453,43 @@ class ReportViolationController extends Controller
     public function postViolationStatistics(Request $request)
     {
 
-      //get violations with depts
+      if($request['v_stats_from'] == "" and $request['v_stats_to'] == "")
+      {
+
+        //get violations with depts
       $cams = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
                                 ->join('courses' , 'students.course', '=' , 'courses.description')
                                 ->join('colleges', 'courses.college_id', '=', 'colleges.id')
                                 ->where('college_id', 1)
-                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
+                                ->where('violation_reports.school_year',$request['school_year'])
                                 ->count();  
 
     $cas = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
                                 ->join('courses' , 'students.course', '=' , 'courses.description')
                                 ->join('colleges', 'courses.college_id', '=', 'colleges.id')
                                 ->where('college_id', 2)
-                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
+                                ->where('violation_reports.school_year',$request['school_year'])
                                 ->count(); 
 
     $cba = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
                                 ->join('courses' , 'students.course', '=' , 'courses.description')
                                 ->join('colleges', 'courses.college_id', '=', 'colleges.id')
                                 ->where('college_id', 3)
-                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
+                                ->where('violation_reports.school_year',$request['school_year'])
                                 ->count();                                 
 
     $coecsa = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
                                 ->join('courses' , 'students.course', '=' , 'courses.description')
                                 ->join('colleges', 'courses.college_id', '=', 'colleges.id')
                                 ->where('college_id', 4)
-                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
+                                ->where('violation_reports.school_year',$request['school_year'])
                                 ->count();  
 
     $cithm = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
                                 ->join('courses' , 'students.course', '=' , 'courses.description')
                                 ->join('colleges', 'courses.college_id', '=', 'colleges.id')
                                 ->where('college_id', 5)
-                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
+                                ->where('violation_reports.school_year',$request['school_year'])
                                 ->count();   
 
             $data = [
@@ -492,15 +514,88 @@ class ReportViolationController extends Controller
 
 
 
+
+
+      }
+
+
+
+
+        else
+        {
+
+      //get violations with depts
+      $cams = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
+                                ->join('courses' , 'students.course', '=' , 'courses.description')
+                                ->join('colleges', 'courses.college_id', '=', 'colleges.id')
+                                ->where('college_id', 1)
+                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
+                                ->where('violation_reports.school_year',$request['school_year'])
+                                ->count();  
+
+    $cas = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
+                                ->join('courses' , 'students.course', '=' , 'courses.description')
+                                ->join('colleges', 'courses.college_id', '=', 'colleges.id')
+                                ->where('college_id', 2)
+                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
+                                ->where('violation_reports.school_year',$request['school_year'])
+                                ->count(); 
+
+    $cba = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
+                                ->join('courses' , 'students.course', '=' , 'courses.description')
+                                ->join('colleges', 'courses.college_id', '=', 'colleges.id')
+                                ->where('college_id', 3)
+                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
+                                ->where('violation_reports.school_year',$request['school_year'])
+                                ->count();                                 
+
+    $coecsa = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
+                                ->join('courses' , 'students.course', '=' , 'courses.description')
+                                ->join('colleges', 'courses.college_id', '=', 'colleges.id')
+                                ->where('college_id', 4)
+                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
+                                ->where('violation_reports.school_year',$request['school_year'])
+                                ->count();  
+
+    $cithm = ViolationReport::join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
+                                ->join('courses' , 'students.course', '=' , 'courses.description')
+                                ->join('colleges', 'courses.college_id', '=', 'colleges.id')
+                                ->where('college_id', 5)
+                                ->whereBetween('date_reported', [$request['v_stats_from'], $request['v_stats_to']])
+                                ->where('violation_reports.school_year',$request['school_year'])
+                                ->count();   
+
+            $data = [
+            [ 'cams' => $cams, 
+              'cas' => $cas,
+              'cba' => $cba,
+              'coecsa' => $coecsa,
+              'cithm' => $cithm,
+
+            ]
+          ];
+        
+              $stats = [
+              ['1' ,$cams], 
+              ['2', $cas],
+              ['3' , $cba],
+              ['4' , $coecsa],
+          
+
+            
+          ];
+}
+
+
       return response()->json(['data' => $data, 'stats' => $stats]);    
   }
 
   public function postViolationReports(Request $request)
-  {
-
-    if ($request['v_reports_offense_level'] == "" and $request['v_reports_college'] == "" and $request['v_reports_course'] == "" and $request['v_reports_college'] == "")
+  {    
+//school year only
+    if ($request['v_reports_offense_level'] == "" and $request['v_reports_course'] == "" and $request['v_reports_college'] == "" and $request['v_reports_from'] == "" and $request['v_reports_to'] == "")
     {
-          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->get();  
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->where('violation_reports.school_year',$request['school_year'])->get();  
 
        foreach ($data as $key => $value) {
         $report[] = ['name' => $value->first_name. " ".$value->last_name,
@@ -512,11 +607,227 @@ class ReportViolationController extends Controller
         ];
     }
     }
+//school year and offense_level
+        elseif ($request['v_reports_course'] == "" and $request['v_reports_college'] == "" and $request['v_reports_from'] == "" and $request['v_reports_to'] == "")
+    {
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->where('violation_reports.school_year',$request['school_year'])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+    // school year and course
+            elseif ($request['v_reports_college'] == "" and $request['v_reports_from'] == "" and $request['v_reports_to'] == "" and $request['v_reports_offense_level'] == "")
+    {
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->where('violation_reports.school_year',$request['school_year'])->where('courses.description',$request['v_reports_course'])->select('violations.*','violation_reports.*','students.*')->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+        // school year and college
+            elseif ($request['v_reports_course'] == ""  and $request['v_reports_from'] == "" and $request['v_reports_to'] == "" and $request['v_reports_offense_level'] == "")
+    {
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->where('violation_reports.school_year',$request['school_year'])->where('colleges.id',$request['v_reports_college'])->select('violations.*','violation_reports.*','students.*')->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+            // school year and college and offense
+            elseif ($request['v_reports_course'] == ""  and $request['v_reports_from'] == "" and $request['v_reports_to'] == "")
+    {
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->where('violation_reports.school_year',$request['school_year'])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->where('colleges.id',$request['v_reports_college'])->select('violations.*','violation_reports.*','students.*')->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+                // school year and course and offense
+            elseif ($request['v_reports_college'] == ""  and $request['v_reports_from'] == "" and $request['v_reports_to'] == "")
+    {
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->where('violation_reports.school_year',$request['school_year'])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->where('courses.description',$request['v_reports_course'])->select('violations.*','violation_reports.*','students.*')->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+                    // school year and course and college
+            elseif ($request['v_reports_from'] == "" and $request['v_reports_to'] == "" and $request['v_reports_offense_level'] == "")
+    {
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->where('violation_reports.school_year',$request['school_year'])->where('courses.description',$request['v_reports_course'])->where('colleges.id',$request['v_reports_college'])->select('violations.*','violation_reports.*','students.*')->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+                        // school year and course and offense and course and offense
+            elseif ($request['v_reports_from'] == "" and $request['v_reports_to'] == "")
+    {
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->where('violation_reports.school_year',$request['school_year'])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->where('courses.description',$request['v_reports_course'])->where('colleges.id',$request['v_reports_college'])->select('violations.*','violation_reports.*','students.*')->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+//range  and school year
+    elseif ($request['v_reports_offense_level'] == "" and $request['v_reports_course'] == "" and $request['v_reports_college'] == "")
+    {
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('violation_reports.school_year',$request['school_year'])->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+    //range and college and school year
+        elseif ($request['v_reports_offense_level'] == "" and $request['v_reports_course'] == "")
+    {
+$data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('colleges.id',$request['v_reports_college'])->where('violation_reports.school_year',$request['school_year'])->select('violations.*','violation_reports.*','students.*')->get();
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+
+    //range and course and school year
+           elseif ($request['v_reports_offense_level'] == "" and $request['v_reports_college'] == "")
+    {
+$data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('courses.description',$request['v_reports_course'])->where('violation_reports.school_year',$request['school_year'])->select('violations.*','violation_reports.*','students.*')->get();
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+
+    //range and offense and school year
+        elseif ($request['v_reports_college'] == "" and $request['v_reports_course'] == "")
+    {
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->where('violation_reports.school_year',$request['school_year'])->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+
+    //range and college and course and school year
+                elseif ($request['v_reports_offense_level'] == "")
+    {
+           $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('courses.description',$request['v_reports_course'])->where('colleges.id',$request['v_reports_college'])->where('violation_reports.school_year',$request['school_year'])->select('violations.*','violation_reports.*','students.*')->get();
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+
+    //range and course and offense and school year
+            elseif ($request['v_reports_college'] == "")
+    {
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->where('courses.description',$request['v_reports_course'])->where('violation_reports.school_year',$request['school_year'])->select('violations.*','violation_reports.*','students.*')->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+    // range and college and offense and school year
+                elseif ($request['v_reports_course'] == "")
+    {
+          $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->where('colleges.id',$request['v_reports_college'])->where('violation_reports.school_year',$request['school_year'])->select('violations.*','violation_reports.*','students.*')->get();  
+
+       foreach ($data as $key => $value) {
+        $report[] = ['name' => $value->first_name. " ".$value->last_name,
+                      'course' => $value->course,
+                      'date_reported' => $value->date_reported,
+                      'offense' => $value->name,
+                      'offense_no' => $value->offense_no,
+                      'description' => $value->description,
+        ];
+    }
+    }
+
+    // all
     else
     {
 
 
-    $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->where('courses.description',$request['v_reports_course'])->where('colleges.id',$request['v_reports_college'])->get();
+    $data = ViolationReport::join('students' , 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations' , 'violation_reports.violation_id' , '=' ,'violations.id')->join('courses', 'students.course' , '=' , 'courses.description')->join('colleges', 'courses.college_id' , '=' , 'colleges.id')->whereBetween('date_reported', [$request['v_reports_from'], $request['v_reports_to']])->where('violation_reports.offense_level' , $request['v_reports_offense_level'])->where('courses.description',$request['v_reports_course'])->where('colleges.id',$request['v_reports_college'])->where('violation_reports.school_year',$request['school_year'])->select('violations.*','violation_reports.*','students.*')->get();
 
     foreach ($data as $key => $value) {
         $report[] = ['name' => $value->first_name. " ".$value->last_name,

@@ -23,6 +23,7 @@ class CreateViolationReportsTable extends Migration
             $table->enum('status' , array('Pending','Completed'));
             $table->date('date_reported');
             $table->time('time_reported');
+            $table->string('school_year');
             $table->string('validity');
             $table->integer('reporter_id');
         });
