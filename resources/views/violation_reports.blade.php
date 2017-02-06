@@ -41,7 +41,7 @@
 
           <output name="v_reports_range">College:</output>
             <select class="form-control" id="college" name="college">
-              <option autofocus="" disabled selected value="">Select course</option>
+              <option autofocus="" selected value="">Select course</option>
               @foreach ($colleges as $college)
               <option value="{{ $college->id }}">{{$college->description}}</option>
               @endforeach
@@ -53,7 +53,7 @@
              <div class="col-md-2">
               <output name="v_reports_range">Course</output>
             <select class="form-control" id="course" name="course">
-              <option autofocus="" disabled selected value="">Select course</option>
+              <option autofocus="" selected value="">Select course</option>
               @foreach ($courses as $course)
               <option value="{{ $course->description }}" >{{$course->description}}</option>
               @endforeach
@@ -145,7 +145,7 @@
         <br><br>
         <div class="col-sm-12 text-center">
           <h5>Student Affair's Office</h5>
-          <h5>Violation Reports</h5>
+          <h5>Student Violation Reports</h5>
 
 
         </div>
@@ -165,7 +165,8 @@
            
             </div>
         <div class="form-group col-xs-6 text-right">   
-          <output id="date"></output>  
+          <output id="date"></output>
+          <output id="schoolyear"></output>  
         </div>
 
 
@@ -177,6 +178,7 @@
 
               <div class="col-sm-12 text-center">
                 <output id="report_type"></output>
+                <output id="report_group"></output>
 
               </div>
             </div>
@@ -194,7 +196,7 @@
 
  -->
             <br>
-            <table class="table table-striped table-bordered table-hover violation-reports-reports-DT DataTable" id="violation-reports-reports-DT" aria-describedby="DataTables_Table_0_info" role="grid" style="width: 100%;">
+            <table class="table table-striped table-bordered table-hover violation-reports-reports-DT DataTable" id="violation-reports-reports-DT" aria-describedby="DataTables_Table_0_info" role="grid" style="font-size: 10.2px; width: 100%;">
 
               <thead>
                 <tr>
@@ -263,16 +265,57 @@ $('#show_v_reports').click(function (e){
 e.preventDefault();
 
 
-$('#report_from').val("From: " + $('#v_reports_from').val());
-$('#report_to').val("To: " + $('#v_reports_to').val());
-$('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Offenses");
+if($('#v_reports_from').val() == ""  && $('#v_reports_to').val() == "")
+{
+  $('#report_from').val("");
+  $('#report_to').val("");
+  $('#report_type').val("List of "+$('select#v_reports_offense_level').val() +  " Offenses ");
+  if($('#course').val() != "")
+  {
+  $('#report_group').val($('select#course').val());
+  }
+  else if($('#college').val() != "")
+  {
+  $('#report_group').val($("select#college option:selected").text());
+  }
+    else if($('#college').val() == "")
+  {
+  $('#report_group').val("");
+  }
+      else if($('#course').val() == "")
+  {
+  $('#report_group').val("");
+  }
+  getReports();
 
-if ($('#v_reports_from').val() == ""  || $('#v_reports_to').val() == ""){
-	swal("Ooops!", "Please the select dates range", "warning");
 }
-else{
-	getReports();
-}
+
+else
+ {
+  $('#report_from').val("From: " + $('#v_reports_from').val());
+  $('#report_to').val("To: " + $('#v_reports_to').val());
+  $('#report_type').val("List of "+$('select#v_reports_offense_level').val() +  " Offenses ");
+  if($('#course').val() != "")
+  {
+  $('#report_group').val($('select#course').val());
+  }
+  else if($('#college').val() != "")
+  {
+  $('#report_group').val($("select#college option:selected").text());
+  }
+      else if($('#college').val() == "")
+  {
+  $('#report_group').val("");
+  }
+      else if($('#course').val() == "")
+  {
+  $('#report_group').val("");
+  }
+  getReports();
+ }
+
+
+
 
 
 });
@@ -280,7 +323,7 @@ else{
 $('#course').change(function (e){
 e.preventDefault();
 
-alert($('#course').val());
+// alert($('#course').val());
 
 
 });
@@ -288,7 +331,7 @@ alert($('#course').val());
 $('#college').change(function (e){
 e.preventDefault();
 
-alert($('#course').val());
+// alert($('#course').val());
 
 
 });
@@ -335,13 +378,21 @@ var v_reports_table = $('.violation-reports-reports-DT').DataTable({
               d.v_reports_offense_level = $('#v_reports_offense_level').val();
               d.v_reports_college = $('#college').val();
               d.v_reports_course = $('#course').val();
+              d.school_year = $('#school_year').val();
 
           },
 
 
 },
 "columns" : [
-{data : 'name'},
+
+   {data:"first_name",
+    "className":"left",
+    "render":function(data, type, full, meta){
+       return full.first_name + " " + full.last_name;
+    }
+   },
+// {data : 'first_name',},
 
 {data : 'course'},
 // {data : 'complainant'},

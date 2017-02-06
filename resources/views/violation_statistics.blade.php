@@ -103,7 +103,7 @@
                                       <br><br>
                                       <div class="col-sm-12 text-center">
                                         <h5>Student Affair's Office</h5>
-                                        <h5>Violation Reports</h5>
+                                        <h5>Violation Statistics</h5>
 
 
                                       </div>
@@ -123,7 +123,8 @@
 
 
                                       <div class="form-group col-xs-6 text-right">   
-                                       <output id="date"></output>  
+                                       <output id="date"></output>
+                                       <output id="schoolyear"></output>  
                                      </div>
                                    </div>
 
@@ -231,6 +232,7 @@ var v_stats_table = $('.violation-stats-DT').DataTable({
     data: function (d) {
       d.v_stats_from = $('#v_stats_from').val();
       d.v_stats_to = $('#v_stats_to').val();
+      d.school_year = $('#school_year').val();
     },
     // data : {month : current_date},
   },
@@ -247,7 +249,7 @@ var v_stats_table = $('.violation-stats-DT').DataTable({
 });
 
 
-
+$('#schoolyear').val("S.Y." + $('#school_year').val());
 
 $('#v_stats_range .input-daterange').datepicker({
   keyboardNavigation: false,
@@ -258,9 +260,17 @@ $('#v_stats_range .input-daterange').datepicker({
 
 $('#show_v_stats').click(function (e){
 
+
+if($('#v_stats_from').val() == ""  && $('#v_stats_to').val() == "")
+{
+  $('#report_from').val("");
+  $('#report_to').val("");
+}
+else 
+{
   $('#report_from').val("From: " + $('#v_stats_from').val());
   $('#report_to').val("To: " + $('#v_stats_to').val());
-
+}
   v_stats_table.ajax.reload();
         // getData();
 
@@ -293,6 +303,8 @@ $('#show_v_stats').click(function (e){
             data: {
              v_stats_from : $('#v_stats_from').val(),
              v_stats_to : $('#v_stats_to').val(),
+             school_year : $('#school_year').val(),
+
            },
          }).done(function(response){
           var items = (response.data);
@@ -332,6 +344,7 @@ $('#show_v_stats').click(function (e){
        }
 
      });
+
 
 
 

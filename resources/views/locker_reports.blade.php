@@ -4,7 +4,7 @@
 
 @section('header-page')
 <div class="row">
-	<div class="col-md-4">
+<!-- 	<div class="col-md-4">
 		<div class="form-group" id="locker_reports_range">
 			<output name="LAF_stats_range">Select date range:</output>
 
@@ -20,7 +20,7 @@
 			<br>
 			<button type="button" class="btn btn-w-m btn-primary" id="show_locker_reports">Show</button>
 		</div>
-	</div>
+	</div> -->
 
 
       							<div class="col-md-2">
@@ -47,17 +47,14 @@
 										     <div class="col-md-2">
         <div class="form-group" id="v_reports_range">
 
-                <output name="v_reports_range">School Year:</output>
-                <select name="school_year" id="school_year" class="form-control">
+                <label>School Year:</label>
+<!--                 <select name="school_year" id="school_year" class="form-control">
                   @foreach ($schoolyear as $schoolyear)
                   <option>{{$schoolyear->school_year }}</option>
                   @endforeach
-
-                  @foreach ($schoolyears as $schoolyear)
-                  <option>{{$schoolyear->school_year }}</option>
-                  @endforeach
-                  
-                </select> 
+                </select> -->
+                									<output id="school_year1" name="school_year1" class="form-control" autofocus="" aria-required="true"  >{{$schoolyear->school_year }}</output>
+									<input type="hidden" id="school_year" name="school_year" class="form-control" autofocus="" aria-required="true" value="{{$schoolyear->school_year }}"> 
 
         </div>
       </div>
@@ -155,9 +152,16 @@
 				</div>
 
 				<div class="form-group col-xs-6 text-right">   
-					<output id="date"></output>  
+					<output id="date"></output>
+					<output id="schoolyear"></output>    
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="col-sm-12 text-center">
+                    <output id="report_type"></output>
+                                        
+     		</div>
 
 
 			<br><br>
@@ -193,7 +197,7 @@
 
 							<!-- <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap"> -->
 
-								<table class="table table-striped table-bordered table-hover lockers1-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid" style="font-size: 11px; width: 100%;">
+								<table class="table table-striped table-bordered table-hover lockers1-DT dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid" style="font-size: 10.2px; width: 100%;">
 									<thead>
 
 										<th>Locker no</th>
@@ -434,6 +438,31 @@ $('#location_sort').change(function(){
 
 	$(document).ready(function(){
 
+
+
+
+
+		$('select#status_sort').change(function(e){
+
+
+$('#report_type').val("List of "+$('select#status_sort').val() + " Lockers");
+
+
+
+
+});
+
+				$('select#location_sort').change(function(e){
+
+
+    $('#report_type').val("List of "+$('select#status_sort').val() + " Lockers at "  +$(":selected",this).text() );
+
+
+
+
+});
+
+
 //  $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Reservations");
 
 //     $('select#school_year').change(function(e){   
@@ -462,6 +491,7 @@ var options = {year: "numeric", month: "long", day: "numeric"};
 var newdate = date.toLocaleDateString('en-US', options);
 $('#date').val(newdate);
 $('#schoolyear').val("S.Y." + $('#school_year').val());
+$('#report_type').val("List of "+$('select#status_sort').val() + " Lockers");
 
 
 

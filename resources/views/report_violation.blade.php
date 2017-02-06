@@ -119,7 +119,7 @@
 									</div>
 
 									<div class="panel-body">
-										<div class="col-md-6">
+										<div class="col-md-3">
 											<div class="form-group" id="violation_date_picker">
 												<label>Date Committed</label>
 												<div class="input-group date" id="data_1">
@@ -129,7 +129,7 @@
 											</div>
 										</div>
 
-										<div class="col-md-6">
+										<div class="col-md-3">
 											<label>Time Reported</label>
 											<div class="input-group clockpicker time_reported" data-autoclose="true">
 												<input type="text" class="form-control" value="" name="time_reported" id="time_reported">
@@ -137,6 +137,27 @@
 											</div>
 
 										</div>
+
+										<div class="col-md-6">
+						<div class="form-group">
+
+								<label>School Year</label>
+<!--                 <select name="school_year" id="school_year" class="form-control">
+                  @foreach ($schoolyear as $schoolyear)
+                  <option>{{$schoolyear->school_year }}</option>
+                  @endforeach
+
+                </select>  -->
+									<output id="school_year1" name="school_year1" class="form-control" autofocus="" aria-required="true"  >{{$schoolyear->school_year }}</output>
+									<input type="hidden" id="school_year" name="school_year" class="form-control" autofocus="" aria-required="true" value="{{$schoolyear->school_year }}">
+
+
+
+
+
+					</div>
+										</div>
+
 										<div class="col-md-12">
 											<div class="form-group" >
 

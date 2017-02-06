@@ -75,11 +75,11 @@
 </div>
 
  
-
+<div class="click2edit">
 <div class="row" id="report_content">
 
 <div class="col-lg-12">
-<div class="click2edit">
+
   
 
     
@@ -136,6 +136,17 @@
            </div>
           
         </div>
+
+         <div class="row">
+
+
+            <div class="col-sm-12 text-center">
+            <output id="report_type"></output>
+                                        
+             </div>
+         </div>
+
+
         <div class="row">
 
           <div class="col-md-12">
@@ -187,9 +198,11 @@ $(document).ready(function(){
 	var options = {year: "numeric", month: "long", day: "numeric"};
       var newdate = date.toLocaleDateString('en-US', options);
 // $('#report_from1').val("Report Type: Yearly");
-$('#report_type').val("List of Activities");
+$('#report_type').val("List of proposed activities");
 $('#report_to1').val(newdate);
 $('#report_to').val("S.Y." + $('#school_year').val());
+
+
 // var sy_id = $('#school_year').val();
 // var org_id = $('#organizationName').val();
 
@@ -210,7 +223,6 @@ var activities_table = $('.activities-DT').DataTable({
         d.sort_by = $('select#sort_by').val();
     },
 			},
-
 	"bPaginate" : false,
 	"bSort" : false,
 	"bFilter" : false,
@@ -235,21 +247,35 @@ var activities_table = $('.activities-DT').DataTable({
 			} else{
 				return '<p> Submitted </p>';
 			}
-		}
-}]
+		},
+}],
 });
 });
+
+
 $('select#school_year').change(function(e){
+
 	// $('.activities-DT').DataTable().draw();
 	$('.activities-DT').DataTable().ajax.url('/activities/ActivitiesByYear').load();
+	$('#report_to').val("S.Y." + $('#school_year').val());
 	$('#report_from1').val("");
 
 });
 
 $('select#sort_by').change(function(e){
+
+		if($('#sort_by').val() == 1)
+	{
+		$('#report_from').val("Status: Complete").val();
+	}
+	else if ($('#sort_by').val() == 0)
+	{
+		$('#report_from').val("Status: Incomplete").val();
+	}
+
 	// $('.activities-DT').DataTable().draw();
 	$('.activities-DT').DataTable().ajax.url('/activities/ActivitiesByYearAndOrgAndStatus').load();
-	$('#report_from1').val("");
+	
 
 });
 
@@ -497,6 +523,7 @@ e.preventDefault();
     </script>
 
     <style type = "text/css">
+
 
 /*.pic1{
 float:left;

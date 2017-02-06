@@ -60,7 +60,7 @@
 <div class="ibox float-e-margins">
   <div class="ibox-title">
 
-    <h5><b>Lost and Found Statistics</b></h5>
+    <h5><b>Lost and Found Reports</b></h5>
 
 
     <button type="button" class="btn btn-primary btn-xs m-l-sm pull-right" id="print">Print</button>
@@ -114,7 +114,7 @@
                                       <br><br>
                                       <div class="col-sm-12 text-center">
                                         <h5>Student Affair's Office</h5>
-                                        <h5>Lost and Found Reports and Statistics</h5>
+                                        <h5>Lost and Found Reports</h5>
 
 
                                       </div>
@@ -137,9 +137,20 @@
                                       </div>
 
                                       <div class="form-group col-xs-6 text-right">   
-                                        <output id="date"></output>  
+                                        <output id="date"></output>
+                                        <output id="schoolyear"></output>  
+
                                       </div>
 
+                                    </div>
+
+                                    <div class="row">
+
+
+                                      <div class="col-sm-12 text-center">
+                                        <output id="report_type"></output>
+                                        
+                                      </div>
                                     </div>
 
 
@@ -194,8 +205,7 @@
 
 
           </table> -->
-
-            <table class="table table-striped table-bordered table-hover lost-and-found dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid" >
+            <table class="table table-striped table-bordered table-hover lost-and-found DataTable" id="lost-and-found" aria-describedby="DataTables_Table_0_info" role="grid" style=" font-size: 10.2px;width: 100%;">
 
               <thead>
         
@@ -591,7 +601,14 @@ getLAFReports();
 
     $(document).ready(function(){
 
-//  $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Reservations");
+ $('#report_type').val("List of "+$('select#sort_by').val() + " Items");
+
+
+    $('select#sort_by').change(function(e){   
+    $('#report_type').val("List of "+$('select#sort_by').val() + " Reservations");
+
+
+  });
 
 //     $('select#school_year').change(function(e){   
 //     $('.activities-DT').DataTable().ajax.url('/activities/ActivitiesByYear').load();
