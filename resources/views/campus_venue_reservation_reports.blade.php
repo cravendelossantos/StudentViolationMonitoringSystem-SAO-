@@ -145,12 +145,12 @@
                             </div>
                           </div>
 
-                          
+                          <div class="click2edit">
 
                           <div class="row" id="report_content">
 
                             <div class="col-lg-12">
-                              <div class="click2edit">
+                              
                                 
 
                                 
@@ -227,7 +227,7 @@
 
           -->
           <br>
-          <table class="table table-striped table-bordered table-hover violation-reports-reports-DT1 DataTable" id="violation-reports-reports-DT1" aria-describedby="DataTables_Table_0_info" role="grid" style="width: 100%;">
+          <table class="table table-striped table-bordered table-hover violation-reports-reports-DT1 DataTable" id="violation-reports-reports-DT1" aria-describedby="DataTables_Table_0_info" role="grid" style=" font-size: 10.2px; width: 100%;">
 
             <thead>
               <tr>
@@ -481,6 +481,12 @@ e.preventDefault();
 
    $('select#v_reports_offense_level').change(function(e){   
     $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " Reservations");
+
+
+  });
+
+      $('select#venue').change(function(e){   
+    $('#report_type').val("List of "+$('select#v_reports_offense_level').val() + " reservations at "  +$('select#venue').val() );
 
 
   });
