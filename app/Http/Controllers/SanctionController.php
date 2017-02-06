@@ -119,7 +119,7 @@ class SanctionController extends Controller
         $new_cs->violation_id = $request['cs_violation_id'];
         $new_cs->date = Carbon::now();
         $new_cs->no_of_days = $request['cs_days'];
-        $new_cs->required_hours = $request['cs_hours'];
+        $new_cs->required_hours = ($request['cs_hours']*3600);
         $new_cs->student_id = $request['cs_modal_student_id'];
         $new_cs->save();
         

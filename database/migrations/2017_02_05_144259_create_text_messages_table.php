@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSmsInboxTable extends Migration
+class CreateTextMessagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,15 @@ class CreateSmsInboxTable extends Migration
      */
     public function up()
     {
-        Schema::create('sms_inbox', function (Blueprint $table) {
+        Schema::create('text_messages', function (Blueprint $table) {
             $table->increments('message_id');
             $table->timestamps();
+            $table->string('recipient');
             $table->longText('message');
-            $table->string('sender');
+            $table->enum('type', array('Manual', 'Violation Notification', 'Community Service Notification', 'Suspension Notification'));
+            $table->boolean('sent');
+            $table->date('date_sent');
+            $table->time('time_sent');
         });
     }
 
@@ -27,6 +31,6 @@ class CreateSmsInboxTable extends Migration
      */
     public function down()
     {
-        Schema::drop('sms_inbox');
+        Schema::drop('text_messages');
     }
 }

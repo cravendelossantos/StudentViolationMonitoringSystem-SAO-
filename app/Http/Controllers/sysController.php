@@ -18,6 +18,9 @@ use Yajra\Datatables\Facades\Datatables;
 use Image;
 use Hash;
 use App\Content;
+use App\Classes\Gammu;
+use Redirect;
+use App\TextMessage;
 
 class sysController extends Controller {
 	
@@ -421,11 +424,37 @@ $data = array(
 
     public function showSMS()
     {
-        return view('text_messaging');
+        $credits = $this->itexmoBalance();
+        $keys = DB::table('itexmo_key')->first();
+
+        return view('text_messaging',['credits' => $credits, 'keys' => $keys]);
     }
 
+    public function updateApiCode(Request $request)
+    {   
+        $messages = [
+            'api_code.required' => 'API Code is required',
+        ];
+        
+        $validator= Validator::make($request->all(),[
+            'api_code' => 'required',
+        ],$messages);
+    
+        if($validator->fails()){
+        
+            return Redirect::back()->withErrors($messages);
 
-    public function getussd(Request $request)
+        } else {
+       
+            $update = DB::table('itexmo_key')->where('id', $request['api_code_id'])
+            ->update(['api_code' => $request['api_code']]);
+            
+            return back()->with('api_code_response' , 'API Code Successfully Changed!');
+        }
+        
+    }
+
+    /*public function getussd(Request $request)
     {
         $ussd_code = $request['ussd_code'];
 
@@ -439,29 +468,107 @@ $data = array(
             return back()->with('ussd' , $e);
         }
         
-        /* $a = popen('gammu getussd *143*5*2#', 'r'); 
-        
+    }*/
 
-        while($b = fgets($a, 2048)) { 
-            
-            $message = $b."\n"; 
-             return back()->with('ussd' , $message);
-            ob_flush();flush(); 
-        } 
-        pclose($a); */
-        
+
+    public function compose(Request $request)
+    {
+        $_number = $request['mobile_number'];
+        $_message = $request['message'];
+        $_apikey = $request->input('api_key');
+        $message_type = "Manual";
+
+        if (strpos($request['mobile_number'] , '+63') !== false)
+        {
+            $_number = str_replace("+63", "0", $_number);          
+        }
+        $response = $this->sendSMS($_number,$_message,$_apikey);
+        return back()->with('response' , $response);
     }
 
 
-    public function sendSMS(Request $request)
+    public function sendSMS($_number,$_message,$_apikey,$message_type)
     {
-
+       
         
-        $_number = $request['mobile_number'];
-        $_message = $request['message'];
-        $_apikey = 'CRAVE936905_PWJDB';
+        $result = $this->itexmo($_number,$_message,$_apikey);
+        if ($result == ""){
+            echo "iTexMo: No response from server!!!
+            Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
+            Please CONTACT US for help. ";  
+        }else if ($result == 0){
 
-        $a = popen('gammu sendsms TEXT '.$_number.' -text "'.$_message.'"', 'r'); 
+            $response = "Message Successfully Sent!";
+            $is_sent = true;
+            $date_sent = Carbon::now()->format('Y-m-d');
+            $time_sent = Carbon::now()->format('h:i');
+
+            $new_message = new TextMessage();
+            $new_message->recipient = $_number;
+            $new_message->message = $_message;
+            $new_message->sent = $is_sent;
+            $new_message->type = $message_type;
+            $new_message->date_sent = $date_sent;
+            $new_message->time_sent = $time_sent;
+            $new_message->save();
+
+        }
+        else{
+
+            $is_sent = false;
+            $date_sent = "";
+            $time_sent = "";
+
+            switch ($result) {
+                case '1':
+                    $response = "Invalid number";
+                    break;
+                case '2':
+                    $response = "Number not Supported";
+                    break;
+                case '3':
+                    $response = "Invalid API Code";
+                    break;
+                case '4':
+                    $response = "Maximum Message per day reached.";
+                    break;
+                case '5':
+                    $response = "Maximum allowed characters for message reached. 
+";
+                    break;
+                case '6':
+                    $response = "System OFFLINE";
+                    break;
+                case '7':
+                    $response = "Your API Code is expired. Please go to iTexMo.com and purchase a new package.";
+                    break;
+                case '8':
+                    $response = "Server Error";
+                    // iTexMo Error. Please try again later. 
+                    break;
+                case '9':
+                    $response = "Invalid Function Parameters.";
+                    break;
+                case '10':
+                    $response = "Recipient's number is blocked due to FLOODING, message was ignored.";
+                    break;
+                case '11':
+                    $response = "Recipient's number is blocked temporarily due to HARD sending (after 3 retries of sending and message still failed to send) and the message was ignored. Try again after an hour.";
+                    break;
+                case '12':
+                    $response = "Invalid request. You can't set message priorities on non corporate API Codes";
+                    break;
+                default:
+                    $response = "Message Successfully Sent!";
+                    break;
+            }
+            //echo "Error Num ". $result . " was encountered!";
+        }
+
+        return $response;
+
+        //GAMMU   
+        /*$a = popen('gammu sendsms TEXT '.$_number.' -text "'.$_message.'"', 'r'); 
         while($b = fgets($a, 2048)) { 
             
             $message = $b."\n"; 
@@ -472,44 +579,76 @@ $data = array(
             ob_flush();flush(); 
         } 
         pclose($a); 
-        
+        */
      
-
-     /*   function itexmo($number,$message,$apicode){
-            $url = 'https://www.itexmo.com/php_api/api.php';
-            $itexmo = array('1' => $number, '2' => $message, '3' => $apicode);
-            $param = array(
-                'http' => array(
-                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method'  => 'POST',
-                    'content' => http_build_query($itexmo),
-                    ),
-                );
-            $context  = stream_context_create($param);
-            return file_get_contents($url, false, $context);
-
-        }
-
-
-
-
-
-        $result = itexmo($_number,$_message,$_apikey);
-        if ($result == ""){
-            echo "iTexMo: No response from server!!!
-            Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
-            Please CONTACT US for help. ";  
-        }else if ($result == 0){
-            echo "Message Sent!";
-        }
-        else{   
-            echo "Error Num ". $result . " was encountered!";
-        }*/
 
    }
 
+    public function showSMSLog()
+    {
+        $messages = TextMessage::all();
+        return view('sms_log',['messages' => $messages]);
+    }
 
-   
+    public function itexmo($number,$message,$apicode)
+    {
+        $url = 'https://www.itexmo.com/php_api/api.php';
+        $itexmo = array('1' => $number, '2' => $message, '3' => $apicode);
+        $param = array(
+                'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($itexmo),
+            ),
+        );
+        $context  = stream_context_create($param);
+        return file_get_contents($url, false, $context);
+
+    }
+
+    public function itexmoBalance()
+    {
+        $apicode = DB::table('itexmo_key')->first();
+        $url = 'https://www.itexmo.com/php_api/api.php';
+        $itexmo = array('4' => $apicode->api_code);
+        $param = array(
+            'http' => array(
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  => 'POST',
+            'content' => http_build_query($itexmo),
+            ),
+        );
+
+        $context  = stream_context_create($param);
+        $contents = @file_get_contents($url, false, $context);
+
+        if ($contents == false) {
+            return null;
+        }
+        else{
+            $credits = $contents;
+            return $credits;
+        }
+         
+        
+    }
+
+    public function itexmoStatus()
+    {
+      $apicode = 'JOHNA237118_FZX48';
+      $url = 'https://www.itexmo.com/php_api/serverstatus.php';
+      $itexmo = array('apicode' => $apicode);
+      $param = array(
+        'http' => array(
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  => 'GET',
+            'content' => http_build_query($itexmo),
+            ),
+        );
+      $context  = stream_context_create($param);
+      return file_get_contents($url, false, $context);
+    }   
+
 	public function showCommunityService()
     {
         return view('community_service');
@@ -520,6 +659,7 @@ $data = array(
     	$violation_table = DB::table('violations')->get();
         return view('violation', ['violationTable' => $violation_table ]);
     }
+
 	/*public function postViolation(Request $request)
 	{
 		$validator = Validator::make($request->all(),[

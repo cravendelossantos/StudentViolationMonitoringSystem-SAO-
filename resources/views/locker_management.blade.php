@@ -114,7 +114,31 @@
 </div>
 </div>
 
-<div id="locker_contract">
+
+<!-- 
+<div class="row" id="contract_content">
+	<div class="col-md-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-content">
+			<form method="POST" action="/saved" id="cms-form">
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<textarea name="contract-details" id="contract-details"></textarea>
+				<button type="submit">save</button>
+			</form>
+			</div>
+		</div>
+	</div>
+</div>
+ -->
+
+<div id="locker_contract" style="display: none;">
+	<div class="ibox float-e-margins">
+		<div class="ibox-content">
+			{!! $content->value !!}
+		</div>
+	</div>
+</div>
+<!-- <div id="locker_contract">
 <div class="ibox float-e-margins">
 	<div class="ibox-title">
 
@@ -128,161 +152,9 @@
 	</div>
 </div>
 
-</div>
-
-<div class="row" id="contract_content">
-
-	<div class="col-md-9 col-md-offset-2">
-		<div class="click2edit">
+</div> -->
 
 
-
-			<div class="ibox float-e-margins">
-				<div class="ibox-content p-xl">
-					<div class="row">
-					<b>F-SAO-004 (Copy)
-					<br>
-					
-					</div>
-					
-					<div class="row">
-						<div class="col-sm-12 text-center">
-							LYCEUM OF THE PHILIPPINES UNIVERSITY
-							<br>
-							Cavite Campus</b>
-							<br>
-							Gen. Trias, Cavite
-						</div>
-					</div>
-
-
-					<div class="row">
-
-						<br><br>
-						<div class="col-sm-12 text-center">
-							<h5>STUDENT AFFAIRS OFFICE</h5>
-							<h5><u>LOCKER CONTRACT</u></h5>
-
-
-						</div>
-
-
-						<br>
-					</div>
-
-
-					<div class="row" style="">
-						<form>
-						<center>
-							<label class="checkbox-inline">
-								<input type="checkbox" value="">Manila
-							</label>
-							<label class="checkbox-inline">
-								<input type="checkbox" value="">Makati
-							</label>
-							<label class="checkbox-inline">
-								<input type="checkbox" value="">Cavite
-							</label>
-							</center>
-						</form>
-						
-					</div>
-					<br>
-					<div class="row text-center" style="">
-
-					<p style="text-align: justify;">I _______________________________,__________________________ would like to rent one (1) locker unit on a<br>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Name of Student)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Course &amp; Year)<br>
-					( ) semestral ( ) yearly basis.<br><br>
-					I hereby agree to the following <i>terms and conditions:</i><br><br>
-
-					<ol type="1" style="text-align: justify; ">
-					<center>
-						<li>
-						<p style="text-align: justify;">I will pay the locker rental fee of ( ) two hundred pesos (P200) per semester / ( ) three hundred and fifty<br>
-						pesos (P350) per school year. In case I discontinue its use, it is understood that the rental fee is non-<br>
-						transferable and non-refundable.</p>
-						</li>
-
-						<li>
-						<p style="text-align: justify;">The locker unit assigned to me is in good state. I am therefore responsible for any damage, which may<br>
-						result from my negligence, deliberate destruction, vandalism or acts that I may be found to be at fault.<br>
-						Likewise, I am willing to abide the school's regulations against vandalism and destruction of school<br>
-						properties.</p>
-						</li>
-						
-						<li  style="text-align: justify;">
-						<p>I hereby acknowledge that any loss or property inside the rented locker unit is not the responsibility of<br>
-						the school. I shall provide the lock for the unit I am to occupy for its security. However, if an incident of<br>
-						loss occurs, I will inform the Student Affairs Office immediately so that proper investigation may be<br>
-						conducted.</p>
-						</li>
-
-						<li>
-							<p style="text-align: justify;">I will maintain the cleanliness and orderliness of my locker.</p>
-
-						</li>
-
-
-						<li>
-							<p style="text-align: justify;">I am to occupy only the unit designated to me. I will not switch my locker unless authorized by the<br>
-							Student Affairs Office.</p>
-						</li>
-
-						<li>
-							<p style="text-align: justify;">I will notify the Student Affairs Office immediately if I decide to discontinue the use of the locker unit<br>
-							assigned to me.</p>
-
-						</li>
-
-						<li>
-							<p style="text-align: justify;">Upon the expiration of this agreement, I agree completely and unconditionally to vacate the<br>
-							aforementioned unit without necessity of demand. Otherwise, my rented locker will be forced open and<br>
-							my personal belongings will be confiscated.</p>
-
-						</li>
-
-						<li>
-							<p style="text-align: justify;">Failure on my part to comply with ant of the <u><i><b>terms and conditions</b></i></u> stated herein may result in the<br>
-							termination of the contract even before the expiration date.</p>
-
-						</li>
-
-						<li>
-							<p style="text-align: justify;">The terms of this agreement will be for the _________________, terminating on___________.<br>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Sem. / SY)</p>
-						</li>
-
-						</center>
-					</ol>
-
-					</div>
-
-
-	<!-- 			<div class="pull-right">	
-					<div class="row">
-						<div class="col-md-offset-6">
-							<p>Conforme: ______________<br>
-							(Signature over printed name)</p>
-						</div>
-					</div>
-				</div>
-				<div class="">
-					<div class="row">
-						<div class="col-md-6">
-						Home Address___________________________________________________________________
-						</div>
-						<div class="col-md-6">
-						Locker No. _____________________________________________________
-						</div>
-					</div>
-				</div>		
- -->
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-</div>
 
 <div class="row">
 
@@ -443,25 +315,29 @@
 
 
 
-
+	<script src="/js/tinymce/js/tinymce/tinymce.min.js"></script>
+	<script src="/js/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
 
 
 	<script src="js/plugins/summernote/summernote.min.js"></script>
 	<script>
 
-		$(document).ready(function(){
+		$(document).ready(function(){ 
 
-			$('.summernote').summernote();
+		tinymce.init({
+			selector: "textarea",
+			plugins: [
+				"advlist lists textcolor colorpicker autoresize print",
+			],
+			toolbar: [ "print | undo redo | styleselect | fontselect | forecolor | fontsizeselect",
+				"bold italic underline | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist",
+			],
+			fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt 40pt',
+			menubar: 'file'
+		});
 
 		});
-		var edit = function() {
-			$('.click2edit').summernote({focus: true});
-		};
-		var save = function() {
-            var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
-            $('.click2edit').destroy();
-        };
-
+		
         //$('#locker_contract').hide();
 
         $('#print').click(function(e){
@@ -478,7 +354,7 @@
     </script>
 
     <style>
-
+    	
     	.locker-damaged{
     		height: 120px;
     		width: 75px;

@@ -1379,10 +1379,19 @@ $('#locker_update').click(function(e){
 		//locker_contract, return occupied data from the backend and open the contract div
 		$('#occupancy_div').hide();
 		$('#lockers_modal').modal('hide');
-		$('form#locker_status_update')[0].reset();
-		swal("Success", "Locker Update!", "success");
+		
+		swal("Success", "Locker Updated!", "success");
 		$('#location_sort').prop('selectedIndex', 0);
 		$('#status_sort').prop('selectedIndex', 0);
+		//printlockercontract
+		if (data['occupied'] == true)
+		{
+			$('#locker_contract').show();
+			$('#c_fname').html($('#m_lessee_name').val());
+
+		}
+		$('form#locker_status_update')[0].reset();
+
 		lockers_table.ajax.reload();
 
 	});

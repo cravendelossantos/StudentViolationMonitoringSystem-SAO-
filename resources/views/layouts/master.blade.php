@@ -310,11 +310,25 @@
 				</ul>
 			</li>
 
+			<li>
+				<a href="#"><i class="fa fa-mobile"></i> <span class="nav-label ng-binding">Text Messaging</span><span class="fa arrow"></span></a>
+				<ul class="nav nav-second-level collapse">
 
 
-							<li >
-								<a href="/text-messaging"><i class="fa fa-mobile"></i> <span class="nav-label ng-binding">Text Messaging</span> </a>
-							</li>
+					<li ui-sref-active="active">
+						<a href="/text-messaging/compose"><i class=""></i> <span class="nav-label ng-binding">Compose</span> </a>
+
+					</li>
+
+					<li ui-sref-active="active">
+						<a href="/text-messaging/log"><i class=""></i> <span class="nav-label ng-binding"></span>Message Log</a>
+
+					</li>
+					
+				</ul>
+			</li>
+
+						
 
 							<li>
 								<a href="#"><i class="fa fa-exchange"></i> <span class="nav-label ng-binding">Import/Export Records</span><span class="fa arrow"></span></a>

@@ -21,6 +21,7 @@ use App\Course;
 use App\Complainant;
 use Auth;
 
+
 class ReportViolationController extends Controller
 {
   public function __construct()
@@ -309,9 +310,30 @@ class ReportViolationController extends Controller
               $to = Carbon::parse($to['start']);*/
 
               $validity = $from . " " . $to;
+              $notification = "No message request";
 
             }
             elseif ($request['offense_level'] == 'Serious' || $request['offense_level'] == 'Very Serious') {
+
+              //SEND NOTIF
+              $student = Student::where('student_no', $request['student_number'])->first();
+              $api_key = DB::table('itexmo_key')->first();
+              $message_type = "Violation Notification";
+              $guardian_number = $student->guardian_contact_no;
+
+
+
+              $message = "From LPU Cavite Student Affairs Office\r\n"."\r\nWe would like to inform you that your son/daughter ".$student->first_name.' '.$student->last_name." has commited a ".$request['offense_level']." violation. Please visit our office and talk about your concerns. Thank you\r\n";
+        
+    
+            if (strpos($guardian_number, '+63') !== false)
+            {
+              $guardian_number = str_replace("+63", "0", $guardian_number);          
+            }
+          
+              
+              $notification = app('App\Http\Controllers\sysController')->sendSMS($guardian_number,$message,$api_key->api_code,$message_type);
+              
               $validity = '';
             }
 	       
@@ -355,28 +377,11 @@ class ReportViolationController extends Controller
 
 
 
-            //sendSMS
-            //$a = popen('gammu sendsms TEXT '.$_number.' -text "'.$_message.'"', 'r'); 
-
-            // $_number = $request['guardian_contact_no'];
-            // $_message = 'hahaha';
             
-
-            // $a = popen('gammu sendsms TEXT '.$_number.' -text "' .$_message. '"', 'r'); 
-            
-            // while($b = fgets($a, 2048)) { 
-
-            //   $message = $b."\n"; 
-            //   if (strpos($message, 'OK') !== false){
-            //     $message = 'Message Sent!';
-            //   return Response::json(['success' => true, 'response' => ++$id, 'message' => $message], 200);
-            //   }
-            //   return Response::json(['success' => false, 'errors' => $message], 400);
-            //   ob_flush();flush(); 
-            // } 
             // pclose($a); 
 
-             return Response::json(['success' => true, 'response' => ++$id], 200);
+
+            return Response::json(['success' => true, 'response' => ++$id, 'notification' => $notification, 'message' => $message], 200);
             
 		      
 

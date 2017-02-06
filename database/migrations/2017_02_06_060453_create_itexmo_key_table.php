@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSmsOutbox extends Migration
+class CreateItexmoKeyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,10 @@ class CreateSmsOutbox extends Migration
      */
     public function up()
     {
-        Schema::create('sms_inbox', function (Blueprint $table) {
+        Schema::create('itexmo_key', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->longText('value');
-            $table->string('page');
+            $table->string('api_code');
         });
     }
 
@@ -27,6 +26,6 @@ class CreateSmsOutbox extends Migration
      */
     public function down()
     {
-        Schema::drop('sms_inbox');
+        Schema::drop('itexmo_key');
     }
 }

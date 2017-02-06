@@ -5,7 +5,60 @@
 @section('header-page')
 <div class="col-md-12">
 	<h1>Send a Text Message</h1>
-	<form action="/modem-test" method="get">
+
+	<hr>	
+	
+	@if (count($errors) > 0)
+    <div class="alert alert-danger">
+        
+            @foreach ($errors->all() as $error)
+                {{ $error }}
+            @endforeach
+        
+    </div>
+	@endif
+
+	@if ($message = Session::get('api_code_response'))
+		<div class="alert alert-success" role="alert">
+			{{ Session::get('api_code_response') }}
+		</div>
+	@endif
+
+	<div class="form-group pull-right">
+		<form action="/text-messaging/api_code/update" method="POST">
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<label>API Code</label>
+				
+				<br>
+
+				<div class="input-group" style="width: 300px;">
+					<input type="hidden" name="api_code_id" value="{{ $keys->id }}">
+					<input type="text" name="api_code" class="form-control" placeholder="Your API Code" value="{{ $keys->api_code }}">
+					<span class="input-group-btn">
+						<button class="btn btn-primary" type="submit">Save</button>
+					</span>
+				</div>
+				<!-- <input type="text" name="" class="form-control pull-right" value="">
+			<input type="submit"  class="pull-right btn btn-sm btn-primary" value="Save"> -->
+		</form>		
+	</div>
+	
+	<div class="form-group">
+		@if (count($credits) == null)
+			<label id="available-credits" style="color: red;">Failed to communicate with the SMS server. Please check your connection</label>
+		@else
+			<label><h3>Available Credits:</label>
+			<label id="available-credits" style="color: green;"> {{ $credits }} </h3></label>
+		@endif
+		<br>
+		<a class="btn btn-success btn-rounded btn-sm" href="https://www.itexmo.com/Developers/packages/index.php"><i class="fa fa-money"></i>&nbsp;Buy package from iTexMo.com</a>
+	</div>
+
+
+	
+	
+
+	<!-- <form action="/modem-test" method="get">
 	<div class="form-group">
 	<button class="btn btn-primary">Test Modem Connection</button>
 	</div>
@@ -15,7 +68,7 @@
 	<div class="form-group">
 	<button class="btn btn-primary">Device Status</button>
 	</div>
-	</form>
+	</form> -->
 </div>
 
 @endsection
@@ -26,7 +79,6 @@
 
 	<div class="col-md-12 animated fadeInRight">
 		<div class="ibox float-e-margins">
-
 
 			<div class="ibox-title">
 				<h5>Compose a message</h5>
@@ -42,6 +94,7 @@
 
 				<form action="/text-messaging/send" method="POST" id="text-messaging-form">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input type="hidden" name="api_key" value="{{ $keys->api_code }}">
 					<div class="form-group">
 						<label>Mobile No.</label>
 						<input type="text" value="" name="mobile_number" id="mobile_number" class="form-control" data-role="tagsinput" >
@@ -68,39 +121,7 @@
 </div>
 
 
-<!-- 
-<div class="row">
 
-	<div class="col-md-6 animated fadeInRight">
-
-		<div class="panel panel-primary">
-			<div class="panel-heading">USSD Code Dialer</div>
-			<div class="panel-body">
-				@if ($message = Session::get('ussd'))
-				<div class="alert alert-info" role="alert">
-					{{ Session::get('ussd') }}
-				</div>
-				@endif
-
-				<form method="POST" action="/getussd">
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<div class="form-group ">
-						<label>Enter USSD Code</label>
-						<input type="text" value="" name="ussd_code" id="ussd_code" class="form-control" placeholder="ex. *143*5*2#" >
-					</div>
-					<div class="form-group">	
-						<button class="btn btn-w-m btn-primary" id="send_btn" type="submit">
-							<span class="glyphicon glyphicon-earphone"></span>&nbsp;<strong>Dial</strong>
-						</button>
-					</form>
-				</div>
-
-			</div>
-
-			
-		</div>
-	</div>
- -->
 
 
 <style>

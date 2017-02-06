@@ -13,6 +13,7 @@ use App\SchoolYear;
 use Response;
 use App\LockerLocation;
 use Auth;
+use App\Content;
 
 class LockerManagementController extends Controller
 {
@@ -23,12 +24,12 @@ class LockerManagementController extends Controller
 
     public function showLockers()
     {
-
+      $content = Content::where('page', 'locker contract')->first();
 
     	$dates = SchoolYear::all();
       $locations = LockerLocation::all();
 
-     return view('locker_management',[ 'dates' => $dates, 'locations' => $locations]);
+     return view('locker_management',[ 'dates' => $dates, 'locations' => $locations, 'content' => $content]);
    }
 
    public function showLockersTable(Request $request)
@@ -129,22 +130,23 @@ class LockerManagementController extends Controller
 public function updateLocker(Request $request)
 {
 
-   $contract_dates = SchoolYear::where('id' , $request['contract'])->first();
+  $contract_dates = SchoolYear::where('id' , $request['contract'])->first();
 
- $validator = Validator::make($request->all(),[
+  $validator = Validator::make($request->all(),[
   'm_update_status' => 'required',
   ]);
 
- if ($validator->fails()) {
-  return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
+  if ($validator->fails()) 
+  {
+    return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
+  }
 
-}
-
-else{
+  else
+  {
 
   $update_status = $request['m_update_status'];
-  if ($update_status == 'Occupied') {
-
+  if ($update_status == 'Occupied')
+  {
     $messages = [
     'm_lessee_id.required' => 'The Lessee ID is required.',
     'm_lessee_id.unique' => 'This Lessee already has a contract',
@@ -155,56 +157,52 @@ else{
     ];
 
 
-    $validator = Validator::make($request->all(),[
-      'm_lessee_name' => 'required|string|min:4',
-      'm_lessee_id' =>  array('required', 'regex:/^[0-9A-Za\s-]+$/', 'unique:lockers,lessee_id'),
-      'contract' => 'required',
-
-      ],$messages);
+  $validator = Validator::make($request->all(),[
+    'm_lessee_name' => 'required|string|min:4',
+    'm_lessee_id' =>  array('required', 'regex:/^[0-9A-Za\s-]+$/', 'unique:lockers,lessee_id'),
+    'contract' => 'required',
+    ],$messages);
 
     $locker_status = Locker::where('locker_no', $request['_m_locker_no'])->first();
 
-    if ($validator->fails()) {
+    if ($validator->fails()) 
+    {
       return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
-
-    }else {
-
-      if ($locker_status->status == 'Occupied'){
-       $errors= ['errors' => 'The selected locker is already occupied'];
-       return Response::json(['success'=> false, 'errors' => $errors],400); 
-     }else {
-      
+    }
+    else 
+    {
+      if ($locker_status->status == 'Occupied')
+      {
+        $errors= ['errors' => 'The selected locker is already occupied'];
+        return Response::json(['success'=> false, 'errors' => $errors],400); 
+      }
+      else 
+      {
       if ($contract_dates->end <= Carbon::now()->format('Y-m-d')){
         $errors= ['errors' => 'The dates in selected contract already ended'];
-       return Response::json(['success'=> false, 'errors' => $errors],400); 
-      } else {
+        return Response::json(['success'=> false, 'errors' => $errors],400); 
+      }
+      else 
+      {
+        
+      $update_occupied = DB::table('lockers')->where('locker_no' , $request['_m_locker_no'])
+      ->update(['status' => $request['m_update_status'], 'lessee_name' => ucwords($request['m_lessee_name']), 'lessee_id' => $request['m_lessee_id'], 'start_of_contract' => $contract_dates->start, 'end_of_contract' => $contract_dates->end , 'updated_by' => Auth::user()->id
+      ]);
 
-       $update_occupied = DB::table('lockers')->where('locker_no' , $request['_m_locker_no'])
-       ->update(['status' => $request['m_update_status'], 'lessee_name' => ucwords($request['m_lessee_name']), 'lessee_id' => $request['m_lessee_id'], 'start_of_contract' => $contract_dates->start, 'end_of_contract' => $contract_dates->end , 'updated_by' => Auth::user()->id
-        ]);
+      return Response::json(['success'=> true, 'response' => $update_occupied, 'occupied' => true],200); 
+    }
+  }     
 
-        return Response::json(['success'=> true, 'response' => $update_occupied],200); 
-       }
+  }  
 
+    }
+    else
+    {
+      $new = DB::table('lockers')->where('locker_no' , $request['_m_locker_no'])->update(['status' => $request['m_update_status'],  'updated_by' => Auth::user()->id]);
+      return Response::json(['success'=> true, 'response' => $new],200); 
 
-     }     
-
-
-
- }  
-
-       
-
-
-
-
-}
-else{
- $new = DB::table('lockers')->where('locker_no' , $request['_m_locker_no'])->update(['status' => $request['m_update_status'],  'updated_by' => Auth::user()->id]);
-   return Response::json(['success'=> true, 'response' => $new],200); 
-
-}
-}
+    }
+  }
  
 }
 

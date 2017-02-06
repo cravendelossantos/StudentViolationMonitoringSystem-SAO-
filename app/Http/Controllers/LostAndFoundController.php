@@ -12,8 +12,6 @@ use DateTime;
 use Validator;
 use Auth;
 use Yajra\Datatables\Facades\Datatables;
-use Khill\Lavacharts\Lavacharts;
-use Lava;
 use Response;
 
 class LostAndFoundController extends Controller
@@ -165,34 +163,6 @@ class LostAndFoundController extends Controller
 
 	public function showLostAndFoundReports(Request $request)
 	{	
-
-	/*	$item = LostAndFound::all()->count();
-
-
-	$lava = new Lavacharts; // See note below for Laravel
-
-	$reasons = Lava::DataTable();
-
-	$reasons->addStringColumn('Reasons')
-	->addNumberColumn('Percent')
-	->addRow(['Check Reviews', 5])
-	->addRow(['Watch Trailers', 8])
-	->addRow(['See Actors Other Work', 5])
-	->addRow(['Settle Argument', 73]);
-
-	Lava::PieChart('IMDB', $reasons, [
-
-		'height' => 500,
-		'title'  => '',
-		'is3D'   => true,
-		'slices' => [
-			['offset' => 0.2],
-			['offset' => 0.25],
-			['offset' => 0.3]
-		]
-		]);
-*/
-
 		return view('lost_and_found_reports');
 	}
 

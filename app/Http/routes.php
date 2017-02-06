@@ -28,11 +28,6 @@ Route::get('/settings/dates/school-year/set' , 'sysController@getDateSettings');
 Route::post('/settings/dates/school-year/set' , 'sysController@postDateSettings');
 Route::post('/settings/show/school-years/' , 'sysController@showSchoolYears');
 
-Route::get('/try', function(){
-	$pdf = PDF::loadView('loginv2');
-	return $pdf->download('invoice.pdf');
-});
-
 });
 
 //Admin route group
@@ -299,10 +294,13 @@ Route::get('/settings/locker-locations/add' , 'LockerManagementController@getLoc
 Route::post('/settings/locker-locations/add' , 'LockerManagementController@postLockerLocations');
 
 //SMS
-Route::get('/text-messaging', 'sysController@showSMS');
-Route::post('/text-messaging/send', 'sysController@sendSMS');
+Route::get('/text-messaging/compose', 'sysController@showSMS');
+Route::post('/text-messaging/send', 'sysController@compose');
+Route::get('/text-messaging/server-status' , 'sysController@itexmoStatus');
+Route::post('/text-messaging/api_code/update' , 'sysController@updateApiCode');
 
-Route::post('/getussd' , 'sysController@getussd');
+Route::get('/text-messaging/log' , 'sysController@showSMSLog');
+/*Route::post('/getussd' , 'sysController@getussd');
 
 Route::get('/modem-test', function(){
 	$a = popen('gammu identify', 'r');  
@@ -321,7 +319,7 @@ Route::post('/modem-info', function(){
 		ob_flush();flush(); 
 	} 
 	pclose($a); 
-});	
+});	*/
 
 
 });
