@@ -4,12 +4,8 @@
 
 @section('header-page')
 
-
-
-
 <div class="row">
 	<div class="col-lg-12">
-
 
 		<div class="widget style1 animated fadeInRight">
 			
@@ -50,24 +46,18 @@
 	<div class="col-lg-12">
 		<div class="ibox float-e-margins">
 			<div class="ibox-content animated fadeInUp">
+			
+			@if (empty($content->value))
+			<a href="/content-management">Edit page content</a>
+			
+			@else
 			{!! $content->value !!}
+
+			@endif
 			</div>
 		</div>
 	</div>
 </div>		
 
-
-
-
-<script src="/js/tinymce/js/tinymce/tinymce.min.js"></script>
-
-<script>
-	tinymce.init({ 
-		selector:'textarea',
-		plugins: "textcolor colorpicker",
-  		toolbar: "forecolor backcolor",
-  		menubar: false
-	});
-</script>
 @endsection
 

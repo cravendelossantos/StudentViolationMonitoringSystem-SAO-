@@ -161,8 +161,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
 		App\Providers\CheckVenueAvailability::class,
-        Illuminate\Notifications\NotificationServiceProvider::class,
-        NotificationChannels\Gammu\GammuServiceProvider::class,
+    
     ],
 
     /*

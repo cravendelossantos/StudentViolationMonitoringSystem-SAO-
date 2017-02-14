@@ -205,7 +205,15 @@
 
 
 					<li ui-sref-active="active" >
-						<a href="/sanctions"><i class="fa fa-desktop"></i> <span class="nav-label ng-binding" >Sanctions Monitoring</span></a>
+						<a href="/sanctions"><i class="fa fa-desktop"></i> <span class="nav-label ng-binding" >Sanctions</span><span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+								<li ui-sref-active="active" >
+									<a href="/sanctions"><i class=""></i> <span class="nav-label ng-binding"> Sanctions Monitoring</span> </a>
+								</li>
+								<li ui-sref-active="active" >
+									<a href="/sanctions/reports"><i class=""></i> <span class="nav-label ng-binding"> Reports</span> </a>
+								</li>
+							</ul>
 					</li>
 				<!-- 		<li>
 							

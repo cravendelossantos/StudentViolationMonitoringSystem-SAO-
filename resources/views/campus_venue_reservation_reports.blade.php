@@ -38,7 +38,7 @@
         <select class="form-control" name="v_reports_offense_level" id="v_reports_offense_level">
           <option value="">All</option>
           <option value="Reserved">Reserved</option>
-          <option value="Banned">Banned</option>
+          <option value="Banned">Cancelled</option>
           <option value="OnProcess">OnProcess</option>
         </select>
 
@@ -66,18 +66,18 @@
         <output name="Omonth">Month</output>
         <select class="form-control" name="month" id="month">
           <option value="">Choose</option>
-          <option value="Reserved">January</option>
-          <option value="Banned">February</option>
-          <option value="Banned">March</option>
-          <option value="Banned">April</option>
-          <option value="Banned">May</option>
-          <option value="Banned">June</option>
-          <option value="Banned">July</option>
-          <option value="Banned">August</option>
-          <option value="Banned">September</option>
-          <option value="Banned">October</option>
-          <option value="Banned">November</option>
-          <option value="OnProcess">December</option>
+          <option value="01">January</option>
+          <option value="02">February</option>
+          <option value="03">March</option>
+          <option value="04">April</option>
+          <option value="05">May</option>
+          <option value="06">June</option>
+          <option value="07">July</option>
+          <option value="08">August</option>
+          <option value="09">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
         </select>
 
                   <label>School Year</label>
@@ -360,6 +360,7 @@ e.preventDefault();
           d.v_reports_offense_level = $('#v_reports_offense_level').val();
           d.school_year = $('#school_year').val();
           d.venue = $('#venue').val();
+          d.month = $('#month').val();
         },
 
       },
