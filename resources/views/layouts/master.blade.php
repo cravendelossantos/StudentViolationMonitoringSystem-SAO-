@@ -183,7 +183,7 @@
 					@section('side-bar')
 
 					<li >
-						<a href="/index"><i class="fa fa-home"></i> <span class="nav-label ng-binding">Home</span> </a>
+						<a href="/home"><i class="fa fa-home"></i> <span class="nav-label ng-binding">Home</span> </a>
 					</li>
 					<li>
 						<a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label ng-binding" > Students Violation Management</span><span class="fa arrow"></span></a>
