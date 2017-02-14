@@ -51,17 +51,18 @@ class SanctionController extends Controller
     {
        
         $sanctions_student = ViolationReport::select('*')
-        ->join('students', 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations', 'violation_reports.violation_id', '=', 'violations.id')->where('current_status' , 'Active');
+        //->join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
+        ->join('violations', 'violation_reports.violation_id', '=', 'violations.id');
                                                
 
         return Datatables::of($sanctions_student)
             ->filter(function ($query) use ($request) {
-                if ($request->has('sanction_student_no') and $request->has('v_reports_offense_level')) {
-                    $query->where('student_no', 'like', "%{$request->get('sanction_student_no')}%")->where('violation_reports.offense_level' , $request['v_reports_offense_level']);
+                if ($request->has('sanction_student_no') and $request->has('v_reports_offense_level')){
+                    $query->where('student_id', 'like', "%{$request->get('sanction_student_no')}%")->where('violation_reports.offense_level' , $request['v_reports_offense_level']);
+                }else{
+                    $query->where('student_id', 'like', "%{$request->get('sanction_student_no')}%");
                 }
-                elseif ($request->has('sanction_student_no')) {
-                    $query->where('student_no', 'like', "%{$request->get('sanction_student_no')}%");
-                }
+                
 
             })
             ->make(true);
@@ -143,6 +144,8 @@ class SanctionController extends Controller
         $new_cs->student_id = $request['cs_modal_student_id'];
         $new_cs->save();
         
+
+        ViolationReport::where('id',$request['suspension_violation_id'])->update(['status' => 'On Going']);
         return Response::json(['success' => true, 'response' => $new_cs], 200);
     }
 
@@ -213,6 +216,7 @@ class SanctionController extends Controller
             $suspend->student_id = $request['_suspension_student_no'];
             $suspend->save();
 
+            ViolationReport::where('rv_id',$request['suspension_violation_id'])->update(['status' => 'On Going']);
             return Response::json(['success' => true, 'response' => $suspend], 200);
         }
         else if ($request['suspension_exclusion'] == 'Exclude'){
@@ -225,7 +229,7 @@ class SanctionController extends Controller
             return Response::json(['success' => true, 'response' => $exclusion], 200);
         }
 
-
+        
         
     }
 

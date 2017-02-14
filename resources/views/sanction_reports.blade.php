@@ -266,8 +266,8 @@ function getStudentReports(){
       type: 'POST',
       data: function (d) {
         d.sanction_student_no = $('input[name=sanction_student_no]').val();
-        d.v_reports_offense_level = $('select[v_reports_offense_level]').val();
-        
+        d.v_reports_offense_level = $('#v_reports_offense_level').val();
+        console.log(v_reports_offense_level);
       }
     },
 
