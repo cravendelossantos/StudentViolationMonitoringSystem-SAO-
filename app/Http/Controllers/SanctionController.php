@@ -13,6 +13,7 @@ use App\CommunityService;
 use Carbon\Carbon;
 use App\Suspension;
 use App\exclusion;
+use App\SuspensionLog;
 use DB;
 
 class SanctionController extends Controller
@@ -28,12 +29,26 @@ class SanctionController extends Controller
     	return view('sanction_monitoring');
     }
 
-  
-    public function searchStudent(Request $request)
+    public function showSanctionsReports()
     {
 
-          
+        $current_time = Carbon::now()->format('Y-m-d');
 
+
+        $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
+
+        $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
+
+
+        $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
+
+
+
+        return view('sanction_reports', ['schoolyears' => $schoolyears,'schoolyear' => $schoolyear]);
+    }
+
+    public function searchStudent(Request $request)
+    {
        
         $sanctions_student = ViolationReport::select('*')
         ->join('students', 'violation_reports.student_id' , '=' , 'students.student_no')->join('violations', 'violation_reports.violation_id', '=', 'violations.id')->where('current_status' , 'Active');
@@ -41,11 +56,16 @@ class SanctionController extends Controller
 
         return Datatables::of($sanctions_student)
             ->filter(function ($query) use ($request) {
-                if ($request->has('sanction_student_no')) {
+                if ($request->has('sanction_student_no') and $request->has('v_reports_offense_level')) {
+                    $query->where('student_no', 'like', "%{$request->get('sanction_student_no')}%")->where('violation_reports.offense_level' , $request['v_reports_offense_level']);
+                }
+                elseif ($request->has('sanction_student_no')) {
                     $query->where('student_no', 'like', "%{$request->get('sanction_student_no')}%");
                 }
+
             })
             ->make(true);
+
     }
 
     public function showStudentViolations(Request $request)
@@ -246,25 +266,177 @@ class SanctionController extends Controller
 
 
   public function getSuspensionUpdate(Request $request)
-  {
+  { 
+       $dates = explode("," , $request['all_suspension_dates']);
 
-       $validator = Validator::make($request->all(),[
-            'suspension_status' => 'required',                   
+
+       $validator = Validator::make($request->all(),[                   
+            '_suspension_log_suspension_id' => 'required',
+           
+           
         ]);
 
         if ($validator->fails()) {
-            return Response::json(['success'=> false, 'errors' =>$validator->getMessageBag()->toArray()],400); 
+            return Response::json(['success'=> false, 'dates' => $dates, 'errors' =>$validator->getMessageBag()->toArray()],400); 
           
         }
-  }
+        else
+        {
+  
+            $old_records = SuspensionLog::select('day')->where('suspension_id', $request['_suspension_log_suspension_id'])->get();
+
+
+            if ($old_records->isEmpty()) {     
+               
+
+            } else {
+
+            foreach ($old_records as $old_record) {
+                //from db
+             $old_dates[] =  $old_record->day;
+
+            }
+
+
+            foreach ($dates as $date) {
+                $days[] = $date; 
+                if ($date > Carbon::now()) {
+                    $message = ['msg' => 'Please select dates before '.Carbon::tomorrow()->format('Y-m-d')]; 
+                    return Response::json(['success'=> false, 'errors' => $message],400); 
+                }        
+            }
+
+
+            $result = array_intersect($days, $old_dates);
+
+
+            foreach ($result as $each_result) {
+                $same_days[] = $each_result;
+            }
+
+            if (count($result) > 0){
+                //parehas lahat
+                $message = ['msg' => 'Dates already exist in the selected suspension:', 'dates' => $same_days, ]; 
+            return Response::json(['success'=> false, 'result' => $result, 'errors' => $message],400); 
+
+            } 
+            
+        }
+    }
+}
 
   public function postSuspensionUpdate(Request $request)
   {
+    $dates = explode("," , $request['all_suspension_dates']);
+    $days_count = count($dates);
 
-    $status = Suspension::where('id' , $request['suspension_id'])
-                                    ->update(['status' => $request['suspension_status'],
-                                            ]);
 
-        return Response::json(['success' => true, 'response' => $status], 200);
+
+            $old_records = SuspensionLog::select('day')->where('suspension_id', $request['_suspension_log_suspension_id'])->get();
+
+            if ($old_records->isEmpty()) {
+                //insert with new dates, walang existing eh
+                
+                  foreach ($dates as $date) {
+                    
+                    $new_dates[] = $date;
+                    $new_suspension_log = new SuspensionLog();
+                    $new_suspension_log->day = Carbon::parse($date)->format('Y-m-d');
+                    $new_suspension_log->suspension_id = $request['_suspension_log_suspension_id'];
+                    $new_suspension_log->student_id = $request['_suspension_log_student_no'];
+                    $new_suspension_log->save();
+    
+                }
+
+                
+    
+            } else {
+
+            
+                //compare dates
+            foreach ($old_records as $old_record) {
+                //from db
+             $old_dates[] =  $old_record->day;
+
+            }
+
+            foreach ($dates as $date) {
+                $days[] = $date;
+            }
+
+            $result = array_intersect($days, $old_dates);
+            $different_days = array_diff($days, $old_dates);
+
+            foreach ($result as $each_result) {
+                $same_days[] = $each_result;
+            }
+
+            if (count($result) > 0){
+                //parehas lahat
+                $message = ['msg' => 'Dates already exist in the selected suspension:', 'dates' => $same_days, ]; 
+            return Response::json(['success'=> false, 'result' => $result, 'errors' => $message],400); 
+
+            } 
+            else
+            {
+                foreach ($different_days as $different_day) {
+        
+                    $new_dates[] = $different_day;
+                    $new_suspension_log = new SuspensionLog();
+                    $new_suspension_log->day = Carbon::parse($different_day)->format('Y-m-d');
+                    $new_suspension_log->suspension_id = $request['_suspension_log_suspension_id'];
+                    $new_suspension_log->student_id = $request['_suspension_log_student_no'];
+                    $new_suspension_log->save();
+    
+                }
+
+                
+            }
+}
+            //check days less than today and minus it to total days
+            $today = Carbon::now();    
+
+            //new dates deduct sa total sus.days
+
+
+  /*          $past_dates = SuspensionLog::select('day')
+                ->where('suspension_id', $request['_suspension_log_suspension_id'])
+                ->where('day','<=', $today)
+                ->groupBy('day')
+                ->get()
+                ->count();  */     
+
+            $total_dates = Suspension::select('suspension_days')
+                ->where('id', $request['_suspension_log_suspension_id'])->first();
+
+
+            //check total
+            
+           // $past_dates_count  = count($past_dates);       
+            $days_update = $total_dates['suspension_days'] - count($new_dates);
+
+            if ($days_update  <= 0){
+                $update_status = Suspension::where('id', $request['_suspension_log_suspension_id'])
+                    ->update(['status' => 'Completed', 'suspension_days' => 0]);
+                ViolationReport::where('rv_id' , $request['_suspension_log_violation_id'])
+                    ->update(['status' => 'Completed']);
+
+            } else {
+                $update_status = Suspension::where('id', $request['_suspension_log_suspension_id'])
+                    ->update(['status' => 'On Going', 'suspension_days' => $days_update]);
+            }
+            
+            return Response::json(['success' => true, 'response' => $new_suspension_log], 200);        
+
+        /*    $update_suspension = Suspension::where('id', $request['_suspension_log_suspension_id'])
+                ->update(['suspension_days'] => )
+                ->first();
+*/
+
+
+            //return Response::json(['success' => true, 'response' => $update_status], 200);
   }
+
+
+
 }

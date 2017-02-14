@@ -113,7 +113,7 @@
               
                <a href="#"> <i class="fa fa-circle text-navy"></i> On Process </a>
                <br>
-               <a href="#"> <i class="fa fa-circle text-danger"></i> Banned</a>
+               <a href="#"> <i class="fa fa-circle text-danger"></i> Cancelled</a>
                <br>
                <a href="#"> <i class="fa fa-circle text-primary"></i> Reserved</a>
 
@@ -197,7 +197,7 @@
                           <option value="">Choose</option>
                           <option style="color:#04803A;" value="OnProcess">OnProcess</option>
                           <option style="color:#3a87ad;" value="Reserved">Reserved</option>
-                          <option style="color:#9B0D0D;" value="Banned">Banned</option>
+<!--                           <option style="color:#9B0D0D;" value="Banned">Cancelled</option> -->
                           
                         </select>
                     </div>
@@ -348,8 +348,9 @@
                   
                 </select> -->
 
+                      <input type="hidden" id="organization" name="organization" class="form-control" autofocus="" aria-required="true">
+                      <output type="text" name="organization1" class="form-control" id="organization1"></output>
 
-                      <output type="text" name="organization" class="form-control" id="organization"></output>
                     
                     
 
@@ -366,7 +367,7 @@
                           <option value="">Choose</option>
                           <option style="color:#04803A;" value="OnProcess">OnProcess</option>
                           <option style="color:#3a87ad;" value="Reserved">Reserved</option>
-                          <option style="color:#9B0D0D;" value="Banned">Banned</option>
+                          <option style="color:#9B0D0D;" value="Banned">Cancelled</option>
                           
                         </select>
                     </div>
@@ -654,6 +655,7 @@
           $('#ModalEdit #title').val(event.title);
           $('#ModalEdit #venue').val(event.venue);
           $('#ModalEdit #organization').val(event.organization);
+          $('#ModalEdit #organization1').val(event.organization);
           $('#ModalEdit #status').val(event.status);
           $('#ModalEdit #time').val(event.start.format('YYYY-MM-DD HH:mm A')+" - "+event.end.format('YYYY-MM-DD HH:mm A'));
           $('#ModalEdit #cvf_no').val(event.cvf_no);

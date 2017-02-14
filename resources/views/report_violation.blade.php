@@ -420,7 +420,7 @@
 							<strong>Cancel</strong>
 						</button>
 					</div>
-
+</div>
 			</form>
 		</div>
 	</div>

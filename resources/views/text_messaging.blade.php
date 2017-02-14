@@ -4,7 +4,7 @@
 
 @section('header-page')
 <div class="col-md-12">
-	<h1>Send a Text Message</h1>
+	<h1>Compose a Text Message</h1>
 
 	<hr>	
 	
@@ -31,27 +31,41 @@
 				
 				<br>
 
-				<div class="input-group" style="width: 300px;">
+				<div class="input-group" style="width: 220px;">
 					<input type="hidden" name="api_code_id" value="{{ $keys->id }}">
 					<input type="text" name="api_code" class="form-control" placeholder="Your API Code" value="{{ $keys->api_code }}">
 					<span class="input-group-btn">
 						<button class="btn btn-primary" type="submit">Save</button>
 					</span>
 				</div>
-				<!-- <input type="text" name="" class="form-control pull-right" value="">
-			<input type="submit"  class="pull-right btn btn-sm btn-primary" value="Save"> -->
+				<br>
+			<a target="_blank" class="btn btn-warning btn-rounded btn-sm" href="https://www.itexmo.com/Developers/packages/index.php" style="width: 220px;"><i class="fa fa-money"></i>&nbsp;Buy package from iTexMo.com</a>
 		</form>		
 	</div>
 	
 	<div class="form-group">
 		@if (count($credits) == null)
 			<label id="available-credits" style="color: red;">Failed to communicate with the SMS server. Please check your connection</label>
+		
+		@elseif ($credits == false)
+			
+			<label style="color: red;"><h3>API Code is required</h3></label>
+			<li>Please use a valid API Code.</li>
+			<li>Click the buy package from iTexMo button to purchase a new package or visit www.iTexMo.com</li>
+		
 		@else
-			<label><h3>Available Credits:</label>
-			<label id="available-credits" style="color: green;"> {{ $credits }} </h3></label>
+			<div class="form-group">
+			<h3>Available Credits:</h3>
+			<h2><label id="available-credits" style="color: green;"> {{ $credits }} </label></h2>
+
+			<small>Number of credits/message per day will reset every (PHT) 12:00AM</small>
+			</div>
+
+
 		@endif
-		<br>
-		<a class="btn btn-success btn-rounded btn-sm" href="https://www.itexmo.com/Developers/packages/index.php"><i class="fa fa-money"></i>&nbsp;Buy package from iTexMo.com</a>
+		
+			
+		
 	</div>
 
 
@@ -85,14 +99,9 @@
 			</div>
 
 			<div class="ibox-content">
-				@if ($message = Session::get('response'))
-				<div class="alert alert-info" role="alert">
-					{{ Session::get('response') }}
-				</div>
-				@endif
 
 
-				<form action="/text-messaging/send" method="POST" id="text-messaging-form">
+				<form id="text-messaging-form">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input type="hidden" name="api_key" value="{{ $keys->api_code }}">
 					<div class="form-group">
@@ -108,7 +117,7 @@
 				</div>
 
 				<div class="ibox-footer">
-					<button class="btn btn-w-m btn-primary" id="send_btn" type="submit">
+					<button class="btn btn-w-m btn-primary" id="send_btn" type="button">
 						<span class="fa fa-send"></span>&nbsp;<strong>Send</strong>
 					</button>
 
@@ -121,7 +130,62 @@
 </div>
 
 
+<script type="text/javascript">
+	$('#send_btn').click(function(){
 
+		swal({
+  title: "Send",
+  text: "Are you sure you want to send this message?",
+  type: "info",
+  showCancelButton: true,
+  closeOnConfirm: true,
+  showLoaderOnConfirm: true,
+},
+function(){
+  
+
+		$.ajax({
+		url : '/text-messaging/send',
+		type: 'POST',
+		data: $('form#text-messaging-form').serialize(),
+	}).done(function(data){
+		var msg = "";
+		if (data.success == false) {
+			$.each(data.errors, function(k, v) {
+				msg = msg + v + "\n";
+				swal("Oops...", msg, "warning");
+
+			});
+
+		} else {
+			if (data.response[0].sent == false){
+
+			}else{
+				swal({   
+				title: "Success!",  
+				text: " " + data.response[0].response,   
+				timer: 5000, 
+				type: "success",  
+				showConfirmButton: true 
+			},function(isConfirm){
+				window.location.reload();
+			});
+
+			$('form#text-messaging-form').each(function() {
+				this.reset();
+			});	
+
+			}
+
+			
+
+		}
+	});
+});
+
+	});	
+
+</script>
 
 
 <style>

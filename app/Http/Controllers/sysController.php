@@ -476,14 +476,15 @@ $data = array(
         $_number = $request['mobile_number'];
         $_message = $request['message'];
         $_apikey = $request->input('api_key');
-        $message_type = "Manual";
+        $_message_type = "Manual";
 
         if (strpos($request['mobile_number'] , '+63') !== false)
         {
             $_number = str_replace("+63", "0", $_number);          
         }
-        $response = $this->sendSMS($_number,$_message,$_apikey);
-        return back()->with('response' , $response);
+        $response = $this->sendSMS($_number,$_message,$_apikey,$_message_type);
+    
+        return Response::json(['success' => true, 'response' => $response], 200);
     }
 
 
@@ -493,9 +494,8 @@ $data = array(
         
         $result = $this->itexmo($_number,$_message,$_apikey);
         if ($result == ""){
-            echo "iTexMo: No response from server!!!
-            Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
-            Please CONTACT US for help. ";  
+            $is_sent = false;
+            $response = "iTexMo: Please check your internet connection.";  
         }else if ($result == 0){
 
             $response = "Message Successfully Sent!";
@@ -565,7 +565,8 @@ $data = array(
             //echo "Error Num ". $result . " was encountered!";
         }
 
-        return $response;
+        return array(['response' => $response, 'sent' => $is_sent]);
+        
 
         //GAMMU   
         /*$a = popen('gammu sendsms TEXT '.$_number.' -text "'.$_message.'"', 'r'); 
@@ -596,19 +597,38 @@ $data = array(
         $itexmo = array('1' => $number, '2' => $message, '3' => $apicode);
         $param = array(
                 'http' => array(
+                //'ignore_errors' => TRUE,
                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
                 'method'  => 'POST',
                 'content' => http_build_query($itexmo),
             ),
         );
         $context  = stream_context_create($param);
-        return file_get_contents($url, false, $context);
+        return @file_get_contents($url, false, $context);
+
+
+        /*if ($contents == false) {
+            return null;
+        }
+        else{
+            $credits = $contents;
+            return $credits;
+        }*/
+
 
     }
 
     public function itexmoBalance()
     {
         $apicode = DB::table('itexmo_key')->first();
+
+        if (empty($apicode->api_code))
+        {
+            $credits = false;
+            return $credits;
+        }
+        else
+        {
         $url = 'https://www.itexmo.com/php_api/api.php';
         $itexmo = array('4' => $apicode->api_code);
         $param = array(
@@ -629,7 +649,7 @@ $data = array(
             $credits = $contents;
             return $credits;
         }
-         
+        }
         
     }
 
@@ -646,7 +666,7 @@ $data = array(
             ),
         );
       $context  = stream_context_create($param);
-      return file_get_contents($url, false, $context);
+      return @file_get_contents($url, false, $context);
     }   
 
 	public function showCommunityService()

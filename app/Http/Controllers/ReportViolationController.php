@@ -30,10 +30,7 @@ class ReportViolationController extends Controller
   }
     
  	public function showReportViolation()
-<<<<<<< HEAD
   {
-=======
-    {
 
   $current_time = Carbon::now()->format('Y-m-d');
 
@@ -46,8 +43,6 @@ class ReportViolationController extends Controller
       $schoolyears = DB::table('school_years')->select('school_year')->where('term_name', 'School Year')->where('school_year', '<>', $selected_year)->get();
 
 
-
->>>>>>> origin/master
     	//$violation_reports = ViolationReport::all()
    /*     $violation_reports = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();*/
     $violations = Violation::all()->sortBy('name');
@@ -93,8 +88,8 @@ class ReportViolationController extends Controller
             'lastName' => 'required|string|max:255',
             'yearLevel' => 'required',
             'course' => 'required',
-            'studentContactNo' => 'required|numeric',
-            'guardianName' => 'required|string|min:2',
+            //'studentContactNo' => 'required|numeric',
+            //'guardianName' => 'required|string|min:2',
             /*'guardianContactNo' => 'required|numeric',*/
             
         ]);
@@ -104,7 +99,14 @@ class ReportViolationController extends Controller
           
         }
         else {
-           
+          
+          if ($request['guardianContactNo'] == ""){
+            $guardian_contact = "";
+          } else {
+            $guardian_contact = "+63".$request['guardianContactNo'];
+          }
+
+
           $new_student_record = new Student();
           $new_student_record->student_no = $request['studentNo'];
           $new_student_record->first_name = ucwords($request['firstName']);
@@ -113,7 +115,8 @@ class ReportViolationController extends Controller
           $new_student_record->course = $request['course'];
           $new_student_record->student_contact_no = "+63".$request['studentContactNo'];
           $new_student_record->guardian_name = ucwords($request['guardianName']);
-          $new_student_record->guardian_contact_no = "+63".$request['guardianContactNo'];
+
+          $new_student_record->guardian_contact_no = $guardian_contact;
           $new_student_record->date_created = Carbon::now();
           $new_student_record-> save();
             
@@ -328,6 +331,7 @@ class ReportViolationController extends Controller
 
               $validity = $from . " " . $to;
               $notification = "No message request";
+              $message = "";
 
             }
             elseif ($request['offense_level'] == 'Serious' || $request['offense_level'] == 'Very Serious') {
@@ -339,25 +343,28 @@ class ReportViolationController extends Controller
               $guardian_number = $student->guardian_contact_no;
 
 
+              if ($student->guardian_contact_no == ""){
+                $notification[] = ['response' => "Message is not sent. Guardian number is not available"];
+                $message = "";
+              } else {
 
+              if (strpos($guardian_number, '+63') !== false) {
+              $guardian_number = str_replace("+63", "0", $guardian_number);          
+              }
+                
               $message = "From LPU Cavite Student Affairs Office\r\n"."\r\nWe would like to inform you that your son/daughter ".$student->first_name.' '.$student->last_name." has commited a ".$request['offense_level']." violation. Please visit our office and talk about your concerns. Thank you\r\n";
         
-    
-            if (strpos($guardian_number, '+63') !== false)
-            {
-              $guardian_number = str_replace("+63", "0", $guardian_number);          
-            }
-          
+            
+         
               
               $notification = app('App\Http\Controllers\sysController')->sendSMS($guardian_number,$message,$api_key->api_code,$message_type);
               
               $validity = '';
             }
-	       
+	         }//end of else/ guardian has number, will send..
             $date_committed = Carbon::parse($request['date_committed']);
-            $time_reported = Carbon::parse($request['time_reported']);
+            $time_reported = Carbon::parse($request['time_reported'])->format('h:i');
 
-            # code...
    
             $id = ViolationReport::select(DB::raw('max(cast((substring(rv_id, 5)) as UNSIGNED)) as max_id'))->first();
 

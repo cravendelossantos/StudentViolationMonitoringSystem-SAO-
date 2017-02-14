@@ -131,10 +131,10 @@
 </div>
  -->
 
-<div id="locker_contract" style="display: none;">
+<div id="locker_contract" style="">
 	<div class="ibox float-e-margins">
 		<div class="ibox-content">
-			{!! $content->value !!}
+			<textarea>{!! $content->value !!}</textarea>
 		</div>
 	</div>
 </div>

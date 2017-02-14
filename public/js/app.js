@@ -292,10 +292,22 @@ $('button#report_btn').click(function(e){
 						
 	
 					}).done(function(data){
+
+						var sent = true;
+						var message = "Guardian notification sent!";
+
+						if (data.notification[0].sent == false){
+							sent = false;
+							message = "Guardian notification not sent\n" + data.notification[0].response;
+						} else {
+							message = data.notification[0].response;
+						}
+						console.log(data);
+
 						swal({   
 							title: "Success!",  
-							text: "Violation Reported",   
-							timer: 1000, 
+							text: "Violation Reported\n\n" + message,
+							timer: 5000, 
 							type: "success",  
 							showConfirmButton: false 
 
@@ -376,7 +388,8 @@ $('#find_student').on('click', function(e){
 						$('#student_number_error').html("Student not found");
 						$('#offense_number').val("").attr("readonly",false);
 						$('#committed_offense_number').val("");
-		
+						$('#guardian_name').val("");
+						$('#guardian_contact_no').val("");
 						$('#student_number').val("");
 						$('#violation_id').val("").attr("readonly",false);
 
@@ -1386,6 +1399,7 @@ $('#locker_update').click(function(e){
 		//printlockercontract
 		if (data['occupied'] == true)
 		{
+			console.log($('#c_fname').val());
 			$('#locker_contract').show();
 			$('#c_fname').html($('#m_lessee_name').val());
 

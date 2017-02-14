@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
+use App\Content;
 
 class AuthController extends Controller
 {
@@ -31,9 +32,9 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/index';
+    protected $redirectTo = '/home';
     protected $loginPath = '/login';
-    protected $redirectAfterLogout = '/index';
+    protected $redirectAfterLogout = '/home';
     protected $loginView ="/login";
 
 
@@ -53,6 +54,25 @@ class AuthController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+
+
+    public function showLoginForm()
+    {
+
+        
+        $content = Content::where('page', 'login')->first();
+
+        $view = property_exists($this, 'loginView')
+                    ? $this->loginView : 'auth.authenticate';
+
+        if (view()->exists($view)) {
+            return view($view);
+        }
+
+
+        return view('auth.login', ['content' => $content]);
+    }
+
     public function logout()
     {
         Auth::guard($this->getGuard())->logout();

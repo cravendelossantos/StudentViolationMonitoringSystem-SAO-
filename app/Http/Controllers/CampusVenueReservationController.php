@@ -248,27 +248,55 @@ return response()->json($data);
       public function postCampusVenueReservationReports(Request $request)
   {
   //WALA LAHAT ITO
-    if ($request['v_reports_offense_level'] == "" and $request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['venue']=="")
+    if ($request['v_reports_offense_level'] == "" and $request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['venue']=="" and $request['month']=="")
     {
           $data = events::where('school_year',$request['school_year'])->get();
 
     }
-        //PAG WALANG FROM AT TO AT VENUE
-   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['venue'] =="" )
+      //MERON MONTHS
+    elseif ($request['v_reports_offense_level'] == "" and $request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['venue']=="")
+    {
+          $data = events::where('school_year',$request['school_year'])->whereMonth('start', '=',$request['month'])->get();
+
+    }
+
+        //PAG WALANG FROM AT TO AT VENUE AT MONTH
+   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['venue'] =="" and $request['month']=="" )
     {
           $data = events::where('school_year',$request['school_year'])->where('status',$request['v_reports_offense_level'])->get();
 
     }
-    //PAG WALANG FROM AT TO AT CATEGORY
-   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['v_reports_offense_level'] =="" )
+
+                //PAG WALANG FROM AT TO AT VENUE
+   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['venue'] ==""  )
+    {
+          $data = events::where('school_year',$request['school_year'])->where('status',$request['v_reports_offense_level'])->whereMonth('start', '=',$request['month'])->get();
+
+    }
+    //PAG WALANG FROM AT TO AT CATEGORY AT MONTH
+   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['v_reports_offense_level'] =="" and $request['month']=="" )
     {
           $data = events::where('school_year',$request['school_year'])->where('venue',$request['venue'])->get();
 
     }
-    //PAG WALANG FROM AT TO 
-   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="")
+
+        //PAG WALANG FROM AT TO AT CATEGORY 
+   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['v_reports_offense_level'] =="" )
+    {
+          $data = events::where('school_year',$request['school_year'])->where('venue',$request['venue'])->whereMonth('start', '=',$request['month'])->get();
+
+    }
+    //PAG WALANG FROM AT TO AT MONTH
+   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="" and $request['month']=="")
     {
           $data = events::where('school_year',$request['school_year'])->where('venue',$request['venue'])->where('status',$request['v_reports_offense_level'])->get();
+
+    }
+
+        //PAG WALANG FROM AT TO 
+   elseif ($request['v_reports_from'] =="" and $request['v_reports_to']=="")
+    {
+          $data = events::where('school_year',$request['school_year'])->where('venue',$request['venue'])->where('status',$request['v_reports_offense_level'])->whereMonth('start', '=',$request['month'])->get();
 
     }
     //PAG WALANG CATEGORY AT VENUE

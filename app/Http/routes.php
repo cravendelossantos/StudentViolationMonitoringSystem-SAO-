@@ -17,7 +17,7 @@ Route::post('/user-management/super_user' , 'sysController@postRegisterSuperUser
 //All users route group
 Route::group(['middleware' => 'roles', 'roles' => ['Admin','Secretary']],function(){
 
-Route::get('/index', 'HomeController@index');
+Route::get('/home', 'HomeController@index');
 
 //Academic Calendar
 Route::get('/academic-calendar' , 'AcademicCalendarController@showCalendar');
@@ -174,7 +174,7 @@ Route::post('/sanctions/excluded_students', 'SanctionController@exclusionTable')
 
 Route::get('/suspension-exclusions/details' , 'SanctionController@getSuspensionDetails');
 Route::get('/sanctions/suspended_students/update' , 'SanctionController@getSuspensionUpdate');
-Route::get('/sanctions/suspended_students/update' , 'SanctionController@postSuspensionUpdate');
+Route::post('/sanctions/suspended_students/update' , 'SanctionController@postSuspensionUpdate');
 
 Route::get('/campus', 'CampusVenueReservationController@showCampusVenueReservation');
 Route::get('/reservationReports', 'CampusVenueReservationController@showCampusVenueReservationReports');
@@ -222,6 +222,7 @@ Route::post('/violation', 'sysController@postViolation');
 // Sanction Monitoring
 
 Route::get('/sanctions', 'SanctionController@showSanctions');
+Route::get('/sanctions/reports', 'SanctionController@showSanctionsReports');
 Route::post('/sanctions/search/student' , 'SanctionController@searchStudent');
 Route::post('/sanctions/student-violation/records' ,  'SanctionController@showStudentViolations');
 Route::get('/sanctions/violation-details' , 'SanctionController@getViolationDetails');

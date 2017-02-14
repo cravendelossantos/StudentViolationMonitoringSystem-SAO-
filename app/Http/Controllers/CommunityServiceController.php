@@ -34,6 +34,7 @@ class CommunityServiceController extends Controller
     public function searchStudent(Request $request)
     {
 
+
         $cs_student = DB::table('community_services');
 
         return Datatables::of($cs_student)
@@ -81,13 +82,14 @@ class CommunityServiceController extends Controller
     }
 
         $messages = [
+        'log_date.before' => 'Date must be not greater than today.',
         '_time_log_cs_id.required' => 'Please select the community service record on the table',
         ];
 
         $validator = Validator::make($request->all(),[
         '_time_log_cs_id' => 'required',
-        'log_date' => 'required|date',
-        'time_in' => 'required|date_format:h:iA',
+        'log_date' => 'required|date|before:' .$tomorrow,
+        'time_in' => 'required|date_format:h:iA|',
         'time_out' => 'required|date_format:h:iA',
         ],$messages);
 
@@ -162,6 +164,17 @@ class CommunityServiceController extends Controller
         $new_log->save();
 
 
+
+        if ($total <= 0){
+
+        DB::table('community_services')
+            ->where('id' , $request['_time_log_cs_id'])
+            ->update(['status' => 'Completed']);
+        ViolationReport::where('rv_id', $request['_time_log_violation_id'])
+             ->update(['status' => 'Completed']);
+        $total = 0;
+        }
+
         $hours_update = CommunityService::where('id' , $request['_time_log_cs_id'])
         ->update(['required_hours' => $total]);
 
@@ -186,6 +199,7 @@ class CommunityServiceController extends Controller
                         'violation_id' => $cs_details->violation_id,
                         'first_name' => $cs_details->first_name,
                         'last_name' => $cs_details->last_name,
+                        'status' => $cs_details->status
                     ];
 
         return response()->json(array('response' => $response));
