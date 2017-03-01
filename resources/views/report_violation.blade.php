@@ -24,7 +24,7 @@
 				<div class="ibox-tools"></div>
 
 				<div class="ibox-content">
-
+				
 					<form role="form" action="" id="reportViolationForm" method="POST">
 						{{ csrf_field() }}
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -142,14 +142,16 @@
 						<div class="form-group">
 
 								<label>School Year</label>
+
+
 <!--                 <select name="school_year" id="school_year" class="form-control">
                   @foreach ($schoolyear as $schoolyear)
                   <option>{{$schoolyear->school_year }}</option>
                   @endforeach
 
                 </select>  -->
-									<output id="school_year1" name="school_year1" class="form-control" autofocus="" aria-required="true"  >{{$schoolyear->school_year }}</output>
-									<input type="hidden" id="school_year" name="school_year" class="form-control" autofocus="" aria-required="true" value="{{$schoolyear->school_year }}">
+									<output id="school_year1" name="school_year1" class="form-control" autofocus="" aria-required="true"  >{{ $schoolyear->school_year }}</output>
+									<input type="hidden" id="school_year" name="school_year" class="form-control" autofocus="" aria-required="true" value="{{ $schoolyear->school_year }}">
 
 
 

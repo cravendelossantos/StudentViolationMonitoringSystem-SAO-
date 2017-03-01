@@ -333,7 +333,7 @@ Route::group(['middleware' => 'web'],function(){
 
 	// Authentication routes...
 Route::post('/login', 'Auth\AuthController@postLogin');
-Route::get('/logout', 'Auth\AuthController@logout');
+Route::post('/logout', 'Auth\AuthController@logout');
 Route::get('/login', 'Auth\AuthController@getLogin');
 
 // Registration routes...

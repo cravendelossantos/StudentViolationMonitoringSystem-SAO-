@@ -158,8 +158,6 @@
 							</strong> </span> <span class="text-muted text-xs block">
 							{{ Auth::user()->roles->first()->name }}
 
-
-
 							<b class="caret"></b></span> </span> </a>
 							<ul class="dropdown-menu animated fadeInRight m-t-xs">
 								<li>
@@ -187,6 +185,8 @@
 					</li>
 					<li>
 						<a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label ng-binding" > Students Violation Management</span><span class="fa arrow"></span></a>
+							
+							
 						<ul class="nav nav-second-level collapse">
 							<li ui-sref-active="active" >
 								<a href="/violation-statistics"><i class=""></i> <span class="nav-label ng-binding">Statistics </span> </a>
@@ -337,7 +337,7 @@
 			</li>
 
 						
-
+							@if ( Auth::user()->roles->first()->name == 'Admin')
 							<li>
 								<a href="#"><i class="fa fa-exchange"></i> <span class="nav-label ng-binding">Import/Export Records</span><span class="fa arrow"></span></a>
 								<ul class="nav nav-second-level collapse">
@@ -358,11 +358,7 @@
 
 							
 							
-							@if ( Auth::user()->roles->first()->name == 'Super User')
-							<li ui-sref-active="active" >
-								<a href="/user-management/super_user"><i class="fa fa-users"></i> <span class="nav-label ng-binding">User Management</span> </a>
-							</li>
-							@elseif ( Auth::user()->roles->first()->name == 'Admin')
+							
 
 							<li>
 								<a href="#"><i class="fa fa-users"></i> <span class="nav-label ng-binding">User Management</span><span class="fa arrow"></span></a>

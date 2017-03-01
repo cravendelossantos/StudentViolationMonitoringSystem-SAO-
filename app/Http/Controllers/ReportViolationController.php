@@ -34,7 +34,7 @@ class ReportViolationController extends Controller
 
   $current_time = Carbon::now()->format('Y-m-d');
 
-
+  $role_id = Auth::user()->roles()->first()->id;
       $schoolyear = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->get();
 
        $selected_year = DB::table('school_years')->select('school_year')->where('term_name' , 'School Year')->whereDate('start', '<' ,$current_time)->whereDate('end' , '>', $current_time)->pluck('school_year');
@@ -45,7 +45,11 @@ class ReportViolationController extends Controller
 
     	//$violation_reports = ViolationReport::all()
    /*     $violation_reports = DB::table('violation_reports')->leftJoin('students_temp', 'violation_reports.student_id', '=', 'students_temp.student_id')->orderBy('created_at','desc')->get();*/
-    $violations = Violation::all()->sortBy('name');
+    if (Auth::user()->roles()->first()->id == 2){
+      $violations = Violation::all()->where('offense_level', 'Less Serious')->sortBy('name');
+    } else {
+      $violations = Violation::all()->sortBy('name');
+    }
 		$courses = Course::with('college')->get();
 		$id = ViolationReport::select(DB::raw('max(cast((substring(rv_id, 5)) as UNSIGNED)) as max_id'))->first();
 
