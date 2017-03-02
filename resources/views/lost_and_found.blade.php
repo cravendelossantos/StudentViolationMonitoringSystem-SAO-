@@ -159,17 +159,7 @@
 							</div>
 						</div>
 
-						<div class="col-md-2">
-						<div class="form-group" id="LAF_date_picker">
-								<label>Date Reported</label>
-								<div class="input-group date" id="data_1">
-									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-									<input type="text" id="date_reported" name="date_reported" class="form-control">
-								</div>
-							</div>
-						</div>
-
-								<div class="col-md-2">
+						<div class="col-md-6">
 
 <!-- 		               <label>School Year</label>
           <select name="school_year" id="school_year" class="form-control">
@@ -180,12 +170,26 @@
 
             
           </select>   -->
+          <div class="form-group">
           							<label>School Year</label>
 									<output id="school_year1" name="school_year1" class="form-control" autofocus="" aria-required="true"  >{{$schoolyear->school_year }}</output>
 									<input type="hidden" id="school_year" name="school_year" class="form-control" autofocus="" aria-required="true" value="{{$schoolyear->school_year }}">
-	</div>
+						</div>
+						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-3">
+						<div class="form-group" id="LAF_date_picker">
+								<label>Date Reported</label>
+								<div class="input-group date" id="data_1">
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									<input type="text" id="date_reported" name="date_reported" class="form-control">
+								</div>
+							</div>
+						</div>
+
+				
+
+						<div class="col-md-3">
 							<div class="form-group">
 								<label>Time Reported</label>
 								<div class="input-group clockpicker time_reported" data-autoclose="true">

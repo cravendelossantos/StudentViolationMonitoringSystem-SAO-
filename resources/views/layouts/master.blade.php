@@ -38,10 +38,10 @@
 
 <body class="md-skin">
 
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+	<!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-	<script type="text/javascript" src="/js/jquery-ui-1.10.4.min.js"></script>
+	<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script> -->
+	<!-- <script type="text/javascript" src="/js/jquery-ui-1.10.4.min.js"></script> -->
 
 	<link rel="stylesheet" type="text/css" href="/css/plugins/jQueryUI/jquery-ui.css" />
 
@@ -50,7 +50,7 @@
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 	<script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-	<script src="/js/jquery-ui-1.10.4.min.js"></script>
+	<!-- <script src="/js/jquery-ui-1.10.4.min.js"></script> -->
 
 
 
@@ -180,22 +180,22 @@
 
 					@section('side-bar')
 
-					<li >
+					<li class="{{ Request::is('home') ? 'active' : null }}">
 						<a href="/home"><i class="fa fa-home"></i> <span class="nav-label ng-binding">Home</span> </a>
 					</li>
-					<li>
+					<li class="{{ Request::is('violation*' , 'report-violation') ? 'active' : 'null' }}">
 						<a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label ng-binding" > Students Violation Management</span><span class="fa arrow"></span></a>
 							
 							
 						<ul class="nav nav-second-level collapse">
-							<li ui-sref-active="active" >
-								<a href="/violation-statistics"><i class=""></i> <span class="nav-label ng-binding">Statistics </span> </a>
-							</li>
-							<li ui-sref-active="active" >
+							
+							<li ui-sref-active="active" class="{{ Request::is('report-violation') ? 'active' : 'null' }}">
 								<a href="{{ url('/report-violation') }}"><i class=""></i> <span class="nav-label ng-binding">Report a violation</span> </a>
 							</li>
-
-							<li ui-sref-active="active" >
+							<li ui-sref-active="active" class="{{ Request::is('violation-statistics') ? 'active' : 'null' }}">
+								<a href="/violation-statistics"><i class=""></i> <span class="nav-label ng-binding">Statistics </span> </a>
+							</li>
+							<li ui-sref-active="active" class="{{ Request::is('violation-reports') ? 'active' : 'null' }}">
 								<a href="/violation-reports"><i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
 							</li>
 
@@ -204,13 +204,13 @@
 
 
 
-					<li ui-sref-active="active" >
+					<li class="{{ Request::is('sanctions/*' , 'sanctions') ? 'active' : 'null' }}">
 						<a href="/sanctions"><i class="fa fa-desktop"></i> <span class="nav-label ng-binding" >Sanctions</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
-								<li ui-sref-active="active" >
+								<li ui-sref-active="active" class="{{ Request::is('sanctions') ? 'active' : 'null' }}">
 									<a href="/sanctions"><i class=""></i> <span class="nav-label ng-binding"> Sanctions Monitoring</span> </a>
 								</li>
-								<li ui-sref-active="active" >
+								<li ui-sref-active="active" class="{{ Request::is('sanctions/reports') ? 'active' : 'null' }}">
 									<a href="/sanctions/reports"><i class=""></i> <span class="nav-label ng-binding"> Reports</span> </a>
 								</li>
 							</ul>
@@ -230,127 +230,128 @@
 							</ul>
 						</li> -->
 
-						<li>
+						<li class="{{ Request::is('locker-*' , 'lockers') ? 'active' : 'null' }}">
 							<a href="#"><i class="fa fa-lock"></i> <span class="nav-label ng-binding">Locker Management</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
-								<li ui-sref-active="active" >
-									<a href="/locker-statistics"> <i class=""></i> <span class="nav-label ng-binding">Statistics</span> </a>
-								</li>
-
-								<li ui-sref-active="active" >
+								
+								<li ui-sref-active="active" class="{{ Request::is('lockers') ? 'active' : 'null' }}">
 									<a href="/lockers"> <i class=""></i> <span class="nav-label ng-binding">Locker Assignment</span> </a>
 								</li>
-								<li ui-sref-active="active" >
+								<li ui-sref-active="active" class="{{ Request::is('locker-statistics') ? 'active' : 'null' }}">
+									<a href="/locker-statistics"> <i class=""></i> <span class="nav-label ng-binding">Statistics</span> </a>
+								</li>
+								<li ui-sref-active="active" class="{{ Request::is('locker-reports') ? 'active' : 'null' }}">
 									<a href="/locker-reports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
 								</li>
 
 							</ul>
 						</li>
-						<li>
+						<li class="{{ Request::is('lost-and-found/*' , 'lost-and-found') ? 'active' : 'null' }}">
 							<a href="#"><i class="fa fa-book"></i> <span class="nav-label ng-binding">Lost and Found</span><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
-						 		<li ui-sref-active="active">
-									<a href="/lost-and-found/statistics"> <i class=""></i> <span class="nav-label ng-binding">Statistics</span> </a>
-								</li>
+						 		
 							
-							<li ui-sref-active="active">
+							<li ui-sref-active="active" class="{{ Request::is('lost-and-found') ? 'active' : 'null' }}">
 								<a href="/lost-and-found"><i class=""></i> <span class="nav-label ng-binding">Add / Claim Items</span> </a>
 							</li>
-							<li ui-sref-active="active" >
+							<li ui-sref-active="active" class="{{ Request::is('lost-and-found/statistics') ? 'active' : 'null' }}">
+									<a href="/lost-and-found/statistics"> <i class=""></i> <span class="nav-label ng-binding">Statistics</span> </a>
+							</li>
+							<li ui-sref-active="active" class="{{ Request::is('lost-and-found/reports') ? 'active' : 'null' }}">
 								<a href="/lost-and-found/reports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
 							</li>
 
 						</ul>
 					</li>
 
-					<li>
+					<li class="{{ Request::is('campus', 'reservationReports') ? 'active' : 'null' }}">
 						<a href="#"><i class="fa fa-calendar"></i> <span class="nav-label ng-binding">Campus Venue Reservation Monitoring</font></span><span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level collapse">
 
-							<li ui-sref-active="active" >
+							<li ui-sref-active="active" class="{{ Request::is('campus') ? 'active' : 'null' }}">
 								<a href="/campus"> <i class=""></i> <span class="nav-label ng-binding">Reservation Form</span> </a>
 							</li>
 						</li>
- 						<li ui-sref-active="active" >
+ 						<li ui-sref-active="active" class="{{ Request::is('reservationReports') ? 'active' : 'null' }}">
 							<a href="/reservationReports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
 						</li> 
 
 					</ul>
 				</li>
 
-				<li>
+				<li class="{{ Request::is('addActivity' , 'activities' , 'activitiesReports') ? 'active' : 'null' }}">
 					<a href="#"><i class="fa fa-list"></i> <span class="nav-label ng-binding">Monitoring of Proposal of Activities</span><span class="fa arrow"></span></a>
 					<ul class="nav nav-second-level collapse">
-						<li ui-sref-active="active">
+						<li ui-sref-active="active" class="{{ Request::is('addActivity') ? 'active' : 'null' }}">
 							<a href="/addActivity"><i class=""></i> <span class="nav-label ng-binding">Add Activity</span> </a>
 
 						</li>
-						<li ui-sref-active="active" >
+						<li ui-sref-active="active" class="{{ Request::is('activities') ? 'active' : 'null' }}">
 							<a href="/activities"> <i class=""></i> <span class="nav-label ng-binding">Monitoring of Activities</span> </a>
 						</li>
 
 					</li>
-					<li ui-sref-active="active" >
+					<li ui-sref-active="active" class="{{ Request::is('activitiesReports') ? 'active' : 'null' }}">
 						<a href="/activitiesReports"> <i class=""></i> <span class="nav-label ng-binding">Reports</span> </a>
 					</li>
 
 				</ul>
 			</li>
 
-			<li>
+			<li class="{{ Request::is('OrganizationsRenewal*' , 'organizationsRenewal') ? 'active' : 'null' }}">
 				<a href="#"><i class="fa fa-file"></i> <span class="nav-label ng-binding">Organizations Renewal Management</span><span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level collapse">
 
 
-					<li ui-sref-active="active">
+					<li ui-sref-active="active" class="{{ Request::is('OrganizationsRenewalAdd') ? 'active' : 'null' }}">
 						<a href="/OrganizationsRenewalAdd"><i class=""></i> <span class="nav-label ng-binding">Add Organization</span> </a>
 
 					</li>
 
-					<li ui-sref-active="active">
+					<li ui-sref-active="active" class="{{ Request::is('OrganizationsRenewalList') ? 'active' : 'null' }}">
 						<a href="/OrganizationsRenewalList"><i class=""></i> <span class="nav-label ng-binding">List of Organizations</span> </a>
 
 					</li>
-					<li ui-sref-active="active" >
+					<li ui-sref-active="active" class="{{ Request::is('organizationsRenewal') ? 'active' : 'null' }}">
 						<a href="/organizationsRenewal"> <i class=""></i> <span class="nav-label ng-binding"> Update Checklist Requirements</span> </a>
 					</li>
 
 				</ul>
 			</li>
 
-			<li>
+			<li class="{{ Request::is('text-messaging/*') ? 'active' : 'null' }}">
 				<a href="#"><i class="fa fa-mobile"></i> <span class="nav-label ng-binding">Text Messaging</span><span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level collapse">
 
 
-					<li ui-sref-active="active">
+					<li ui-sref-active="active" class="{{ Request::is('text-messaging/compose') ? 'active' : 'null' }}">
 						<a href="/text-messaging/compose"><i class=""></i> <span class="nav-label ng-binding">Compose</span> </a>
 
 					</li>
 
-					<li ui-sref-active="active">
+					<!-- <li ui-sref-active="active" class="{{ Request::is('text-messaging/log') ? 'active' : 'null' }}">
 						<a href="/text-messaging/log"><i class=""></i> <span class="nav-label ng-binding"></span>Message Log</a>
 
-					</li>
+					</li> -->
 					
 				</ul>
 			</li>
 
 						
 							@if ( Auth::user()->roles->first()->name == 'Admin')
-							<li>
+							<li class="{{ Request::is('student-records' , 'violation-list' , 'activity-records') ? 'active' : 'null' }}">
 								<a href="#"><i class="fa fa-exchange"></i> <span class="nav-label ng-binding">Import/Export Records</span><span class="fa arrow"></span></a>
 								<ul class="nav nav-second-level collapse">
-									<li ui-sref-active="active">
-										<a href="/student-records"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Student Records</span> </a>
+									<li ui-sref-active="active" class="{{ Request::is('student-records') ? 'active' : 'null' }}">
+										<a href="/student-records"><span class="nav-label ng-binding">Student Records</span> </a>
 
 									</li>
-									<li ui-sref-active="active" >
-										<a href="/violation-list"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Violation Records</span> </a>
+									<li ui-sref-active="active" class="{{ Request::is('violation-list') ? 'active' : 'null' }}">
+										<a href="/violation-list"><span class="nav-label ng-binding">Violation Records</span> </a>
 									</li>
 
-									<li ui-sref-active="active" >
-										<a href="/activity-records"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Activities</span> </a>
+									<li ui-sref-active="active" class="{{ Request::is('activity-records') ? 'active' : 'null' }}">
+										<a href="/activity-records"><span class="nav-label ng-binding">Activities</span> </a>
 									</li>
 
 								</ul>
@@ -360,22 +361,22 @@
 							
 							
 
-							<li>
+							<li class="{{ Request::is('user-management/*') ? 'active' : 'null' }}">
 								<a href="#"><i class="fa fa-users"></i> <span class="nav-label ng-binding">User Management</span><span class="fa arrow"></span></a>
 								<ul class="nav nav-second-level collapse">
-									<li ui-sref-active="active">
-										<a href="/user-management/admin"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Create a new account</span> </a>
+									<li ui-sref-active="active" class="{{ Request::is('user-management/admin') ? 'active' : 'null' }}">
+										<a href="/user-management/admin"><span class="nav-label ng-binding">Create a new account</span> </a>
 
 									</li>
-									<li ui-sref-active="active" >
-										<a href="/user-management/roles"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">User Roles</span> </a>
+									<li ui-sref-active="active" class="{{ Request::is('user-management/roles') ? 'active' : 'null' }}">
+										<a href="/user-management/roles"><span class="nav-label ng-binding">User Roles</span> </a>
 									</li>
 
 								</ul>
 							</li>
 
 
-							<li ui-sref-active="active">
+							<li ui-sref-active="active" class="{{ Request::is('content-management') ? 'active' : 'null' }}">
 								<a href="/content-management"><i class="fa fa-edit"></i> <span class="nav-label ng-binding">Content Management</span> </a>
 							</li>
 							@else
@@ -386,7 +387,7 @@
 
 
 							@if ( Auth::user()->roles->first()->name == 'Admin')
-							<li>
+							<li class="{{ Request::is('settings/*') ? 'active' : 'null' }}">
 								<a href="#"><i class="fa fa-cog"></i> <span class="nav-label ng-binding">Settings</span><span class="fa arrow"></span></a>
 								<ul class="nav nav-second-level collapse">
 						<!-- 	<li ui-sref-active="active">
@@ -397,11 +398,11 @@
 								<a href="/courses"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Courses</span> </a>
 							</li> -->
 
-							<li ui-sref-active="active" >
+							<li ui-sref-active="active" class="{{ Request::is('settings/locker-locations') ? 'active' : 'null' }}">
 								<a href="/settings/locker-locations"><i class="fa fa-plus"></i> <span class="nav-label ng-binding">Add Locker Locations</span> </a>
 							</li>
 
-							<li ui-sref-active="active" >
+							<li ui-sref-active="active" class="{{ Request::is('settings/dates/school-year') ? 'active' : 'null' }}">
 								<a href="/settings/dates/school-year"><i class="fa fa-calendar"></i> <span class="nav-label ng-binding">Date Settings</span> </a>
 							</li>
 

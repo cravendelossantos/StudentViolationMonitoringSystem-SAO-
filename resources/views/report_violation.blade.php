@@ -57,7 +57,7 @@
 												<input type="text" class="form-control" placeholder="Student No." name="student_no" id="student_no" class="form-control" maxlength="10">
 												<span class="input-group-btn">
 													<button class="btn btn-default" id="find_student" type="button">
-														Find
+														<i class="fa fa-search"></i>
 													</button> </span>
 											</div>
 
@@ -262,7 +262,9 @@
 		</div>
 
 		<div class="ibox float-e-margins">
-
+		<div class="ibox-title">
+			<h5>Violation Reports</h5>
+		</div>
 			<div class="ibox-content" id="table-content">
 				<div class="table-responsive">
 					<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">

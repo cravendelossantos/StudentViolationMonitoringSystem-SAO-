@@ -67,7 +67,7 @@
                                 </div>
                             </div>
 
-                            <button type="button" id="sy_date_btn">Set</button>
+                            <button type="button" class="btn btn-primary" id="sy_date_btn">Set</button>
 </form>
                                 </div>
                             </div>
@@ -77,9 +77,14 @@
 
 
 
-
-
+<div class="row"> 
+<div class="col-md-12 animated fadeInRight"> 
+<div class="ibox float-e-margins">
+<div class="ibox-title">
+    <h5>School Years</h5>
+</div>
 <div class="ibox-content">
+
                             <div class="table-responsive">
 
 
@@ -107,8 +112,10 @@
 
                     </div>
                 </div>
+                </div>
 </div>
-
+</div>
+</div>
 
 
 @endsection

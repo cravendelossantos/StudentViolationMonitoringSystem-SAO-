@@ -91,7 +91,7 @@
 									<th>Course</th>
 									<th>Year</th>
 									<th>Contact no</th>
-									
+									<th>Action</th>
 
 								</tr>	
 							</thead>
@@ -110,9 +110,14 @@
 	</div>
 </div>
 
-@endsection
 
 <script>
-	
 
+$('.student-records-DT').on('click', 'tr', function(){
+var tr_id = $(this).attr('id');	
+	alert(tr_id);
+	
+});
 </script>
+@endsection
+

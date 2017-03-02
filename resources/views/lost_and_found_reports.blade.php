@@ -605,7 +605,7 @@ getLAFReports();
 
 
     $('select#sort_by').change(function(e){   
-    $('#report_type').val("List of "+$('select#sort_by').val() + " Reservations");
+    $('#report_type').val("List of "+$('select#sort_by').val() + " Items");
 
 
   });
