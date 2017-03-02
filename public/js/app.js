@@ -299,17 +299,18 @@ $('button#report_btn').click(function(e){
 						if (data.notification[0].sent == false){
 							sent = false;
 							message = "Guardian notification not sent\n" + data.notification[0].response;
-						} else {
+						} else if (data.notification[0].sent == true){
 							message = data.notification[0].response;
+						} else {
+							message = "";
 						}
 						console.log(data);
 
 						swal({   
 							title: "Success!",  
 							text: "Violation Reported\n\n" + message,
-							timer: 5000, 
 							type: "success",  
-							showConfirmButton: false 
+							showConfirmButton: true 
 
 
 						});
@@ -1430,7 +1431,7 @@ var student_records_table = $('.student-records-DT').DataTable({
 	"bSort" : true,
 	"bFilter" : true,
 	"order": [[ 0, "desc" ]],
-	"rowId" : 'id',	
+	"rowId" : 'student_no',	
 	"columns" : [
 
 	{data : 'student_no'},
@@ -1439,7 +1440,7 @@ var student_records_table = $('.student-records-DT').DataTable({
 	{data : 'course'},
 	{data : 'year_level'},
 	{data : 'student_contact_no'},
-
+	{data: 'action', name: 'action', orderable: false, searchable: false},
 
 	],
 	dom : '<"html5buttons"B>lTfgtip',

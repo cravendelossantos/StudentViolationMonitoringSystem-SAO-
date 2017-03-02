@@ -70,7 +70,7 @@
                     {{ csrf_field() }}
 
                     <td><button class="btn btn-sm btn-primary" type="submit">Assign Roles</button>
-                    <button type="submit" formaction="/user-management/roles/revoke" class="btn btn-sm btn-primary" type="submit">Revoke</button></td>
+                    <button type="submit" formaction="/user-management/roles/revoke" class="btn btn-sm btn-danger" type="submit">Revoke</button></td>
                 </form>
             </tr>
 

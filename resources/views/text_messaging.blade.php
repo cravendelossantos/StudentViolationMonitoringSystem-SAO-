@@ -97,6 +97,18 @@
 			<div class="ibox-title">
 				<h5>Compose a message</h5>
 			</div>
+				<div id="try" style="display:none">
+
+								<div class="sk-spinner sk-spinner-wave">
+									<div class="sk-rect1"></div>
+									<div class="sk-rect2"></div>
+									<div class="sk-rect3"></div>
+									<div class="sk-rect4"></div>
+									<div class="sk-rect5"></div>
+								<h5>Sending...</h5>
+								</div>
+
+							</div>
 
 			<div class="ibox-content">
 
@@ -142,8 +154,7 @@
   showLoaderOnConfirm: true,
 },
 function(){
-  
-
+  $('#try').show();
 		$.ajax({
 		url : '/text-messaging/send',
 		type: 'POST',
@@ -153,14 +164,28 @@ function(){
 		if (data.success == false) {
 			$.each(data.errors, function(k, v) {
 				msg = msg + v + "\n";
+			
+				$('#try').fadeOut('slow');
+			
+
 				swal("Oops...", msg, "warning");
 
 			});
 
 		} else {
 			if (data.response[0].sent == false){
+			
 
+			$('#try').fadeOut('slow');
+			
+
+
+				swal("Oops...", data.response[0].response, "warning");
 			}else{
+			
+					$('#try').fadeOut('slow');
+			
+
 				swal({   
 				title: "Success!",  
 				text: " " + data.response[0].response,   
@@ -212,4 +237,51 @@ function(){
 
 
 </script>
+
+
+<style>
+	.sk-spinner-wave.sk-spinner {
+		margin: 0 auto;
+		width: 50px;
+		height: 30px;
+		text-align: center;
+		font-size: 10px;
+		position: fixed;
+		z-index: 999;
+		overflow: show;
+		margin: auto;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+	}
+
+	#try {
+		width: auto;
+		height: auto;
+		position: fixed;
+		z-index: 999;
+		overflow: show;
+		margin: auto;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background-color: #f3f3f4;
+	}
+	#try2 {
+		width: auto;
+		height: auto;
+		position: fixed;
+		z-index: 999;
+		overflow: show;
+		margin: auto;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background-color: #f3f3f4;
+	}
+</style>
+
 @endsection

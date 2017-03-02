@@ -51,7 +51,7 @@ class SanctionController extends Controller
     {
        
         $sanctions_student = ViolationReport::select('*')
-        //->join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
+        ->join('students', 'violation_reports.student_id' , '=' , 'students.student_no')
         ->join('violations', 'violation_reports.violation_id', '=', 'violations.id');
                                                
 

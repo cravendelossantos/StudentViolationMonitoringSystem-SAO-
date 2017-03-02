@@ -71,7 +71,7 @@
 										<input type="text" id="sanction_student_no" name="sanction_student_no" class="form-control">
 										<span class="input-group-btn">
 											<button type="button" id="sanction_find_student" class="btn btn-primary">
-												Find
+												<i class="fa fa-search"></i>
 											</button> </span>
 									</div>
 									<div class="table-responsive">
@@ -115,7 +115,7 @@
 									<input type="text" name="cs_student_no" class="form-control">
 									<span class="input-group-btn">
 										<button type="button" id="cs_find_student" class="btn btn-primary">
-											Find
+											<i class="fa fa-search"></i>
 										</button> </span>
 								</div>
 
@@ -239,7 +239,7 @@
 											<input type="text" name="suspensions_student_no" class="form-control">
 											<span class="input-group-btn">
 												<button type="button" id="suspensions_student_find" class="btn btn-primary">
-													Find
+													<i class="fa fa-search"></i>
 												</button> </span>
 										</div>
 										<br>
@@ -358,7 +358,7 @@
 											<input type="text" name="suspensions_student_no" class="form-control">
 											<span class="input-group-btn">
 												<button type="button" id="suspensions_student_find" class="btn btn-primary">
-													Find
+													<i class="fa fa-search"></i>
 												</button> </span>
 										</div>
 										<br>

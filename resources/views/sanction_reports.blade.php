@@ -10,7 +10,7 @@
 
 
     <div class="row">
-      <div class="col-md-2">
+      <div class="col-md-4">
         <div class="form-group" id="v_reports_range">
 <!--           <output name="v_reports_range">Select date range:</output>
 
@@ -28,12 +28,13 @@
           <br>
           <button type="button" class="btn btn-w-m btn-primary" id="show_v_reports">Show</button> -->
 
-                              <label>Enter Student Number</label>
+                        <output>Enter Student Number</output>
 
                     <div class="input-group">
 
 
-                      <input type="text" id="sanction_student_no" name="sanction_student_no" class="form-control"> <span class="input-group-btn"> <button type="button" id="sanction_find_student" class="btn btn-primary">Find
+                      <input type="text" id="sanction_student_no" name="sanction_student_no" class="form-control"> <span class="input-group-btn"> <button type="button" id="sanction_find_student" class="btn btn-primary">
+                      <i class="fa fa-search"></i>
                     </button> </span></div>
 
         </div>
@@ -294,9 +295,6 @@ function getStudentReports(){
 
 
   $('#sanction_find_student').on('click', function(e) {
-
-alert($('#v_reports_offense_level').val());
-
 
     var stud_no = $('#sanction_student_no ').val();
     getStudentReports();

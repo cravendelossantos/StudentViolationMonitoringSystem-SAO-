@@ -104,8 +104,13 @@ class StudentRecordsController extends Controller
 	}
 
 	public function getStudentRecordsTable()
-	{
-		return Datatables::eloquent(Student::query())->make(true);
+	{	
+		$students = Student::all();
+
+		return Datatables::of($students)
+		->addColumn('action', function ($students) {
+                return '<a href="#edit-'.$students->student_no.'" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';})
+		->make(true);
 	}
 
 }
